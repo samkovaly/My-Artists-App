@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "Blank Template",
-    "slug": "My-Artists-App",
+    "scheme": "myapp",
+    "name": "My Artists",
+    "slug": "MyArtists",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
