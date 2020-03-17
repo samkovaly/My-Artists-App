@@ -1,8 +1,7 @@
 {
   "expo": {
-    "scheme": "myapp",
-    "name": "My Artists",
-    "slug": "MyArtists",
+    "name": "My",
+    "slug": "My-Artists-App",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [

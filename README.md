@@ -11,5 +11,12 @@ will fill this out later but Technologies include: React Native, Expo and Redux
 2. Get NPM & Node.js (https://www.npmjs.com/get-npm) (12.16.1)
 3. add npm to path
 4. npm install -g expo-cli
+5. "expo login" to account
 5. install yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
-6. run "run" to
+6. run "yarn install" 
+7. manual installs:
+    a. "expo install react-redux"
+    b. "expo install react-navigation"
+    c. "expo install react-navigation-stack"
+    d. "expo install react-navigation-tabs"
+    e. "expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view"
