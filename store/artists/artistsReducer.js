@@ -1,4 +1,4 @@
-import { SET_ARTIST_IDS, SET_ARTISTS } from './artistsActions'
+import { FETCH_ARTISTS_DATA, SET_ARTISTS } from './artistsActions'
 
 
 const initialState = {

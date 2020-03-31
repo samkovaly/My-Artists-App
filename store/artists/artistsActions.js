@@ -2,6 +2,7 @@
 
 export const SET_ARTIST_IDS = 'SET_ARTIST_IDS';
 export const SET_ARTISTS = 'SET_ARTISTS';
+export const FETCH_ARTISTS_DATA = 'FETCH_ARTISTS_DATA'
 //export const ADD_ARTIST = 'ADD_ARTIST';
 
 

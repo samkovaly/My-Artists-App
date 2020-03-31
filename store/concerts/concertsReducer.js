@@ -1,9 +1,9 @@
 
-import { SET_CONCERTS} from './concertsActions'
+import { FETCH_CONCERTS_DATA, SET_CONCERTS} from './concertsActions'
 
 const initialState = {
   concerts: null,
-  dataFetched = false,
+  dataFetched: false,
 }
 
 export default function(state = initialState, action) {

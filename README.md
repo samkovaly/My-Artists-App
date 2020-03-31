@@ -15,8 +15,13 @@ will fill this out later but Technologies include: React Native, Expo and Redux
 5. install yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
 6. run "yarn install" 
 7. manual installs:
-    a. "expo install react-redux"
-    b. "expo install react-navigation"
-    c. "expo install react-navigation-stack"
-    d. "expo install react-navigation-tabs"
-    e. "expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view"
+    a. "expo install redux"
+    b. "expo install react-redux"
+    c. "expo install redux-thunk"
+    d. "expo install react-navigation"
+    e. "expo install react-navigation-stack"
+    f. "expo install react-navigation-tabs"
+    g. "expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view"
+    h. "expo install react-native-elements"
+    i. "expo install Base64"
+    j. "expo install expo-secure-store"

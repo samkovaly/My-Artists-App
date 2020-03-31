@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   ActivityIndicator,
@@ -12,37 +12,51 @@ import {
 import { SPOTIFY_GREEN, SPOTIFY_BLACK } from '../styles/colors';
 
 
-import { getUserRefreshToken, getUserID } from '../store/authentication/authenticationStorage';
+import { getUserSavedOnLocal, getUserRefreshToken, getUserID } from '../store/authentication/authenticationStorage';
 
 
+import { getSpotifyAppCredentials, getConcertsAPICredentials, getAccessTokenInitial, registerUser } from '../store/authentication/authenticationActions';
 
-import { getSpotifyAppCredentials, getAccessTokenInitial } from '../store/authentication/authenticationActions'
 
 export default function AuthLoadingScreen(props) {
 
     const dispatch = useDispatch();
     const appCredentials = useSelector(state => state.authentication.appCredentials);
 
-    useEffect(() => {
-        console.log('a')
-        if(appCredentials.clientId == null){
-            dispatch(getSpotifyAppCredentials());
-        }else{
-            console.log('b')
-            const userID = await getUserID();
-            const refreshToken = await getUserRefreshToken();
-            console.log('user ID from storage ', userID, ' refresh token from storage: ', refreshToken);
-            if(userID && refreshToken){
-                console.log('c')
-                dispatch(getAccessTokenInitial(userID, refreshToken))
-                console.log('d')
+    console.log('authloadingscreen | appcreds:', appCredentials)
 
-                props.navigation.navigate('App');
+    useEffect(() => {
+        const loadAuthFromStorage = async() => {
+            console.log('loadAuthFromStorage')
+            if(appCredentials.clientId == null){
+                dispatch(getSpotifyAppCredentials());
+                print('after 1 dispatch')
+                dispatch(getConcertsAPICredentials());
+                print('after 2 dispatch')
             }else{
-                props.navigation.navigate('Auth');
+                console.log('clientID not null')
+                const userSavedOnLocal = await getUserSavedOnLocal();
+
+
+                if(userSavedOnLocal){
+                    const userID = await getUserID();
+                    const refreshToken = await getUserRefreshToken();
+                    console.log('user ID from storage ', userID, ' refresh token from storage: ', refreshToken);
+                    console.log('c')
+                    await dispatch(getAccessTokenInitial(userID, refreshToken))
+                    console.log('d')
+
+                    // temporarily here for tests
+                    await dispatch(registerUser());
+
+                    props.navigation.navigate('App');
+                }else{
+                    props.navigation.navigate('Auth');
+                }
             }
         }
-    }, [])
+        loadAuthFromStorage();
+    })
 
     return loadingScreen();
 }

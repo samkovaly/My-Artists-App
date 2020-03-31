@@ -17,7 +17,8 @@ const theme = {
 
 export default function MyArtists(props) {
 
-
+  const state = useSelector(state => state);
+  //console.log("state in myArtists", state)
   const artists = useSelector(state => state.artists.artists);
 
   if(artists !== undefined){

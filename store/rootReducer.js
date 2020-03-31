@@ -9,7 +9,7 @@ import concertsReducer from './concerts/concertsReducer';
 
 export default combineReducers({
   authentication: authenticationReducer,
-  artists: ArtistsReducer,
-  tracks: TracksReducer,
-  concerts: ConcertsReducer,
+  artists: artistsReducer,
+  tracks: tracksReducer,
+  concerts: concertsReducer,
 });

@@ -2,14 +2,15 @@
 
 
 export const METHODS = {
-  GET = 'GET',
-  POST = 'POST',
+  GET: 'GET',
+  POST: 'POST',
 }
 
 
 
-const requestJSON = async (URL, method, headers = null, body = null) => {
+export const requestJSON = async (URL, method, headers = null, body = null) => {
     // setTimeout(function(){ alert("Hello"); }, 3000);
+    console.log(`requestJSON(URL=${URL}, method=${method}, headers=${headers}, body=${body}`);
     const response = await fetch(URL, {
         method: method,
         headers: headers,

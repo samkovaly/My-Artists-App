@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 
 // My screens
-import Login from './screens/Login';
+import LoginWithSpotify from './screens/LoginWithSpotify';
 import MyArtists from './screens/MyArtists';
 import Concerts from './screens/Concerts';
 import Discovery from './screens/Discovery';
@@ -40,7 +40,7 @@ const AppStack = createBottomTabNavigator({
   },
 });
 
-const AuthStack = createStackNavigator({ Login: Login });
+const AuthStack = createStackNavigator({ LoginWithSpotify: LoginWithSpotify });
 
 
 const App = createAppContainer(

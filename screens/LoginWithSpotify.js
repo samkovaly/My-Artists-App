@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { SPOTIFY_GREEN, SPOTIFY_BLACK } from '../styles/colors'
 
 
@@ -12,17 +12,19 @@ export default function LoginWithSpotify(props) {
   const dispatch = useDispatch();
 
   const LoginUserButtonClicked = async () => {
-    
-    dispatch(getAccessTokenInitial())
+    dispatch(getAccessTokenInitial());
 
     // display 'analyzing your Spotify' modal for some seconds while backend finishes
     
     dispatch(registerUser());
 
-    // now just need artist_ids, which should be a fast request to our backend which is all set for this user
-    dispatch()
 
     props.navigation.navigate('App');
+
+    // now just need artist_ids, which should be a fast request to our backend which is all set for this user
+    //dispatch()
+
+    
   }
 
 

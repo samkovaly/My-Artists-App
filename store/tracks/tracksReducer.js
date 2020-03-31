@@ -1,8 +1,8 @@
-import { SET_TRACKS, ADD_TRACK } from './tracksActions';
+import { FETCH_TRACKS_DATA, SET_TRACKS, ADD_TRACK } from './tracksActions';
 
 const initialState = {
   tracks: null,
-  dataFetched = false,
+  dataFetched: false,
 }
 
 /*tracks: [

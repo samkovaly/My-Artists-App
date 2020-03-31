@@ -1,6 +1,6 @@
 
 
-import { requestJSON, METHODS } from '../../../utilities/HTTPRequests'
+import { requestJSON, METHODS } from '../../utilities/HTTPRequests'
 
 import { BACKEND_API_URL } from '../authentication/authenticationEffects/backendRequests'
 

@@ -10,22 +10,33 @@ const TOKEN_ENDPOINT = ACCOUNTS_URL + 'api/token';
 const USER_PERMISSION_SCOPES = ['user-read-currently-playing', 'user-library-read','playlist-read-private',
   'playlist-read-collaborative','user-read-recently-played','user-top-read', 'user-follow-read'];
 
+const USER_PROFILE_URL = 'https://api.spotify.com/v1/me';
 
 
-export const fetchUserID = async() => {
-  return 'lol, user ID here'
+export const fetchUsername = async (accessToken) => {
+  //console.log(`fetchUsername(${accessToken})`)
+  const headers = {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  }
+  const userProfile = await requestJSON(USER_PROFILE_URL, METHODS.GET, headers);
+  //console.log('userProfile:', userProfile)
+  return userProfile.id
 }
+
   
 // user login, fetch access token and expire time with refresh token
-export const refreshAccessToken = async (appCredentials, refreshToken) => {
+export const fetchAccessToken = async (appCredentials, refreshToken) => {
     const body = `grant_type=refresh_token&refresh_token=${refreshToken}`;
     return await fetchUserTokens(appCredentials, body);
   }
 
 // user registration - new refresh token, auth code is discared as it's not needed for future calls
-// gets access token and refresh token
-export const getNewUserTokens = async (appCredentials) => {
+// fetches access token and refresh token
+export const fetchNewUserTokens = async (appCredentials) => {
+    //console.log(`fetchNewUserTokens(${appCredentials})`)
     const authCode = await fetchUserAuthCode(appCredentials);
+    //console.log('autocode', authCode)
     const body = `grant_type=authorization_code&code=${authCode}&redirect_uri=${appCredentials.redirectUri}`;
     return await fetchUserTokens(appCredentials, body);
 }
@@ -55,11 +66,12 @@ const fetchUserAuthCode = async (appCredentials) => {
 // used for new access tokens and for renewing old ones
 const fetchUserTokens = async (appCredentials, body) =>{
     const appCredentialsB64 = Base64.btoa(`${appCredentials.clientId}:${appCredentials.clientSecret}`);
+
     const headers = {
         Authorization: `Basic ${appCredentialsB64}`,
         'Content-Type': 'application/x-www-form-urlencoded',
     }
-    const tokensData = await requestJSON(SPOTIFY_TOKEN_ENDPOINT, METHODS.POST, headers, body)
+    const tokensData = await requestJSON(TOKEN_ENDPOINT, METHODS.POST, headers, body)
 
     const expireTime = new Date().getTime() + tokensData.expires_in * 1000;
     const tokens = {

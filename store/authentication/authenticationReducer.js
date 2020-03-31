@@ -1,6 +1,6 @@
 
 import { SET_APP_CREDENTIALS, SET_USER_CREDENTIALS, SET_ANALYZING_SPOTIFY,
-   SET_USER_ACCESS_TOKEN, LOGIN, LOGOUT, SET_CONCERT_API_KEYS } from './authenticationActions'
+   SET_USER_ACCESS_TOKEN, LOGIN, LOGOUT, SET_CONCERTS_CREDENTIALS } from './authenticationActions'
 
 const initialState = {
   appCredentials: {
@@ -8,15 +8,20 @@ const initialState = {
     clientSecret: null,
     redirectUri: null,
   },
-  // user creds stored on local device
-  userCredentials: {
-    userID: null, // key needed to store user data longterm in backend
-    refreshToken: null, // authentication needed for backend
+  concertsCredentials: {
+    eventful: {
+      key: null
+    },
   },
-  userAccessToken: {
+  
+  refreshToken: null,
+  accessToken: {
     token: null,
-    expireTime: null,
+    expireTime: 0,
   },
+  username: null,
+
+  backendUserAuthToken: null,
   loggedIn: false,
   analyzingSpotify: false,
   concertAPIKeys: null,
@@ -29,6 +34,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         appCredentials: action.payload
+      }
+    
+    case SET_CONCERTS_CREDENTIALS:
+      return {
+        ...state,
+        concertsCredentials: action.payload
       }
     
     case SET_USER_CREDENTIALS:
