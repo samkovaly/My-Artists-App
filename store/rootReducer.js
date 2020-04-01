@@ -2,14 +2,12 @@
 import { combineReducers } from 'redux';
 
 import authenticationReducer from './authentication/authenticationReducer';
-
-import artistsReducer from './artists/artistsReducer';
-import tracksReducer from './tracks/tracksReducer';
+import musicProfileReducer from './musicProfile/musicProfileReducer';
 import concertsReducer from './concerts/concertsReducer';
+
 
 export default combineReducers({
   authentication: authenticationReducer,
-  artists: artistsReducer,
-  tracks: tracksReducer,
+  musicProfile: musicProfileReducer,
   concerts: concertsReducer,
 });

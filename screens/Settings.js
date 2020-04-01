@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { SPOTIFY_GREEN, SPOTIFY_BLACK, LOGOUT_BUTTON_RED } from '../styles/colors';
 
-import { logoutSpotify } from '../store/authentication/authenticationActions';
-
+import { logout } from '../store/authentication/authenticationActions';
+import { loadNewMusicProfile } from '../store/musicProfile/musicProfileActions'
 
 
 
@@ -15,14 +15,13 @@ export default function Settings(props) {
 
     const dispatch = useDispatch();
 
-      
-    const logout = async() =>{
-      dispatch(logoutSpotify())
+    const logoutClicked = async() =>{
+      dispatch(logout())
       props.navigation.navigate('Auth');
     }
-    const refreshData = async () => {
-      dispatch(refreshSpotifyData())
-      props.navigation.navigate('Concerts');
+    const refreshMusicProfile = async () => {
+      dispatch(loadNewMusicProfile())
+      props.navigation.navigate('MyArtists');
     }
 
     return (
@@ -32,14 +31,14 @@ export default function Settings(props) {
             {/* REFRESH SPOTIFY DATA */}
             <TouchableHighlight
               style = {fetchingArtists ? styles.getArtistsButtonDisabled : styles.getArtistsButton}
-              onPress={fetchingArtists ? () => {} : () => refreshData()}>
+              onPress={fetchingArtists ? () => {} : () => refreshMusicProfile()}>
               <Text style = {styles.getArtistsButtonText}>Refresh spotify data</Text>
             </TouchableHighlight>
 
             {/* LOGOUT OF SPOTIFY */}
             <TouchableHighlight
                 style = {styles.logoutButton }
-                onPress={() => logout()}>
+                onPress={() => logoutClicked()}>
                 <Text style = {styles.logoutButtonText}>Logout</Text>
             </TouchableHighlight>
 

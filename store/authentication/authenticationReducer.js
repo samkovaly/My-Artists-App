@@ -1,6 +1,7 @@
 
-import { SET_APP_CREDENTIALS, SET_USER_CREDENTIALS, SET_ANALYZING_SPOTIFY,
-   SET_USER_ACCESS_TOKEN, LOGIN, LOGOUT, SET_CONCERTS_CREDENTIALS } from './authenticationActions'
+import { SET_APP_CREDENTIALS, SET_CONCERTS_CREDENTIALS, 
+  SET_REFRESH_TOKEN, SET_ACCESS_TOKEN, SET_USERNAME, SET_BACKEND_AUTH_TOKEN,
+  SET_ANALYZING_SPOTIFY, LOGIN, LOGOUT } from './authenticationActions'
 
 const initialState = {
   appCredentials: {
@@ -14,17 +15,15 @@ const initialState = {
     },
   },
   
-  refreshToken: null,
   accessToken: {
     token: null,
     expireTime: 0,
   },
+  refreshToken: null,
   username: null,
+  backendAuthToken: null,
 
-  backendUserAuthToken: null,
   loggedIn: false,
-  analyzingSpotify: false,
-  concertAPIKeys: null,
 }
 
 export default function(state = initialState, action) {
@@ -35,46 +34,42 @@ export default function(state = initialState, action) {
         ...state,
         appCredentials: action.payload
       }
-    
     case SET_CONCERTS_CREDENTIALS:
       return {
         ...state,
         concertsCredentials: action.payload
       }
-    
-    case SET_USER_CREDENTIALS:
-      return {
-        ...state,
-        userCredentials: action.payload
-      };
 
-    case SET_USER_ACCESS_TOKEN:
+    case SET_REFRESH_TOKEN:
       return {
         ...state,
-        userAccessToken: action.payload
-      };
-    
-    case SET_ANALYZING_SPOTIFY:
-      return {
-        ...state,
-        analyzingSpotify: action.payload
+        refreshToken: action.payload
       }
-
+    case SET_ACCESS_TOKEN:
+      return {
+        ...state,
+        accessToken: action.payload
+      }
+    case SET_USERNAME:
+      return {
+        ...state,
+        username: action.payload
+      };
+    case SET_BACKEND_AUTH_TOKEN:
+      return {
+        ...state,
+        backendAuthToken: action.payload
+      };
     case LOGIN:
       return {
         ...state,
         loggedIn: true,
       }
+
     case LOGOUT:
       return {
         ...state,
         loggedIn: false,
-      }
-      
-    case SET_CONCERT_API_KEYS:
-      return {
-        ...state,
-        concertAPIKeys: action.payload
       }
       
     default:

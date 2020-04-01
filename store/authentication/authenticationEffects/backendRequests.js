@@ -7,13 +7,12 @@ import { localDevIP, APIMasterKey } from '../../../localDevVariables';
 const BACKEND_URL = `http://${localDevIP}/`
 
 const BAKEND_LOGIN = `${BACKEND_URL}auth/`
-export const BACKEND_API_URL = `${BACKEND_URL}api/`;
+const BACKEND_API_URL = `${BACKEND_URL}api/`;
 
 const BACKEND_CREDENTIALS_ENDPOINT = `${BACKEND_API_URL}spotify-app-credentials/`;
 const BACKEND_CONCERTS_ENDPOINT = `${BACKEND_API_URL}concerts-APIs-credentials/`;
 
-const BACKEND_USERS = `${BACKEND_API_URL}users/`;
-const BACKEND_MUSIC_PROFILE = `${BACKEND_USERS}music_profile/`;
+export const BACKEND_USERS = `${BACKEND_API_URL}users/`;
 
 const AUTH_MASTER_KEY_HEADER = {
     'Authorization': `Token ${APIMasterKey}`,
@@ -34,11 +33,11 @@ export const fetchConcertsAPICredentials = async () => {
 };
 
 
-export const registerUserBackend = async (userID, refreshToken) => {
+export const registerUserForAuthToken = async (username, refreshToken) => {
     console.log('Registering user at ', BACKEND_USERS)
     
     const body = {
-        'username': userID,
+        'username': username,
         'password': getPasswordFromToken(refreshToken), // [0:15]
         'refresh_token': refreshToken,
     }
@@ -47,37 +46,15 @@ export const registerUserBackend = async (userID, refreshToken) => {
 }
 
 
-export const LoginUserBackend = async (userID, refreshToken) => {
+export const LoginUserForAuthToken = async (username, refreshToken) => {
     console.log('Loggin in user at ', BACKEND_USERS)
     
     const body = {
-        'username': userID,
+        'username': username,
         'password': getPasswordFromToken(refreshToken), // [0:15]
     }
     const registerResult = await requestJSON(BAKEND_LOGIN, METHODS.POST, null, JSON.stringify(body))
     return registerResult
-}
-
-
-export const getSpotifyMusicProfile = async(userID, userToken) => {
-    const headers = {
-        'Authorization': `Token ${userToken}`,
-        'Content-Type': 'application/json',
-    };
-    const getResult = await requestJSON(BACKEND_MUSIC_PROFILE + userID, METHODS.GET, headers)
-    return getResult
-}
-
-export const refreshSpotifyMusicProfile = async(userID, accessToken, userToken) => {
-    const headers = {
-        'Authorization': `Token ${userToken}`,
-        'Content-Type': 'application/json',
-    };
-    const body = {
-        'access_token': accessToken,
-    }
-    const refreshResult = await requestJSON(BACKEND_MUSIC_PROFILE + userID, METHODS.POST, headers, body = body)
-    return refreshResult
 }
 
 

@@ -12,10 +12,12 @@ import {
 import { SPOTIFY_GREEN, SPOTIFY_BLACK } from '../styles/colors';
 
 
-import { getUserSavedOnLocal, getUserRefreshToken, getUserID } from '../store/authentication/authenticationStorage';
 
+import { getUserSavedOnLocal } from '../store/authentication/authenticationStorage';
+import { getSpotifyAppCredentials, getConcertsAPICredentials } from '../store/authentication/authenticationActions';
+import { loginWithUserAuthStorage } from '../store/authentication/authenticationActions';
+import { getMusicProfile } from '../store/musicProfile/musicProfileActions';
 
-import { getSpotifyAppCredentials, getConcertsAPICredentials, getAccessTokenInitial, registerUser } from '../store/authentication/authenticationActions';
 
 
 export default function AuthLoadingScreen(props) {
@@ -36,19 +38,12 @@ export default function AuthLoadingScreen(props) {
             }else{
                 console.log('clientID not null')
                 const userSavedOnLocal = await getUserSavedOnLocal();
-
-
+                console.log('userSavedOnLocal: ', userSavedOnLocal);
                 if(userSavedOnLocal){
-                    const userID = await getUserID();
-                    const refreshToken = await getUserRefreshToken();
-                    console.log('user ID from storage ', userID, ' refresh token from storage: ', refreshToken);
-                    console.log('c')
-                    await dispatch(getAccessTokenInitial(userID, refreshToken))
-                    console.log('d')
-
-                    // temporarily here for tests
-                    await dispatch(registerUser());
-
+                    // set state to what's found on local storage
+                    dispatch(loginWithUserAuthStorage());
+                    // retrive music profile from backend database
+                    dispatch(getMusicProfile());
                     props.navigation.navigate('App');
                 }else{
                     props.navigation.navigate('Auth');

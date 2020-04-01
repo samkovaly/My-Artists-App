@@ -4,28 +4,26 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SPOTIFY_GREEN, SPOTIFY_BLACK } from '../styles/colors'
 
 
-import { getAccessTokenInitial, registerUser } from '../store/authentication/authenticationActions'
-import { getArtistIds } from '../store/artists/artistsActions';
+
+import { RegisterWithSpotifyFetch } from '../store/authentication/authenticationActions';
+
+import { loadNewMusicProfile, getMusicProfile } from '../store/musicProfile/musicProfileActions';
 
 export default function LoginWithSpotify(props) {
 
   const dispatch = useDispatch();
 
+
   const LoginUserButtonClicked = async () => {
-    dispatch(getAccessTokenInitial());
+    dispatch(RegisterWithSpotifyFetch());
 
     // display 'analyzing your Spotify' modal for some seconds while backend finishes
-    
-    dispatch(registerUser());
-
+    dispatch(loadNewMusicProfile());
+    dispatch(getMusicProfile());
 
     props.navigation.navigate('App');
-
-    // now just need artist_ids, which should be a fast request to our backend which is all set for this user
-    //dispatch()
-
-    
   }
+
 
 
   return (

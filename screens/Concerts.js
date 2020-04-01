@@ -14,8 +14,9 @@ export default function Concerts(props) {
   const dispatch = useDispatch();
 
 
-  const artists = useSelector(state => state.artists.artists);
-  const tracks = useSelector(state => state.tracks.tracks);
+  const artists = useSelector(state => state.musicProfile.artists);
+  const tracks = useSelector(state => state.musicProfile.tracks);
+
   const concerts = useSelector(state => state.concerts.concerts);
 
   if(concerts){
@@ -27,6 +28,7 @@ export default function Concerts(props) {
     //}, [])
     //fetchConcertAPICredentials()
     //setUpcomingConcerts(dispatch);
+    console.log('no concerts to display...')
     return loadingScreen();
   }
 
