@@ -11,6 +11,6 @@ export const getConcerts = () => {
         // fetch...
 
 
-        // dispatch the result
+        // await dispatch the result
     }
 }

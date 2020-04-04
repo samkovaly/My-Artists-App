@@ -5,10 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { SPOTIFY_GREEN, SPOTIFY_BLACK, LOGOUT_BUTTON_RED } from '../styles/colors';
 
 import { logout } from '../store/authentication/authenticationActions';
-import { loadNewMusicProfile } from '../store/musicProfile/musicProfileActions'
-
-
-
+import { refreshAndGetMusicProfile } from '../store/musicProfile/musicProfileActions'
   
 
 export default function Settings(props) {
@@ -16,13 +13,15 @@ export default function Settings(props) {
     const dispatch = useDispatch();
 
     const logoutClicked = async() =>{
-      dispatch(logout())
+      await dispatch(logout())
       props.navigation.navigate('Auth');
     }
     const refreshMusicProfile = async () => {
-      dispatch(loadNewMusicProfile())
-      props.navigation.navigate('MyArtists');
+      await dispatch(refreshAndGetMusicProfile());
+      //props.navigation.navigate('MyArtists');
     }
+
+    const analyzingSpotify = useSelector(state => state.musicProfile.analyzingSpotify);
 
     return (
         <View style={styles.container}>
@@ -30,8 +29,8 @@ export default function Settings(props) {
 
             {/* REFRESH SPOTIFY DATA */}
             <TouchableHighlight
-              style = {fetchingArtists ? styles.getArtistsButtonDisabled : styles.getArtistsButton}
-              onPress={fetchingArtists ? () => {} : () => refreshMusicProfile()}>
+              style = {analyzingSpotify ? styles.getArtistsButtonDisabled : styles.getArtistsButton}
+              onPress={analyzingSpotify ? () => {} : () => refreshMusicProfile()}>
               <Text style = {styles.getArtistsButtonText}>Refresh spotify data</Text>
             </TouchableHighlight>
 

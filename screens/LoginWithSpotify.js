@@ -1,27 +1,36 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux'
 import { SPOTIFY_GREEN, SPOTIFY_BLACK } from '../styles/colors'
 
 
 
-import { RegisterWithSpotifyFetch } from '../store/authentication/authenticationActions';
+import { getRefreshToken, registerWithRefreshToken } from '../store/authentication/authenticationActions';
 
-import { loadNewMusicProfile, getMusicProfile } from '../store/musicProfile/musicProfileActions';
+import { refreshAndGetMusicProfile } from '../store/musicProfile/musicProfileActions';
 
 export default function LoginWithSpotify(props) {
 
   const dispatch = useDispatch();
 
 
+  // ask to sign in to spotify, which will return a refrsh token if successful,
+  // and null if the user refused or an error occured
   const LoginUserButtonClicked = async () => {
-    dispatch(RegisterWithSpotifyFetch());
-
-    // display 'analyzing your Spotify' modal for some seconds while backend finishes
-    dispatch(loadNewMusicProfile());
-    dispatch(getMusicProfile());
-
+    await dispatch(getRefreshToken());
+  }
+  const registerAnalyzeAndGetMusicProfile = async() => {
+    await dispatch(registerWithRefreshToken());
+    await dispatch(refreshAndGetMusicProfile());
+    console.log("navigating to app now")
     props.navigation.navigate('App');
+  }
+  
+  const refreshToken = useSelector(state => state.authentication.refreshToken);
+
+  if(refreshToken){
+    registerAnalyzeAndGetMusicProfile()
   }
 
 

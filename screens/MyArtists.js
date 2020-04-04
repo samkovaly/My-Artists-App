@@ -22,7 +22,7 @@ export default function MyArtists(props) {
 
   if(artists !== undefined){
     console.log('artists returned:', artists.length)
-    console.log(artists[0].image_url)
+    console.log('artists[0]', artists[0])
   }
 
   

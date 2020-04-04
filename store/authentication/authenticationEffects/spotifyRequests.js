@@ -24,7 +24,7 @@ export const fetchUsername = async (accessToken) => {
   return userProfile.id
 }
 
-  
+
 // user login, fetch access token and expire time with refresh token
 export const fetchAccessToken = async (appCredentials, refreshToken) => {
     const body = `grant_type=refresh_token&refresh_token=${refreshToken}`;
@@ -36,6 +36,7 @@ export const fetchAccessToken = async (appCredentials, refreshToken) => {
 export const fetchNewUserTokens = async (appCredentials) => {
     //console.log(`fetchNewUserTokens(${appCredentials})`)
     const authCode = await fetchUserAuthCode(appCredentials);
+    if(!authCode) return null
     //console.log('autocode', authCode)
     const body = `grant_type=authorization_code&code=${authCode}&redirect_uri=${appCredentials.redirectUri}`;
     return await fetchUserTokens(appCredentials, body);
@@ -44,22 +45,25 @@ export const fetchNewUserTokens = async (appCredentials) => {
 // this function prompts the user with the spotify login
 const fetchUserAuthCode = async (appCredentials) => {
   const scopes = USER_PERMISSION_SCOPES.join(' ');
-  try {
   //this is something like https://auth.expo.io/@your-username/your-app-slug
-    const redirectUrl = AuthSession.getRedirectUrl();
-    const result = await AuthSession.startAsync({
-      authUrl:
-        CODE_ENDPOINT +
-        '?response_type=code' +
-        '&client_id=' +
-        appCredentials.clientId +
-        (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-        '&redirect_uri=' +
-        encodeURIComponent(redirectUrl),
-    })
-    return result.params.code;
-  } catch (err) {
-    console.error(err)
+  const redirectUrl = AuthSession.getRedirectUrl();
+  const result = await AuthSession.startAsync({
+    authUrl:
+      CODE_ENDPOINT +
+      '?response_type=code' +
+      '&client_id=' +
+      appCredentials.clientId +
+      (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+      '&redirect_uri=' +
+      encodeURIComponent(redirectUrl),
+  })
+  if(result.type == "success"){
+    return result.params.code; 
+  }else if(result.type == "cancel"){
+    return null
+  }else if(result.type == 'error'){
+    console.log('User fetch auth error:', result)
+    return null
   }
 }
   

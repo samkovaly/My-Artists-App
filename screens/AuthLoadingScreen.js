@@ -13,11 +13,12 @@ import { SPOTIFY_GREEN, SPOTIFY_BLACK } from '../styles/colors';
 
 
 
-import { getUserSavedOnLocal } from '../store/authentication/authenticationStorage';
+import { getUserSavedOnStorage } from '../store/authentication/authenticationStorage';
 import { getSpotifyAppCredentials, getConcertsAPICredentials } from '../store/authentication/authenticationActions';
 import { loginWithUserAuthStorage } from '../store/authentication/authenticationActions';
 import { getMusicProfile } from '../store/musicProfile/musicProfileActions';
 
+import { printOutAllStorage } from '../store/authentication/authenticationStorage';
 
 
 export default function AuthLoadingScreen(props) {
@@ -25,27 +26,24 @@ export default function AuthLoadingScreen(props) {
     const dispatch = useDispatch();
     const appCredentials = useSelector(state => state.authentication.appCredentials);
 
-    console.log('authloadingscreen | appcreds:', appCredentials)
 
     useEffect(() => {
         const loadAuthFromStorage = async() => {
-            console.log('loadAuthFromStorage')
             if(appCredentials.clientId == null){
-                dispatch(getSpotifyAppCredentials());
-                print('after 1 dispatch')
-                dispatch(getConcertsAPICredentials());
-                print('after 2 dispatch')
+                await dispatch(getSpotifyAppCredentials());
+                await dispatch(getConcertsAPICredentials());
+
             }else{
-                console.log('clientID not null')
-                const userSavedOnLocal = await getUserSavedOnLocal();
-                console.log('userSavedOnLocal: ', userSavedOnLocal);
-                if(userSavedOnLocal){
+                const userSavedOnStorage = await getUserSavedOnStorage();
+                if(userSavedOnStorage){
+                    console.log('automatic login..')
                     // set state to what's found on local storage
-                    dispatch(loginWithUserAuthStorage());
+                    await dispatch(loginWithUserAuthStorage());
                     // retrive music profile from backend database
-                    dispatch(getMusicProfile());
+                    await dispatch(getMusicProfile());
                     props.navigation.navigate('App');
                 }else{
+                    console.log('need to register / login')
                     props.navigation.navigate('Auth');
                 }
             }
@@ -59,7 +57,7 @@ export default function AuthLoadingScreen(props) {
 const loadingScreen = () => {
     return (
         <View style = {styles.loadingScreenContainer}>
-            <Text>Loading...</Text>
+            <Text style = {styles.bigLoadingText}>Loading...</Text>
         </View>
     )
 }
@@ -68,5 +66,9 @@ const styles = StyleSheet.create({
     loadingScreenContainer: {
         flex: 1,
         backgroundColor: SPOTIFY_BLACK,
+    },
+    bigLoadingText: {
+        fontSize: 50,
+        color: 'white',
     },
 });

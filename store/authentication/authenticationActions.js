@@ -11,11 +11,12 @@ export const SET_BACKEND_AUTH_TOKEN = 'SET_BACKEND_AUTH_TOKEN';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
+
 import { makeAction } from '../../utilities/actions';
 import { fetchNewUserTokens, fetchUsername, fetchAccessToken } from './authenticationEffects/spotifyRequests';
 import { fetchSpotifyAppCredentials, fetchConcertsAPICredentials, fetchSpotifyMusicProfile } from './authenticationEffects/backendRequests';
 import { registerUserForAuthToken, LoginUserForAuthToken } from './authenticationEffects/backendRequests';
-import { saveRefreshTokenStorage, saveUsernameStorage, saveBackendAuthTokenStorage, removeAllStorage } from "./authenticationStorage";
+import { saveRefreshTokenStorage, saveUsernameStorage, saveBackendAuthTokenStorage, removeAllStorage, saveUserSavedOnStorage } from "./authenticationStorage";
 
 import { getUsernameStorage, getRefreshTokenStorage, getBackendAuthTokenStorage } from "./authenticationStorage";
 
@@ -27,14 +28,14 @@ import { getUsernameStorage, getRefreshTokenStorage, getBackendAuthTokenStorage 
 export const getSpotifyAppCredentials = () => {
     return async (dispatch, getState) => {
         credentials = await fetchSpotifyAppCredentials()
-        dispatch(makeAction(SET_APP_CREDENTIALS, credentials))
+        await dispatch(makeAction(SET_APP_CREDENTIALS, credentials))
     }
 }
 // same for this guy
 export const getConcertsAPICredentials = () => {
     return async (dispatch, getState) => {
         credentials = await fetchConcertsAPICredentials();
-        dispatch(makeAction(SET_CONCERTS_CREDENTIALS, credentials));
+        await dispatch(makeAction(SET_CONCERTS_CREDENTIALS, credentials));
     }
 }
 
@@ -46,8 +47,7 @@ export const loginWithUserAuthStorage = () => {
     return async (dispatch, getState) => {
         
         refreshToken = await getRefreshTokenStorage();
-        await dispatch(setRefreshTokenAction(newUserTokens.refreshToken));
-
+        await dispatch(setRefreshTokenAction(refreshToken));
         await dispatch(refreshAccessToken());
 
         username = await getUsernameStorage();
@@ -57,22 +57,33 @@ export const loginWithUserAuthStorage = () => {
         await dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthToken));
 
         await dispatch(login());
+
+        console.log('after auto login, auth state is:', getState().authentication)
     }
 }
 
-export const RegisterWithSpotifyFetch = () => {
+export const saveAuthStateToStorage = async (authentication) => {
+    console.log('saving the stuff')
+    await saveRefreshTokenStorage(authentication.refreshToken);
+    await saveUsernameStorage(authentication.username)
+    await saveBackendAuthTokenStorage(authentication.backendAuthToken)
+    await saveUserSavedOnStorage(true)
+}
+
+
+export const registerWithRefreshToken = () => {
     return async (dispatch, getState) => {
         // prompts for user to sign into spotify with their username / password
-        await dispatch(getRefreshToken());
 
         await dispatch(refreshAccessToken());
         await dispatch(getUsername());
         await dispatch(getBackendAuthToken());
 
+        await saveAuthStateToStorage(getState().authentication)
         await dispatch(login());
+        
     }
 }
-
 
 
 // gets refresh token from spotify (also gets initial access token but we ignore it to keep code architecture neat)
@@ -80,8 +91,12 @@ export const getRefreshToken = () => {
     return async (dispatch, getState) => {
         const auth = getState().authentication;
         newUserTokens = await fetchNewUserTokens(auth.appCredentials);
-        await saveRefreshTokenStorage(newUserTokens.refreshToken);
-        dispatch(setRefreshTokenAction(newUserTokens.refreshToken));
+        if(newUserTokens){
+            await dispatch(setRefreshTokenAction(newUserTokens.refreshToken));
+        }else{
+            // dispatches null if the user refused (or some other error)
+            await dispatch(setRefreshTokenAction(null));
+        }
     }
 }
 // retrieves username with our access token
@@ -89,8 +104,7 @@ export const getUsername = () => {
     return async (dispatch, getState) => {
         const auth = getState().authentication
         username = await fetchUsername(auth.accessToken.token);
-        await saveUsernameStorage(username)
-        dispatch(setUsernameAction(username))
+        await dispatch(setUsernameAction(username))
     }
 }
 // acquires initial access token after logging in / registering or when a new one is needed due to expiration.
@@ -99,7 +113,7 @@ export const refreshAccessToken = () => {
         const auth = getState().authentication
         if(needNewAccessToken(auth.accessToken.expireTime)){
             const newUserTokens = await fetchAccessToken(auth.appCredentials, auth.refreshToken)
-            dispatch(setAccessTokenAction(newUserTokens.accessToken, newUserTokens.expireTime))
+            await dispatch(setAccessTokenAction(newUserTokens.accessToken, newUserTokens.expireTime))
         }
     }
 }
@@ -110,13 +124,12 @@ export const refreshAccessToken = () => {
 export const getBackendAuthToken = () => {
     return async (dispatch, getState) => {
         const auth = getState().authentication;
-        console.log("requesting backend user auth token with current auth state:", auth)
+        //console.log("requesting backend user auth token with current auth state:", auth)
         // register user, does not if they are already registered
-        await registerUserForAuthToken(auth.username, auth.refreshToken)
+        await registerUserForAuthToken(auth.username, auth.refreshToken, auth.accessToken.token)
         // login user and get auth token as return value
         backendAuthToken = await LoginUserForAuthToken(auth.username, auth.refreshToken)
-        await saveBackendAuthTokenStorage(backendAuthToken)
-        dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthToken))
+        await dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthToken))
     }
 }
 
@@ -125,7 +138,7 @@ export const getBackendAuthToken = () => {
 
 export const login = () => {
     return async(dispatch, getState) => {
-        dispatch(makeAction(LOGIN))
+        await dispatch(makeAction(LOGIN))
     }
 }
 export const logout = () => {
@@ -134,7 +147,7 @@ export const logout = () => {
         // and updating state to reflect a new app open
         await removeAllStorage();
         // logout action will reset the app state
-        dispatch(makeAction(LOGOUT))
+        await dispatch(makeAction(LOGOUT))
         // component calling this will have to redirect elsewhere (to start of app flow most likely)
     }
 }

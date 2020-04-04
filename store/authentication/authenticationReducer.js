@@ -19,6 +19,7 @@ const initialState = {
     token: null,
     expireTime: 0,
   },
+  // these 3 are saved to local storage for automatica login upon app start
   refreshToken: null,
   username: null,
   backendAuthToken: null,
@@ -72,6 +73,7 @@ export default function(state = initialState, action) {
         loggedIn: false,
       }
       
+
     default:
       return state;
   }

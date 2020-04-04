@@ -5,60 +5,60 @@ import { requestJSON, METHODS } from '../../../utilities/HTTPRequests'
 import { localDevIP, APIMasterKey } from '../../../localDevVariables';
 
 const BACKEND_URL = `http://${localDevIP}/`
-
-const BAKEND_LOGIN = `${BACKEND_URL}auth/`
 const BACKEND_API_URL = `${BACKEND_URL}api/`;
 
-const BACKEND_CREDENTIALS_ENDPOINT = `${BACKEND_API_URL}spotify-app-credentials/`;
-const BACKEND_CONCERTS_ENDPOINT = `${BACKEND_API_URL}concerts-APIs-credentials/`;
+const BACKEND_CREDENTIALS_ENDPOINT =    `${BACKEND_API_URL}spotify-app-credentials/`;
+const BACKEND_CONCERTS_ENDPOINT =       `${BACKEND_API_URL}concerts-APIs-credentials/`;
 
-export const BACKEND_USERS = `${BACKEND_API_URL}users/`;
+export const BACKEND_USERS =            `${BACKEND_API_URL}users/`;
+export const BACKEND_REGISTER =         `${BACKEND_API_URL}register/`;
+const BAKEND_LOGIN =                    `${BACKEND_API_URL}login/`
+
+
 
 const AUTH_MASTER_KEY_HEADER = {
     'Authorization': `Token ${APIMasterKey}`,
     'Content-Type': 'application/json',
 }
-
 export const fetchSpotifyAppCredentials = async () => {
     const credentials = await requestJSON(BACKEND_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
-    console.log('fetched app credentials: ', credentials)
+    //console.log(credentials)
     return credentials
 };
-
-
 export const fetchConcertsAPICredentials = async () => {
     const credentials = await requestJSON(BACKEND_CONCERTS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
-    console.log('fetched concerts credentials: ', credentials)
+    //console.log(credentials)
     return credentials
 };
 
 
-export const registerUserForAuthToken = async (username, refreshToken) => {
-    console.log('Registering user at ', BACKEND_USERS)
-    
+export const registerUserForAuthToken = async (username, refreshToken, accessToken) => {
+    //console.log('Registering user at ', BACKEND_REGISTER)
+    const headers = {
+        'Content-Type': 'application/json'
+    }
     const body = {
         'username': username,
-        'password': getPasswordFromToken(refreshToken), // [0:15]
         'refresh_token': refreshToken,
+        'access_token': accessToken,
     }
-    const registerResult = await requestJSON(BACKEND_USERS, METHODS.POST, AUTH_MASTER_KEY_HEADER, JSON.stringify(body))
+    //console.log('register body:', body)
+    const registerResult = await requestJSON(BACKEND_REGISTER, METHODS.POST, headers, JSON.stringify(body))
+    //console.log('\n1 Register result:', registerResult, '\n')
     return registerResult
 }
 
 
 export const LoginUserForAuthToken = async (username, refreshToken) => {
-    console.log('Loggin in user at ', BACKEND_USERS)
-    
+    //console.log('Loggin in user at ', BAKEND_LOGIN)
+    const headers = {
+        'Content-Type': 'application/json'
+    }
     const body = {
         'username': username,
-        'password': getPasswordFromToken(refreshToken), // [0:15]
+        'refresh_token': refreshToken,
     }
-    const registerResult = await requestJSON(BAKEND_LOGIN, METHODS.POST, null, JSON.stringify(body))
-    return registerResult
-}
-
-
-
-const getPasswordFromToken = (token) => {
-    return token.substring(0, 15)
+    const loginResult = await requestJSON(BAKEND_LOGIN, METHODS.POST, headers, JSON.stringify(body))
+    //console.log('\n1 Login result:', loginResult, '\n')
+    return loginResult.token
 }

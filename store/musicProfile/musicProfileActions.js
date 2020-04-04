@@ -4,37 +4,41 @@ export const SET_ANALYZING_SPOTIFY = 'SET_ANALYZING_SPOTIFY';
 
 
 import { makeAction } from '../../utilities/actions';
-import { refreshSpotifyMusicProfile, fetchSpotifyMusicProfile } from './musicProfileEffects';
+import { loadNewMusicProfile, fetchMusicProfile } from './musicProfileEffects';
 
 
-// new user to the app or a user is requesting to refresh their data
-// backend takes some seconds to process a new music profile and then
-// a new one is ready for getMusicProfile to be called to get it.
-export const loadNewMusicProfile = () => {
+export const refreshAndGetMusicProfile = () => {
     return async(dispatch, getState) => {
-        auth = getState().authentication
-        dispatch(setAnalyzingSpotifyAction(true))
-        const refreshStatus = await refreshBackendSpotifyData(auth.username, auth.backendAuthToken, auth.accessToken.token)
-        dispatch(setAnalyzingSpotifyAction(false))
+        const auth = getState().authentication;
+        await dispatch(setAnalyzingSpotifyAction(true));
+        await loadNewMusicProfile(auth.username, auth.backendAuthToken, auth.accessToken.token);
+        await dispatch(getMusicProfile());
+        await dispatch(setAnalyzingSpotifyAction(false));
     }
 }
+
+
+
 // open the app, app remembers who user is (storage), and then this is automatically
 // called to populate the state (backend simply returns what is in the databse)
 export const getMusicProfile = () => {
     return async(dispatch, getState) => {
         auth = getState().authentication
-        const musicProfileJSON = await fetchSpotifyMusicProfile(auth.username, auth.backendAuthToken);
-
-        const artists = JSON.parse(musicProfileJSON.artists).slice(0,50)
-        const processedArtists = processArtists(artists)
-        const tracks = JSON.parse(musicProfileJSON.tracks).slice(0,50)
-        const processedTracks = processArtists(tracks)
         
-        console.log('artists[0]', artists[0])
-        console.log('tracks[0]', tracks[0])
+        const musicProfile = await fetchMusicProfile(auth.username, auth.backendAuthToken);
 
-        dispatch(setArtistsAction(processedArtists))
-        dispatch(setArtistsAction(processedTracks))
+        const musicProfileJSON = JSON.parse(musicProfile.music_profile_JSON)
+        const lastRefreshed = musicProfile.last_refreshed
+
+        const artists = JSON.parse(musicProfileJSON.artists)
+        const processedArtists = processArtists(artists)
+
+        const tracks = JSON.parse(musicProfileJSON.tracks)
+        const processedTracks = processArtists(tracks)
+
+        //console.log('\n',processedArtists.slice(0,10) ,'\n')
+        await dispatch(setArtistsAction(processedArtists))
+        await dispatch(setTracksAction(processedTracks))
     }
 }
 
@@ -64,5 +68,6 @@ const setTracksAction = (tracks) => {
 }
 
 const setAnalyzingSpotifyAction = (toValue) => {
+    console.log("analyzing spotify:", toValue)
     return makeAction(SET_ANALYZING_SPOTIFY, toValue);
 }

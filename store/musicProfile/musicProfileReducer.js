@@ -1,5 +1,5 @@
 
-import { SET_ARTISTS, SET_TRACKS, SET_ANALYZING_SPOTIFY } from './tracksActions';
+import { SET_ARTISTS, SET_TRACKS, SET_ANALYZING_SPOTIFY } from './musicProfileActions';
 
 const initialState = {
     artists: null,
