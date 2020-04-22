@@ -9,11 +9,11 @@ import { loadNewMusicProfile, fetchMusicProfile } from './musicProfileEffects';
 
 export const refreshAndGetMusicProfile = () => {
     return async(dispatch, getState) => {
+        console.log("analyzing spotify...");
         const auth = getState().authentication;
-        await dispatch(setAnalyzingSpotifyAction(true));
+        
         await loadNewMusicProfile(auth.username, auth.backendAuthToken, auth.accessToken.token);
         await dispatch(getMusicProfile());
-        await dispatch(setAnalyzingSpotifyAction(false));
     }
 }
 
@@ -37,6 +37,7 @@ export const getMusicProfile = () => {
         const processedTracks = processArtists(tracks)
 
         //console.log('\n',processedArtists.slice(0,10) ,'\n')
+        console.log('dispatching new music profile to redux state...')
         await dispatch(setArtistsAction(processedArtists))
         await dispatch(setTracksAction(processedTracks))
     }
@@ -67,7 +68,6 @@ const setTracksAction = (tracks) => {
     return makeAction(SET_TRACKS, tracks);
 }
 
-const setAnalyzingSpotifyAction = (toValue) => {
-    console.log("analyzing spotify:", toValue)
+export const setAnalyzingSpotifyAction = (toValue) => {
     return makeAction(SET_ANALYZING_SPOTIFY, toValue);
 }

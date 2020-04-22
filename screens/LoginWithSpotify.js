@@ -1,72 +1,100 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux'
-import { SPOTIFY_GREEN, SPOTIFY_BLACK } from '../styles/colors'
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Colors, Screens, Buttons} from '../styles';
+
+import { getRefreshToken, registerWithRefreshToken, login } from '../store/authentication/authenticationActions';
+
+import { refreshAndGetMusicProfile, setAnalyzingSpotifyAction } from '../store/musicProfile/musicProfileActions';
+import AnalyzingSpotifyArt from '../components/AnalyzingSpotifyArt';
 
 
+/*
+N:
+direct user to login screen [ LOGIN SCREEN ]
 
-import { getRefreshToken, registerWithRefreshToken } from '../store/authentication/authenticationActions';
+register and analyze on backend [ ANALYZING SPOTIFY SCREEN/COMPONENT ]
+get user auth from backend
 
-import { refreshAndGetMusicProfile } from '../store/musicProfile/musicProfileActions';
+{ LOAD AUTH STATE AND MUSIC PROFILE WITH THIS CREDENTIALS OBJECT}
+auth obj -> auth state
+fetch music profile into state
+LOGIN to trigger auth nav screen change
+*/
+
+
 
 export default function LoginWithSpotify(props) {
 
   const dispatch = useDispatch();
 
 
+
+
+
   // ask to sign in to spotify, which will return a refrsh token if successful,
   // and null if the user refused or an error occured
+
   const LoginUserButtonClicked = async () => {
+    // user clicking login button
     await dispatch(getRefreshToken());
+    await registerAnalyzeAndGetMusicProfile();
   }
-  const registerAnalyzeAndGetMusicProfile = async() => {
+
+  const registerAnalyzeAndGetMusicProfile = async () => {
+    await dispatch(setAnalyzingSpotifyAction(true));
+    // user has verified and refresh token is returned
     await dispatch(registerWithRefreshToken());
+    // refreshAndGetMusicProfile sets analyzingSpotify state to on then off again
     await dispatch(refreshAndGetMusicProfile());
-    console.log("navigating to app now")
-    props.navigation.navigate('App');
+    await dispatch(setAnalyzingSpotifyAction(false));
+    
+    await dispatch(login());
   }
   
-  const refreshToken = useSelector(state => state.authentication.refreshToken);
+  //const refreshToken = useSelector(state => state.authentication.refreshToken);
 
-  if(refreshToken){
-    registerAnalyzeAndGetMusicProfile()
+  //if(refreshToken){
+  //  registerAnalyzeAndGetMusicProfile();
+  //}
+
+  const analyzingSpotify = useSelector(state => state.musicProfile.analyzingSpotify);
+
+  if(analyzingSpotify){
+    return (
+      <AnalyzingSpotifyArt/>
+    )
+  }else{
+    return (
+      <View style = {styles.loginContainer}>
+          <TouchableHighlight
+            style = {styles.loginButton}
+            onPress={() => {LoginUserButtonClicked()}}>
+            <Text style = {styles.loginButtonText}>Login with spotify</Text>
+          </TouchableHighlight>
+      </View>
+    )
   }
-
-
-
-  return (
-    <View style = {styles.loginContainer}>
-        <TouchableHighlight
-          style = {styles.loginButton}
-          onPress={() => {LoginUserButtonClicked()}}>
-          <Text style = {styles.loginButtonText}>Login with spotify</Text>
-        </TouchableHighlight>
-    </View>
-  )
 }
 
 
 const styles = StyleSheet.create({
-  loadingScreenContainer: {
-    flex: 1,
-    backgroundColor: SPOTIFY_BLACK,
-  },
   loginContainer: {
-    flex: 1,
-    backgroundColor: SPOTIFY_BLACK,
+    ...Screens.screenContainerFlexEnd,
+    alignItems: 'center',
+  },
+  loginButton: {
+    backgroundColor: Colors.SPOTIFY_GREEN,
+    marginBottom: 40,
+    padding: 15,
+    borderRadius: 12,
+    width: 300,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  loginButton: {
-    borderWidth: 3,
-    borderColor: 'black',
-    backgroundColor: SPOTIFY_GREEN,
-    padding: 15,
-    borderRadius: 12,
-  },
   loginButtonText: {
-    color: 'white',
-    fontSize: 26,
+    ...Buttons.largeButtonWhiteText,
   }
 });

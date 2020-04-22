@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { SPOTIFY_GREEN, SPOTIFY_BLACK, LOGOUT_BUTTON_RED } from '../styles/colors';
+import { Colors, Screens, Buttons} from '../styles'
 
 import { logout } from '../store/authentication/authenticationActions';
-import { refreshAndGetMusicProfile } from '../store/musicProfile/musicProfileActions'
+import { refreshAndGetMusicProfile, setAnalyzingSpotifyAction } from '../store/musicProfile/musicProfileActions'
   
 
 export default function Settings(props) {
@@ -14,11 +14,11 @@ export default function Settings(props) {
 
     const logoutClicked = async() =>{
       await dispatch(logout())
-      props.navigation.navigate('Auth');
     }
     const refreshMusicProfile = async () => {
+      await dispatch(setAnalyzingSpotifyAction(true));
       await dispatch(refreshAndGetMusicProfile());
-      //props.navigation.navigate('MyArtists');
+      await dispatch(setAnalyzingSpotifyAction(false));
     }
 
     const analyzingSpotify = useSelector(state => state.musicProfile.analyzingSpotify);
@@ -29,16 +29,16 @@ export default function Settings(props) {
 
             {/* REFRESH SPOTIFY DATA */}
             <TouchableHighlight
-              style = {analyzingSpotify ? styles.getArtistsButtonDisabled : styles.getArtistsButton}
+              style = {analyzingSpotify ? styles.refreshArtistsButtonDisabled : styles.refreshArtistsButton}
               onPress={analyzingSpotify ? () => {} : () => refreshMusicProfile()}>
-              <Text style = {styles.getArtistsButtonText}>Refresh spotify data</Text>
+              <Text style = {styles.buttonText}>Refresh spotify data</Text>
             </TouchableHighlight>
 
             {/* LOGOUT OF SPOTIFY */}
             <TouchableHighlight
                 style = {styles.logoutButton }
                 onPress={() => logoutClicked()}>
-                <Text style = {styles.logoutButtonText}>Logout</Text>
+                <Text style = {styles.buttonText}>Logout</Text>
             </TouchableHighlight>
 
       </View>
@@ -47,44 +47,21 @@ export default function Settings(props) {
 
 
 
-
-
-
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: SPOTIFY_BLACK,
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: 20,
-    },
-    getArtistsButton: {
-      backgroundColor: SPOTIFY_GREEN,
-      padding: 12,
-      borderRadius: 8,
-      margin: 8
-    },
-    getArtistsButtonDisabled: {
-      backgroundColor: 'grey',
-      padding: 12,
-      borderRadius: 8,
-      margin: 8
-
-    },
-    getArtistsButtonText: {
-      color: 'white',
-      fontSize: 20,
-    },
-  
-    logoutButton: {
-      borderColor: 'black',
-      backgroundColor: LOGOUT_BUTTON_RED,
-      padding: 12,
-      borderRadius: 8,
-    },
-    logoutButtonText: {
-      color: 'white',
-      fontSize: 20,
-    }
-  });
-  
+  container: {
+    ...Screens.screenContainerFlexEnd,
+    padding: 20,
+  },
+  refreshArtistsButton: {
+    ...Buttons.mediumButtonGreen,
+  },
+  refreshArtistsButtonDisabled: {
+    ...Buttons.mediumButtonDisabled,
+  },
+  logoutButton: {
+    ...Buttons.mediumButtonRed,
+  },
+  buttonText: {
+    ...Buttons.mediumButtonWhiteText,
+  },
+})

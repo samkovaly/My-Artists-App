@@ -31,13 +31,14 @@ export default function(state = initialState, action) {
 }
 /*artists: [
       {
-        name: "" (necesary) (name to fetch concert API date)
-        id: "" (necesary)   ( and id to fetch futher backend data (tracks, long_term, etc))
-        top_artists_long_term: T/F
-        top_artists_medium_term: T/F
-        top_artists_short_term: T/F
-        followed_artist: T/F
-        tracks: [ "...", "...", ...]
+      "followed_artist": false,
+      "id": "0r371dCcixw9isainQEkD6",
+      "image_url": "https://i.scdn.co/image/ab67616d0000b2738d3ae370b3ee10754ee0a87e",
+      "name": "Verbal",
+      "showConcert": true,
+      "top_artists_long_term": false,
+      "top_artists_medium_term": false,
+      "top_artists_short_term": false,
       }
     ]*/
 /*tracks: [

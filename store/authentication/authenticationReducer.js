@@ -1,9 +1,11 @@
 
 import { SET_APP_CREDENTIALS, SET_CONCERTS_CREDENTIALS, 
-  SET_REFRESH_TOKEN, SET_ACCESS_TOKEN, SET_USERNAME, SET_BACKEND_AUTH_TOKEN,
+  SET_REFRESH_TOKEN, SET_ACCESS_TOKEN, SET_USERNAME, SET_BACKEND_AUTH_TOKEN, 
   SET_ANALYZING_SPOTIFY, LOGIN, LOGOUT } from './authenticationActions'
 
 const initialState = {
+  loggedIn: false,
+  
   appCredentials: {
     clientId: null,
     clientSecret: null,
@@ -24,12 +26,11 @@ const initialState = {
   username: null,
   backendAuthToken: null,
 
-  loggedIn: false,
 }
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    
+      
     case SET_APP_CREDENTIALS:
       return {
         ...state,
@@ -68,11 +69,7 @@ export default function(state = initialState, action) {
       }
 
     case LOGOUT:
-      return {
-        ...state,
-        loggedIn: false,
-      }
-      
+      return initialState;
 
     default:
       return state;

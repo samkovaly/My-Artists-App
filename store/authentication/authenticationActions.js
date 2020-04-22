@@ -1,4 +1,6 @@
 
+export const SET_FETCHING_USER_STORAGE = 'SET_FETCHING_USER_STORAGE';
+export const SET_USER_SAVED_ON_STORAGE = 'SET_USER_SAVED_ON_STORAGE';
 // first enter the app, should always work as long as my backend is functioning
 export const SET_APP_CREDENTIALS = 'SET_APP_CREDENTIALS';
 export const SET_CONCERTS_CREDENTIALS = 'SET_CREDENTIALS_CREDENTIALS';
@@ -43,7 +45,7 @@ export const getConcertsAPICredentials = () => {
 
 
 // called by authLoadingScreen component
-export const loginWithUserAuthStorage = () => {
+export const setAuthStateFromStorage = () => {
     return async (dispatch, getState) => {
         
         refreshToken = await getRefreshTokenStorage();
@@ -56,11 +58,10 @@ export const loginWithUserAuthStorage = () => {
         backendAuthToken = await getBackendAuthTokenStorage();
         await dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthToken));
 
-        await dispatch(login());
-
-        console.log('after auto login, auth state is:', getState().authentication)
+        //console.log('after auto login, auth state is:', getState().authentication)
     }
 }
+
 
 export const saveAuthStateToStorage = async (authentication) => {
     console.log('saving the stuff')
@@ -73,6 +74,7 @@ export const saveAuthStateToStorage = async (authentication) => {
 
 export const registerWithRefreshToken = () => {
     return async (dispatch, getState) => {
+        console.log('rwrt')
         // prompts for user to sign into spotify with their username / password
 
         await dispatch(refreshAccessToken());
@@ -80,7 +82,6 @@ export const registerWithRefreshToken = () => {
         await dispatch(getBackendAuthToken());
 
         await saveAuthStateToStorage(getState().authentication)
-        await dispatch(login());
         
     }
 }
@@ -147,7 +148,9 @@ export const logout = () => {
         // and updating state to reflect a new app open
         await removeAllStorage();
         // logout action will reset the app state
-        await dispatch(makeAction(LOGOUT))
+        console.log('pre')
+        await dispatch(makeAction(LOGOUT));
+        console.log('post')
         // component calling this will have to redirect elsewhere (to start of app flow most likely)
     }
 }
@@ -171,4 +174,38 @@ const setAccessTokenAction = (accessToken, expireTime) => {
 }
 const setUsernameAction = (username) => {
     return makeAction(SET_USERNAME, username);
+}
+
+
+
+
+
+
+
+
+
+export const loginIfReturning = () => {
+    return async(dispatch, getState) => {
+        const savedOnStorage = await getUserSavedOnStorage();
+        if(savedOnStorage == null){
+            // first time user / logged out user
+
+        }else{
+            // local storage has our login info
+
+        }
+
+    }
+}
+
+
+
+export const fetchUserStorage = () => {
+    return async(dispatch, getState) => {
+        await dispatch(setFetchingUserStorageAction(true));
+        let savedOnStorage = await getUserSavedOnStorage();
+        let userSaved = savedOnStorage != null;
+        await dispatch(setUserSavedOnStorageAction(userSaved));
+        await dispatch(setFetchingUserStorageAction(false));
+    }
 }

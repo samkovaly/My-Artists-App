@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { SPOTIFY_GREEN, SPOTIFY_BLACK, LOGOUT_BUTTON_RED } from '../styles/colors';
-
 import { useSelector } from 'react-redux';
 
 
+import { Screens, Font } from '../styles'
 
 
 
@@ -24,13 +23,10 @@ export default function Discovery(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: SPOTIFY_BLACK,
-    alignItems: 'center',
-    justifyContent: 'center',
+    ...Screens.screenContainerFlexStart,
   },
   mainText: {
-    fontSize: 32,
-    color: 'white',
+    ...Font.largeWhiteText,
+    margin: 50,
   },
 });
