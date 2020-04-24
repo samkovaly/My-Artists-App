@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 //import { setUpcomingConcerts, fetchConcertAPICredentials } from '../redux/actions/getConcertsActions'
 import { getUserLocation, getConcertsAtLocation } from "../store/concerts/concertsActions"
-import concertsReducer from '../store/concerts/concertsReducer';
 
 
 export default function Concerts(props) {

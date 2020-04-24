@@ -83,13 +83,13 @@ export default function AuthLoadingScreen(props) {
 
                }else{
                    // 3. N:
-                   //console.log('need to register / login')
+                   console.log('need to register / login')
                    props.navigation.navigate('LoginWithSpotify');
                }
            }
        }
        loginUserOrAskToRegister();
-   })
+   }, [appCredentials])
 
     return loadingScreen();
 }

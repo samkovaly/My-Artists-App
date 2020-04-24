@@ -1,14 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TextInput } from 'react-native';
 
 import { Colors } from '../styles'
-import { TextInput } from 'react-native-gesture-handler';
 
 
-const SearchBar = ({ artist }) => {
+const SearchBar = ({ searchCallback, style, placeholderText }) => {
     return (
-      <View style={styles.container}>
-        <TextInput>type here...</TextInput>
+      <View style={[styles.container, style]}>
+        <TextInput
+            style = {styles.typingText }
+            placeholder = {placeholderText}
+            placeholderTextColor="#a3a3a3"
+            onChangeText = {text => searchCallback(text)}
+        ></TextInput>
       </View>
     );
   }
@@ -18,13 +22,15 @@ const SearchBar = ({ artist }) => {
 
 const styles = StyleSheet.create({
     containter: {
-        backgroundColor: Colors.SPOTIFY_BLACK
-    },
-    inactiveText: {
-        color: 'grey',
     },
     typingText: {
-        color: 'white'
+        color: '#d6d6d6',
+        fontSize: 16,
+        backgroundColor: '#404040',
+        paddingVertical: 10,
+        paddingHorizontal: 18,
+        borderRadius: 20,
+        
     },
 });
 

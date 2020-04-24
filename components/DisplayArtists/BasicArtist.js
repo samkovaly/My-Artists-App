@@ -28,6 +28,7 @@ const BasicArtist = ({ artist }) => {
     );
   }
 
+  export default BasicArtist;
 
 
 
@@ -63,7 +64,6 @@ const styles = StyleSheet.create({
   });
 
   
-export default BasicArtist;
 
 /*
 Object {
