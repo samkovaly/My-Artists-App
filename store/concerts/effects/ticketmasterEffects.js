@@ -26,24 +26,11 @@ const eventsURL2 = URL2 + "events.json?"
 
 export const fetchConcertsAtLocation = async(artists, lat, long, radius, apiKey) => {
 
-    let concerts = [];
-
-    //for(let i = 0; i < artists.length; i++){
-    //    concerts.push(...await fetchConcertAtLocation(artists[i].name, lat, long, radius, apiKey));
-    //}
-
-    const fakeArtists = ['MIKA', 'Disclosure']
-    for(let i = 0; i < fakeArtists.length; i++){
-        concerts.push(...await fetchConcertAtLocation(fakeArtists[i], lat, long, radius, apiKey));
-    }
-    return concerts;
-}
-
-
-const fetchConcertAtLocation = async(artistName, lat, long, radius, apiKey) => {
     var now = new Date();
     var dateISO = now.toISOString().split('.')[0]+"Z";
     console.log(dateISO)
+
+
 
     // call defaults
     let url = eventsURL + "segmentName=music" + "&includeTBA=yes" + "&includeTBD=yes" + "&sort=date,name,asc"
@@ -51,11 +38,61 @@ const fetchConcertAtLocation = async(artistName, lat, long, radius, apiKey) => {
     url += "&unit=miles" + "&startDateTime=" + dateISO;
 
     // parameters of the call
-    url += "&keyword=" + artistName + "&latlong=" + lat + "," + long + "&radius=" + radius + "&apikey=" + apiKey;
+    url += "&latlong=" + lat + "," + long + "&radius=" + radius + "&apikey=" + apiKey;
 
+        
+    callsArray = [];
+
+    for(let artist_index = 0; artist_index <= 20; artist_index += 1){
+    //for(let artist_index = 0; artist_index <= artists.length; artist_index += 1){
+        callsArray.push( new Promise( (resolve, reject) => {
+            return resolve(fetchConcertAtLocation(url, artists[artist_index].name, lat, long, radius, apiKey))
+        } ));
+    }
+
+    // execute and wait
+    try {
+        var callReturns = await Promise.all(callsArray);
+    }
+    catch(err) {
+        console.log(err);
+    };
+
+
+    // join arrays
+    let allEvents = []
+    for(let i = 0; i < callReturns.length; i += 1){
+        allEvents.push(...callReturns[i]);
+    }
+
+
+    console.log(allEvents);
+    let concerts = [];
+
+    //for(let i = 0; i < artists.length; i++){
+    //    concerts.push(...await fetchConcertAtLocation(artists[i].name, lat, long, radius, apiKey));
+    //}
+
+    //const fakeArtists = ['MIKA', 'Disclosure']
+    //for(let i = 0; i < fakeArtists.length; i++){
+    //    concerts.push(...await fetchConcertAtLocation(fakeArtists[i], lat, long, radius, apiKey));
+    //}
+    return allEvents;
+}
+
+
+const fetchConcertAtLocation = async(url, artistName, lat, long, radius, apiKey) => {
+
+    url += "&keyword=" + artistName;
     console.log("attempting url=", url);
     const response = await requestJSON(url, METHODS.GET);
 
+    if(!response.page){
+        console.log('ERROR', url, response, response.page);
+    }
+    if(response.page.totalElements == 0){
+        return [];
+    }
     const events = Object.values(response._embedded.events).map((event) => {
 
         console.log('\n', event.name, '\n')

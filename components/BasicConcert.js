@@ -1,29 +1,29 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../../styles'
+import { Colors, Screens, Buttons, Font } from '../styles'
 
 
-const elementHeight = 100; // 60
+const elementHeight = 60;
 const imageHeightRatio = 0.75;
 
 
-const BasicArtist = ({ artist, pressForDetail, navigation }) => {
+const BasicConcert = ({ concert, pressForDetail, navigation }) => {
 
   const innerContainer = () => (
     <View>
       <Image
-        style={styles.avatar}
-        source={getImageSource(artist)}
-      />
-      <Text style={styles.title}>{artist.name}{' '}{artist.top_artists_long_term}</Text>
+          style={styles.avatar}
+          source={getImageSource(concert)}
+       />
+      <Text style={styles.title}>{concert.artists ? concert.artists[0].name : "N/A"}</Text>
     </View>
     )
 
   return (
     <View style={styles.outerContainer}>
       {pressForDetail ? 
-        <TouchableWithoutFeedback style={styles.innerContainer} onPress={() => navigation.navigate("ArtistDetail", {artist})}>
+        <TouchableWithoutFeedback style={styles.innerContainer} onPress={() => navigation.navigate("ConcertDetail", {concert})}>
           {innerContainer()}
         </TouchableWithoutFeedback>
       :
@@ -36,18 +36,16 @@ const BasicArtist = ({ artist, pressForDetail, navigation }) => {
     );
 }
 
-export default BasicArtist;
+export default BasicConcert;
 
 
-
-const getImageSource = (artist) => {
-  if(artist.image_url){
-    return {uri: artist.image_url}
-  }else{
-    return require('../../graphics/blank-artist.jpg')
-  }
+const getImageSource = (concert) => {
+    if(concert && concert.artists && concert.artists[0] && concert.artists[0].image){
+      return {uri: concert.artists[0].image}
+    }else{
+      return require('../graphics/blank-artist.jpg');
+    }
 }
-
 
 const styles = StyleSheet.create({
     innerContainer: {
@@ -57,7 +55,6 @@ const styles = StyleSheet.create({
       marginHorizontal: 2,
       height: elementHeight,
       flexDirection: 'row',
-      flex: 1,
     },
     avatar: {
         borderRadius: (elementHeight * imageHeightRatio)/2 ,
@@ -71,6 +68,7 @@ const styles = StyleSheet.create({
       fontSize: 18,
     },
     outerContainer: {
+
     },
     bottomLine: {
       marginLeft: 6,
@@ -79,29 +77,3 @@ const styles = StyleSheet.create({
       width: '88%',
     }
   });
-
-  
-
-/*
-Object {
-  "followed_artist": false,
-  "genres": Array [
-    "art pop",
-    "pop",
-  ],
-  "genres_length": 2,
-  "id": "00FQb4jTyendYWaN8pK0wa",
-  "image_size": 160,
-  "image_url": "https://i.scdn.co/image/6e8dc460cfb6b89d7970302259febd0aa73b38c6",
-  "name": "Lana Del Rey",
-  "showConcert": true,
-  "top_artists_long_term": true,
-  "top_artists_medium_term": true,
-  "top_artists_short_term": true,
-  "tracks": Array [
-    "1M0g1beKC4H9gbrOiSayHW",
-    "2lFTzUnuGaWlWHJQokjRyb",
-  ],
-  "tracks_length": 2,
-}
-*/

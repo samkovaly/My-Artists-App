@@ -38,11 +38,12 @@ export default function AllArtists(props) {
             query = {artistsQuery}
             elements = {sortedArtists}
             queryKey = {"name"}
-            renderElementComponenet = {(item) => <BasicArtist artist = {item} />}
+            renderElementComponenet = {(item) => <BasicArtist artist = {item} pressForDetail = {true} navigation={props.navigation} />}
             pageSize = {PAGE_SIZE}
             // passing a different key from the previous key tells react to
             // load a new component and thus reset the component's state to initial.
             key = {artistsQuery}
+            style = {styles.list}
           />
         </View>
       </View>
@@ -56,6 +57,9 @@ const styles = StyleSheet.create({
     },
     listPadding: {
       padding: 4,
+    },
+    list: {
+      padding: 0,
     },
     searchBar: {
       margin: 4,

@@ -15,11 +15,11 @@ const queryElements = (elements, query, queryKey) => {
 
 
 
-const SearchableFlatList = ({query, elements, queryKey, renderElementComponenet, pageSize}) => {
+const SearchableFlatList = ({query, elements, queryKey, renderElementComponenet, pageSize, style}) => {
     // elements must have a queryKey property to be indexable.
 
     const [page, setPage] = useState(1);
-    const queriedElements = useMemo(() => queryElements(elements, query, queryKey), [query])  
+    const queriedElements = useMemo(() => queryElements(elements, query, queryKey), [query])
 
     const loadNextPage = () => {
         if(pageSize * page < queriedElements.length){
@@ -30,6 +30,7 @@ const SearchableFlatList = ({query, elements, queryKey, renderElementComponenet,
       
     return (
         <FlatList
+            style = {style}
             data={queriedElements.slice(0, pageSize * page)}
             renderItem={({ item }) => renderElementComponenet(item)}
             keyExtractor={item => item.id}

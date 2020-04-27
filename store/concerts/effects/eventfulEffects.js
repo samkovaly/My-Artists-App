@@ -17,26 +17,31 @@ export const fetchConcertsAtLocation = async(artists, lat, long, radius, apiKey)
 
     // prepare base URL
     const artistNames = Object.values(artists).map((artist) => {return artist.name})
+    //const artistNames = ['andrey pushkarev', 'chet porter', 'heerhorst', 'nicola cruz']
 
-    const query = makePerformersQuery(artistNames);
-    let url = URL + query;
-    //url += "&location=" + lat + "," + long;
+    const artistsQuery = makeArtistQuery(artistNames);
+    // http://eventful.com/events?q=title%3A%22Jonathan+Coulton%22+%7C%7C+performer%3A%22Jonathan+Coulton%22&l=
+
+    let url = URL;
+    url += artistsQuery;
+    url += "&location=" + lat + "," + long;
     url += "&app_key=" + apiKey;
     url += "&page_size=30";
 
     //url += "&location=London";
     //url += "&when=Today";
-    //url += "&within=" + radius;
-    //url += "&sort_order=date";
-    //url += "&units=mi";
+    url += "&within=" + radius;
+    url += "&sort_order=date";
+    url += "&units=mi";
 
     // get pages from initial request
+    console.log('URL:', url)
     const response = await requestXML(url, METHODS.GET);
     let pageCount = response.search.page_count[0]
-    pageCount = 1
 
     // prepare all calls with for all pages
     callsArray = [];
+
     for(let page = 1; page <= pageCount; page += 1){
         callsArray.push( new Promise( (resolve, reject) => { resolve(fetchConcertsAtLocationPage(url, page)) } ));
     }
@@ -73,11 +78,13 @@ const fetchConcertsAtLocationPage = async(url, page) => {
 }
 
 
-const makePerformersQuery = (performerNames) => {
-    // "q=performer:\"Tame+Impala\"+||+performer:\"Phish\"+||+performer:\"Alicia Keys\""
+const makeArtistQuery = (performerNames) => {
     let query = "q=";
     for(let i = 0; i < performerNames.length; i++){
-        let artistQuery = "performer:\"" + performerNames[i] + "\"";
+        let artistQuery = "title:\"" + performerNames[i] + "\"";
+        artistQuery += "+||+";
+        artistQuery += "performer:\"" + performerNames[i] + "\"";
+
         if(i != performerNames.length-1){
             artistQuery += "+||+";
         }
@@ -152,7 +159,9 @@ const processEvents = (response) => {
                     name: null,
                     id: null,
                 },
-            } : null,
+            } : {
+                name: event.title[0],
+            }
         }
     })
 

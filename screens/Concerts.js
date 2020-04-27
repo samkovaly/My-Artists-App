@@ -1,8 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
 
-import { ListItem, ThemeProvider, Card } from 'react-native-elements';
 
 
 import { Colors, Screens, Buttons, Font } from '../styles'
@@ -11,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 //import { setUpcomingConcerts, fetchConcertAPICredentials } from '../redux/actions/getConcertsActions'
 import { getUserLocation, getConcertsAtLocation } from "../store/concerts/concertsActions"
-
+import BasicConcert from '../components/BasicConcert';
 
 export default function Concerts(props) {
 
@@ -31,8 +30,20 @@ export default function Concerts(props) {
     return loadingScreen();
   }
 
-  //console.log(concertsAtLocation);
-  return displayConcerts(concertsAtLocation);
+  return (
+    <View style={styles.container}>
+      <Text>CONCERTS</Text>
+
+      <View style={{flex: 1}}>
+        <FlatList
+              data={concertsAtLocation}
+              renderItem={({ item }) => <BasicConcert concert = {item} pressForDetail = {true} navigation={props.navigation} />}
+              //keyExtractor={item => item.id}
+              keyExtractor = {(item, index) => `list-item-${index}`}
+        />
+      </View>
+    </View>
+  );
 }
 
 
@@ -44,33 +55,6 @@ export default function Concerts(props) {
   // 4. disaptch to state
   // 5. display nicely
 
-const displayConcerts = (concerts) => {
-  //console.log('concerts', concerts)
-  return (
-    <View style={styles.container}>
-      <Text>CONCERTS</Text>
-
-      <View style={{flex: 1}}>
-        <ScrollView>
-          <Card containerStyle={{ padding: 5}}>
-            {
-              concerts? concerts.map((concert, i) => (
-                <ListItem
-                  key={i}
-                  leftAvatar={{ source: {uri: concert.image.url || "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" } }}
-                  title={concert.artist ? concert.artist.name : "N/A"}
-                  subtitle={concert.start.localDate || "N/A"}
-                  titleStyle={styles.title}
-                  bottomDivider
-                  />
-              ))
-              : <Text>not fetched yet</Text>}
-            </Card>
-          </ScrollView>
-      </View>
-    </View>
-  );
-}
 
 
 const loadingScreen = () => {

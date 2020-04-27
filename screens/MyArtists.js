@@ -9,8 +9,7 @@ import { useSelector} from 'react-redux';
 import BasicArtist from '../components/DisplayArtists/BasicArtist'
 import BasicButton from '../components/BasicButton'
 
-import { ListItem, ThemeProvider, Card } from 'react-native-elements';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native';
 
 
 

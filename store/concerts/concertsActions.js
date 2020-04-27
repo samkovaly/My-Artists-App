@@ -5,11 +5,17 @@ export const SET_CONCERTS_AT_LOCATION = "SET_CONCERTS_AT_LOCATION";
 import { makeAction } from '../../utilities/actions';
 import { fetchLocationOrAskPermission } from './effects/concertsEffects'
 
-import * as ticketmasterEffects from './effects/ticketmasterEffects'
-import * as eventfulEffects from './effects/eventfulEffects'
-//import { fetchConcertsAtLocation, TESTfetchConcertsAtLocation } from './effects/ticketmasterEffects'
-//import { fetchConcertsAtLocation}
+//import * as ticketmasterEffects from './effects/ticketmasterEffects'
+//import * as eventfulEffects from './effects/eventfulEffects'
+import * as seatgeekEffects from './effects/seatgeekEffects'
 
+// seatgeek
+// eventful
+// last.fm
+// ticketmaster
+// songkick
+// RA adviser
+// 
 
     
 export const getConcertsAtLocation = () => {
@@ -19,18 +25,14 @@ export const getConcertsAtLocation = () => {
         const userLocation = getState().concerts.userLocation.coords;
         const radius = getState().concerts.searchRadius;
         const artists = getState().musicProfile.artists;
-        const ticketmasterApiKey = getState().authentication.concertsCredentials.ticketmaster.key;
-        const eventfulApiKey = getState().authentication.concertsCredentials.eventful.key;
+        //const ticketmasterApiKey = getState().authentication.concertsCredentials.ticketmaster.key;
+        //const eventfulApiKey = getState().authentication.concertsCredentials.eventful.key;
+        const seatgeekClientId = getState().authentication.concertsCredentials.seatgeek.client_id;
 
-        //const concerts = await ticketmasterEffects.TESTfetchConcertsAtLocation(artists, userLocation.latitude, userLocation.longitude, radius, ticketmasterApiKey);
-        // testing
-        const concerts = await eventfulEffects.fetchConcertsAtLocation(artists.slice(0, 10), userLocation.latitude, userLocation.longitude, radius, eventfulApiKey);
-        
+        const concerts = await seatgeekEffects.fetchConcertsForManyArtists(artists.slice(100), seatgeekClientId, userLocation.latitude, userLocation.longitude, radius);
 
         // await dispatch the result
         dispatch(setConcertsAtLocationAction(concerts));
-
-
     }
 }
 

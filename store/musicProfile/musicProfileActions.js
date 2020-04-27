@@ -31,32 +31,32 @@ export const getMusicProfile = () => {
         const lastRefreshed = musicProfile.last_refreshed
 
         const artists = JSON.parse(musicProfileJSON.artists)
-        const processedArtists = processArtists(artists)
+        const processedArtists = addConcertToArtists(artists)
 
         const tracks = JSON.parse(musicProfileJSON.tracks)
-        const processedTracks = processArtists(tracks)
+        const tracksMap = makeTracksIntoMap(tracks)
 
-        //console.log('\n',processedArtists.slice(0,10) ,'\n')
         console.log('dispatching new music profile to redux state...')
         await dispatch(setArtistsAction(processedArtists))
-        await dispatch(setTracksAction(processedTracks))
+        await dispatch(setTracksAction(tracksMap))
     }
 }
 
 
-const processArtists = (artists) => {
+const addConcertToArtists = (artists) => {
     const processedArtists = Object.values(artists).map((artist) => {return {
         ...artist,
         showConcert: true
       }});
     return processedArtists;
 }
-const processTracks = (tracks) => {
-    const processedTracks = Object.values(tracks).map((track) => {return {
-        ...track,
-        //showConcert: true
-      }});
-    return processedTracks;
+
+const makeTracksIntoMap = (tracks) => {
+    let tracksMap = new Map();
+    for(var track of tracks){
+        tracksMap.set(track.id, track);
+    }
+    return tracksMap;
 }
 
   
@@ -70,4 +70,9 @@ const setTracksAction = (tracks) => {
 
 export const setAnalyzingSpotifyAction = (toValue) => {
     return makeAction(SET_ANALYZING_SPOTIFY, toValue);
+}
+
+export const getTracks = (trackIDs, allTracks) => {
+    const tracks = trackIDs.map((id) => allTracks.get(id));
+    return tracks
 }

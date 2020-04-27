@@ -7,8 +7,8 @@ const ACCOUNTS_URL = 'https://accounts.spotify.com/';
 const CODE_ENDPOINT = ACCOUNTS_URL + 'authorize';
 const TOKEN_ENDPOINT = ACCOUNTS_URL + 'api/token';
 
-const USER_PERMISSION_SCOPES = ['user-read-currently-playing', 'user-library-read','playlist-read-private',
-  'playlist-read-collaborative','user-read-recently-played','user-top-read', 'user-follow-read'];
+const USER_PERMISSION_SCOPES = ['user-library-read','playlist-read-private',
+  'playlist-read-collaborative','user-top-read', 'user-follow-read'];
 
 const USER_PROFILE_URL = 'https://api.spotify.com/v1/me';
 
