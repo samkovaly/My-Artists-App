@@ -29,6 +29,7 @@ export default function(state = initialState, action) {
       return state;
   }
 }
+
 /*artists: [
       {
       "followed_artist": false,

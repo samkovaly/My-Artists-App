@@ -11,7 +11,7 @@ const imageHeightRatio = 0.75;
 const BasicConcert = ({ concert, pressForDetail, navigation }) => {
 
   const innerContainer = () => (
-    <View>
+    <View style={styles.innerContainer}>
       <Image
           style={styles.avatar}
           source={getImageSource(concert)}
@@ -23,13 +23,11 @@ const BasicConcert = ({ concert, pressForDetail, navigation }) => {
   return (
     <View style={styles.outerContainer}>
       {pressForDetail ? 
-        <TouchableWithoutFeedback style={styles.innerContainer} onPress={() => navigation.navigate("ConcertDetail", {concert})}>
-          {innerContainer()}
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("ConcertDetail", {concert})}>
+            {innerContainer()}
         </TouchableWithoutFeedback>
       :
-        <View style={styles.innerContainer}>
-          {innerContainer()}
-        </View>
+          innerContainer()
       }
       <View style = {styles.bottomLine}/>
     </View>
@@ -55,11 +53,12 @@ const styles = StyleSheet.create({
       marginHorizontal: 2,
       height: elementHeight,
       flexDirection: 'row',
+      flex: 1,
     },
     avatar: {
-        borderRadius: (elementHeight * imageHeightRatio)/2 ,
-        width: elementHeight * imageHeightRatio,
-        height: elementHeight * imageHeightRatio,
+      borderRadius: (elementHeight * imageHeightRatio)/2 ,
+      width: elementHeight * imageHeightRatio,
+      height: elementHeight * imageHeightRatio,
     },
     title: {
       marginTop: 0,
@@ -67,6 +66,7 @@ const styles = StyleSheet.create({
       color: 'white',
       fontSize: 18,
     },
+
     outerContainer: {
 
     },

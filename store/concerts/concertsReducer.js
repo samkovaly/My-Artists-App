@@ -5,7 +5,7 @@ import { SET_USER_LOCATION, SET_CONCERTS_AT_LOCATION } from './concertsActions'
 const initialState = {
   concertsAtLocation: null,
   userLocation: null,
-  searchRadius: 50,
+  searchRadius: 30,
 }
 
 export default function(state = initialState, action) {

@@ -2,16 +2,16 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../styles'
+import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
 import { useSelector} from 'react-redux';
 
-import BasicConcert from '../components/BasicConcert';
-import BasicButton from '../components/BasicButton';
+import BasicConcert from '../../components/BasicConcert';
+import BasicButton from '../../components/BasicButton';
 
-import { getTracks } from '../store/musicProfile/musicProfileActions';
-import { getFullConcert } from '../utilities/spotifyFetches';
+import { getTracks } from '../../store/musicProfile/musicProfileActions';
+import { getFullConcert } from '../../utilities/spotifyFetches';
 
 
 export default function ConcertDetail({ route }) {
@@ -113,7 +113,7 @@ const getImageSource = (concert) => {
     if(concert && concert.artists && concert.artists[0] && concert.artists[0].image){
       return {uri: concert.artists[0].image}
     }else{
-      return require('../graphics/blank-artist.jpg');
+      return require('../../graphics/blank-artist.jpg');
     }
 }
 

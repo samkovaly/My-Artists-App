@@ -2,32 +2,56 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../styles'
+import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
-import { useSelector} from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 
-import BasicArtist from '../components/DisplayArtists/BasicArtist';
-import BasicButton from '../components/BasicButton';
+import BasicArtist from '../../components/DisplayArtists/BasicArtist';
+import BasicButton from '../../components/BasicButton';
 
-import { getTracks } from '../store/musicProfile/musicProfileActions';
-import { getFullArtist } from '../utilities/spotifyFetches';
+import { getTracks } from '../../store/musicProfile/musicProfileActions';
+import { getFullArtist } from '../../utilities/spotifyFetches';
+import { fetchAllConcertsForArtist } from '../../store/concerts/effects/seatgeekEffects'
 
+import { getUserLocation } from '../../store/concerts/concertsActions'
 
 export default function ArtistDetail({ route }) {
+  
+    const dispatch = useDispatch();
+
     const allTracks = useSelector(state => state.musicProfile.tracks);
     const accessToken = useSelector(state => state.authentication.accessToken.token);
+    const seatgeekClientId = useSelector(state => state.authentication.concertsCredentials.seatgeek.client_id);
+    const userLocation = useSelector(state => state.concerts.userLocation);
+    const radius = useSelector(state => state.concerts.searchRadius);
 
     const { artist } = route.params;
     const [fullArtist, setFullArtist] = useState(null);
+    const [concerts, setConcerts] = useState(null);
+
     const tracks = getTracks(artist.tracks, allTracks);
 
+
+
+
     useEffect(() => {
-        const getFullArtistAsync = async() => {
+        const getAsyncArtistData = async() => {
             setFullArtist(await getFullArtist(accessToken, artist.id));
+            setConcerts(await fetchAllConcertsForArtist(
+                artist, seatgeekClientId, userLocation.coords.latitude, userLocation.coords.longitude, radius))
         }
-        getFullArtistAsync();
-    }, [])
+
+        if (userLocation){
+          getAsyncArtistData();
+        }else{
+          dispatch(getUserLocation());
+        }
+
+    }, [userLocation])
+
+
+    console.log(concerts);
 
     
     /* needs to show:
@@ -77,7 +101,7 @@ const getImageSource = (fullArtist) => {
   if(fullArtist && fullArtist.images && fullArtist.images[0] && fullArtist.images[0].url){
     return {uri: fullArtist.images[0].url}
   }else{
-    return require('../graphics/blank-artist.jpg');
+    return require('../../graphics/blank-artist.jpg');
   }
 }
 

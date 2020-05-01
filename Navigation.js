@@ -14,16 +14,21 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native'
 
 // My screens
-import LoginWithSpotify from './screens/LoginWithSpotify';
-import MyArtists from './screens/MyArtists';
-import AllArtists from './screens/AllArtists';
-import ArtistDetail from './screens/ArtistDetail';
-import Concerts from './screens/Concerts';
-import Discovery from './screens/Discovery';
-import Settings from './screens/Settings';
-import AuthLoadingScreen from './screens/AuthLoadingScreen';
+import LoginWithSpotify from './screens/authenticationFlow/LoginWithSpotify';
+import AuthLoadingScreen from './screens/authenticationFlow/AuthLoadingScreen';
 
-import ConcertDetail from './screens/ConcertDetail';
+import Concerts from './screens/concerts/Concerts';
+import ConcertDetail from './screens/concerts/ConcertDetail';
+
+import MyArtists from './screens/artists/MyArtists';
+import AllArtists from './screens/artists/AllArtists';
+import ArtistDetail from './screens/artists/ArtistDetail';
+
+
+import Discovery from './screens/Discovery';
+
+import Settings from './screens/Settings';
+
 
 import { Colors } from './styles'
 

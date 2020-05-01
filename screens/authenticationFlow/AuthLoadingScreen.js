@@ -10,19 +10,19 @@ import {
   Text,
 } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../styles'
+import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
 
-import { getUserSavedOnStorage } from '../store/authentication/authenticationStorage';
-import { getSpotifyAppCredentials, getConcertsAPICredentials } from '../store/authentication/authenticationActions';
-import { setAuthStateFromStorage, login } from '../store/authentication/authenticationActions';
-import { getMusicProfile } from '../store/musicProfile/musicProfileActions';
+import { getUserSavedOnStorage } from '../../store/authentication/authenticationStorage';
+import { getSpotifyAppCredentials, getConcertsAPICredentials } from '../../store/authentication/authenticationActions';
+import { setAuthStateFromStorage, login } from '../../store/authentication/authenticationActions';
+import { getMusicProfile } from '../../store/musicProfile/musicProfileActions';
 
-import { printOutAllStorage } from '../store/authentication/authenticationStorage';
+import { printOutAllStorage } from '../../store/authentication/authenticationStorage';
 
 
-import SplashArt from '../components/SplashArt';
+import SplashArt from '../../components/SplashArt';
 
 
 

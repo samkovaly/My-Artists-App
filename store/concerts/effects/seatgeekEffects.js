@@ -50,26 +50,39 @@ export const fetchAllConcertsForArtist = async(artist, clientId, lat, lon, radiu
 
 
     // run location and non-location calls at the same time to save time.
-    artistCalls = [];
-    artistCalls.push( new Promise( (resolve, reject) => {
+    concertCalls = [];
+    concertCalls.push( new Promise( (resolve, reject) => {
         return resolve(fetchConcertsArtistName(locationURL, artist.name_ascii))
     } ));
-    artistCalls.push( new Promise( (resolve, reject) => {
+    concertCalls.push( new Promise( (resolve, reject) => {
         return resolve(fetchConcertsArtistName(nonLocationURL, artist.name_ascii))
     } ));
 
 
     // execute and wait
     try {
-        var artistCalls = await Promise.all(callsArray);
+        var concerts = await Promise.all(concertCalls);
     }
     catch(err) {
         console.log(err);
     };
 
+
+    const localConcerts = concerts[0]
+
+    const nonLocalConcerts = concerts[1].filter(nonLocalConcert => {
+        for(localConcert of localConcerts){
+            if(nonLocalConcert.id == localConcert.id){
+                // leave out
+                return false
+            }
+        }
+        return true;
+    })
+
     return {
-        locationConcerts: artistCalls[0],
-        nonLocationConcerts: artistCalls[1],
+        localConcerts,
+        nonLocalConcerts,
     }
 }
 

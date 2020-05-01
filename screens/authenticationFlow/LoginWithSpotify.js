@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Colors, Screens, Buttons} from '../styles';
+import { Colors, Screens, Buttons} from '../../styles';
 
-import { getRefreshToken, registerWithRefreshToken, login } from '../store/authentication/authenticationActions';
+import { getRefreshToken, registerWithRefreshToken, login } from '../../store/authentication/authenticationActions';
 
-import { refreshAndGetMusicProfile, setAnalyzingSpotifyAction } from '../store/musicProfile/musicProfileActions';
-import AnalyzingSpotifyArt from '../components/AnalyzingSpotifyArt';
+import { refreshAndGetMusicProfile, setAnalyzingSpotifyAction } from '../../store/musicProfile/musicProfileActions';
+import AnalyzingSpotifyArt from '../../components/AnalyzingSpotifyArt';
 
 
 /*

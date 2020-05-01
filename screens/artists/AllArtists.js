@@ -4,12 +4,12 @@ import { useSelector} from 'react-redux';
 
 import { StyleSheet, Text, View } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../styles'
+import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
-import BasicArtist from '../components/DisplayArtists/BasicArtist';
-import SearchBar from '../components/SearchBar';
-import SearchableFlatList from '../components/SearchableFlatList';
+import BasicArtist from '../../components/DisplayArtists/BasicArtist';
+import SearchBar from '../../components/SearchBar';
+import SearchableFlatList from '../../components/SearchableFlatList';
 
 
 //const sortedArtists = artists.sort((a, b) => (a.name > b.name) ? 1 : -1);
@@ -38,7 +38,7 @@ export default function AllArtists(props) {
             query = {artistsQuery}
             elements = {sortedArtists}
             queryKey = {"name"}
-            renderElementComponenet = {(item) => <BasicArtist artist = {item} pressForDetail = {true} navigation={props.navigation} />}
+            renderElementComponenet = {(item) => <BasicArtist artist = {item} pressForDetail = {false} navigation={props.navigation} />}
             pageSize = {PAGE_SIZE}
             // passing a different key from the previous key tells react to
             // load a new component and thus reset the component's state to initial.

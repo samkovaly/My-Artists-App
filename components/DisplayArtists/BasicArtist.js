@@ -11,7 +11,7 @@ const imageHeightRatio = 0.75;
 const BasicArtist = ({ artist, pressForDetail, navigation }) => {
 
   const innerContainer = () => (
-    <View>
+    <View style={styles.innerContainer}>
       <Image
         style={styles.avatar}
         source={getImageSource(artist)}
@@ -23,13 +23,11 @@ const BasicArtist = ({ artist, pressForDetail, navigation }) => {
   return (
     <View style={styles.outerContainer}>
       {pressForDetail ? 
-        <TouchableWithoutFeedback style={styles.innerContainer} onPress={() => navigation.navigate("ArtistDetail", {artist})}>
-          {innerContainer()}
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("ArtistDetail", {artist})}>
+            {innerContainer()}
         </TouchableWithoutFeedback>
       :
-        <View style={styles.innerContainer}>
-          {innerContainer()}
-        </View>
+          innerContainer()
       }
       <View style = {styles.bottomLine}/>
     </View>
