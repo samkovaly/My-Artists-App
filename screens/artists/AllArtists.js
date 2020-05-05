@@ -31,14 +31,20 @@ export default function AllArtists(props) {
         <SearchBar
           style = {styles.searchBar}
           searchCallback = {setArtistsQuery}
-          placeholderText = "Find Artists"
+          placeholderText = "Filter Artists"
+          autoCapitalize = 'none'
+          autoCorrect = {false}
+          autoFocus = {true}
         />
+
+        <Text style = {styles.white}>Display: (All Alphabetical) (top long term) (medium term) (short term) (genre) (playlists?)</Text>
+        
         <View style = {styles.listPadding}>
           <SearchableFlatList
             query = {artistsQuery}
             elements = {sortedArtists}
             queryKey = {"name"}
-            renderElementComponenet = {(item) => <BasicArtist artist = {item} pressForDetail = {false} navigation={props.navigation} />}
+            renderElementComponenet = {(item) => <BasicArtist artist = {item} pressForDetail = {true} navigation={props.navigation} />}
             pageSize = {PAGE_SIZE}
             // passing a different key from the previous key tells react to
             // load a new component and thus reset the component's state to initial.
@@ -52,14 +58,14 @@ export default function AllArtists(props) {
 
 
 const styles = StyleSheet.create({
+  white: {
+    color: 'white',
+  },
   container: {
       ...Screens.screenContainer,
     },
-    listPadding: {
-      padding: 4,
-    },
     list: {
-      padding: 0,
+      marginHorizontal: 6,
     },
     searchBar: {
       margin: 4,

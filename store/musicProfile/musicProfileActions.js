@@ -12,7 +12,11 @@ export const refreshAndGetMusicProfile = () => {
         console.log("analyzing spotify...");
         const auth = getState().authentication;
         
-        await loadNewMusicProfile(auth.username, auth.backendAuthToken, auth.accessToken.token);
+        const refreshStatus = await loadNewMusicProfile(auth.username, auth.backendAuthToken, auth.accessToken.token);
+        if(refreshStatus == null){
+            console.log('music profile refresh status of null, dispatching nothing');
+            return;
+        }
         await dispatch(getMusicProfile());
     }
 }
@@ -33,6 +37,7 @@ export const getMusicProfile = () => {
         const artists = JSON.parse(musicProfileJSON.artists)
         const processedArtists = addConcertToArtists(artists)
 
+
         const tracks = JSON.parse(musicProfileJSON.tracks)
         const tracksMap = makeTracksIntoMap(tracks)
 
@@ -44,10 +49,15 @@ export const getMusicProfile = () => {
 
 
 const addConcertToArtists = (artists) => {
-    const processedArtists = Object.values(artists).map((artist) => {return {
-        ...artist,
-        showConcert: true
-      }});
+    const processedArtists = Object.values(artists).map((artist) => {
+        let slug = artist.name.trim()
+        slug = slug.replace(/&| & | /g,"-")
+        return {
+            ...artist,
+            slug: slug,
+            showConcert: true
+        }
+    });
     return processedArtists;
 }
 
@@ -56,6 +66,7 @@ const makeTracksIntoMap = (tracks) => {
     for(var track of tracks){
         tracksMap.set(track.id, track);
     }
+
     return tracksMap;
 }
 

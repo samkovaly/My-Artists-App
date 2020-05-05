@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { Colors } from '../styles'
 
 
-const SearchBar = ({ searchCallback, style, placeholderText }) => {
+const SearchBar = ({ searchCallback, style, placeholderText, autoCapitalize, autoCorrect, autoFocus }) => {
     return (
       <View style={[styles.container, style]}>
         <TextInput
@@ -12,6 +12,9 @@ const SearchBar = ({ searchCallback, style, placeholderText }) => {
             placeholder = {placeholderText}
             placeholderTextColor="#a3a3a3"
             onChangeText = {text => searchCallback(text)}
+            autoCapitalize = {autoCapitalize}
+            autoCorrect = {autoCorrect}
+            autoFocus = {autoFocus}
         ></TextInput>
       </View>
     );

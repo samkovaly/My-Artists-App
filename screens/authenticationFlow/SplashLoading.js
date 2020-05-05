@@ -15,7 +15,7 @@ import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
 import { getUserSavedOnStorage } from '../../store/authentication/authenticationStorage';
-import { getSpotifyAppCredentials, getConcertsAPICredentials } from '../../store/authentication/authenticationActions';
+import { getSpotifyAppCredentials, getAPICredentials } from '../../store/authentication/authenticationActions';
 import { loginWithUserAuthStorage } from '../../store/authentication/authenticationActions';
 import { getMusicProfile } from '../../store/musicProfile/musicProfileActions';
 

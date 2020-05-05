@@ -1,5 +1,5 @@
 
-import { SET_APP_CREDENTIALS, SET_CONCERTS_CREDENTIALS, 
+import { SET_APP_CREDENTIALS, SET_API_CREDENTIALS, 
   SET_REFRESH_TOKEN, SET_ACCESS_TOKEN, SET_USERNAME, SET_BACKEND_AUTH_TOKEN, 
   SET_ANALYZING_SPOTIFY, LOGIN, LOGOUT } from './authenticationActions'
 
@@ -11,9 +11,9 @@ const initialState = {
     clientSecret: null,
     redirectUri: null,
   },
-  concertsCredentials: {
-    eventful: {
-      key: null
+  APICredentials: {
+    seatgeek: {
+      client_id: null
     },
   },
   
@@ -36,10 +36,10 @@ export default function(state = initialState, action) {
         ...state,
         appCredentials: action.payload
       }
-    case SET_CONCERTS_CREDENTIALS:
+    case SET_API_CREDENTIALS:
       return {
         ...state,
-        concertsCredentials: action.payload
+        APICredentials: action.payload
       }
 
     case SET_REFRESH_TOKEN:

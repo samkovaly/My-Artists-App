@@ -7,7 +7,6 @@ import { Colors, Screens, Buttons, Font } from '../../styles'
 
 import { useSelector} from 'react-redux';
 
-import BasicConcert from '../../components/BasicConcert';
 import BasicButton from '../../components/BasicButton';
 
 import { getTracks } from '../../store/musicProfile/musicProfileActions';

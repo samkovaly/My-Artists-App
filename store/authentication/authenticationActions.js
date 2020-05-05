@@ -3,7 +3,7 @@ export const SET_FETCHING_USER_STORAGE = 'SET_FETCHING_USER_STORAGE';
 export const SET_USER_SAVED_ON_STORAGE = 'SET_USER_SAVED_ON_STORAGE';
 // first enter the app, should always work as long as my backend is functioning
 export const SET_APP_CREDENTIALS = 'SET_APP_CREDENTIALS';
-export const SET_CONCERTS_CREDENTIALS = 'SET_CREDENTIALS_CREDENTIALS';
+export const SET_API_CREDENTIALS = 'SET_API_CREDENTIALS';
 
 export const SET_REFRESH_TOKEN = 'SET_REFRESH_TOKEN';
 export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN';
@@ -16,7 +16,7 @@ export const LOGOUT = 'LOGOUT';
 
 import { makeAction } from '../../utilities/actions';
 import { fetchNewUserTokens, fetchUsername, fetchAccessToken } from './authenticationEffects/spotifyRequests';
-import { fetchSpotifyAppCredentials, fetchConcertsAPICredentials, fetchSpotifyMusicProfile } from './authenticationEffects/backendRequests';
+import { fetchSpotifyAppCredentials, fetchAPICredentials, fetchSpotifyMusicProfile } from './authenticationEffects/backendRequests';
 import { registerUserForAuthToken, LoginUserForAuthToken } from './authenticationEffects/backendRequests';
 import { saveRefreshTokenStorage, saveUsernameStorage, saveBackendAuthTokenStorage, removeAllStorage, saveUserSavedOnStorage } from "./authenticationStorage";
 
@@ -34,10 +34,10 @@ export const getSpotifyAppCredentials = () => {
     }
 }
 // same for this guy
-export const getConcertsAPICredentials = () => {
+export const getAPICredentials = () => {
     return async (dispatch, getState) => {
-        credentials = await fetchConcertsAPICredentials();
-        await dispatch(makeAction(SET_CONCERTS_CREDENTIALS, credentials));
+        credentials = await fetchAPICredentials();
+        await dispatch(makeAction(SET_API_CREDENTIALS, credentials));
     }
 }
 
@@ -135,8 +135,6 @@ export const getBackendAuthToken = () => {
 }
 
 
-
-
 export const login = () => {
     return async(dispatch, getState) => {
         await dispatch(makeAction(LOGIN))
@@ -148,9 +146,7 @@ export const logout = () => {
         // and updating state to reflect a new app open
         await removeAllStorage();
         // logout action will reset the app state
-        console.log('pre')
         await dispatch(makeAction(LOGOUT));
-        console.log('post')
         // component calling this will have to redirect elsewhere (to start of app flow most likely)
     }
 }

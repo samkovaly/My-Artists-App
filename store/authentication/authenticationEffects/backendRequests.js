@@ -7,8 +7,8 @@ import { localDevIP, APIMasterKey } from '../../../localDevVariables';
 const BACKEND_URL = `http://${localDevIP}/`
 const BACKEND_API_URL = `${BACKEND_URL}api/`;
 
-const BACKEND_CREDENTIALS_ENDPOINT =    `${BACKEND_API_URL}spotify-app-credentials/`;
-const BACKEND_CONCERTS_ENDPOINT =       `${BACKEND_API_URL}concerts-APIs-credentials/`;
+const BACKEND_APP_CREDENTIALS_ENDPOINT =    `${BACKEND_API_URL}spotify-app-credentials/`;
+const BACKEND_API_CREDENTIALS_ENDPOINT =       `${BACKEND_API_URL}API-credentials/`;
 
 export const BACKEND_USERS =            `${BACKEND_API_URL}users/`;
 export const BACKEND_REGISTER =         `${BACKEND_API_URL}register/`;
@@ -21,12 +21,12 @@ const AUTH_MASTER_KEY_HEADER = {
     'Content-Type': 'application/json',
 }
 export const fetchSpotifyAppCredentials = async () => {
-    const credentials = await requestJSON(BACKEND_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
+    const credentials = await requestJSON(BACKEND_APP_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
     //console.log(credentials)
     return credentials
 };
-export const fetchConcertsAPICredentials = async () => {
-    const credentials = await requestJSON(BACKEND_CONCERTS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
+export const fetchAPICredentials = async () => {
+    const credentials = await requestJSON(BACKEND_API_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
     //console.log(credentials)
     return credentials
 };

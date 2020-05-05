@@ -8,6 +8,86 @@ import { requestJSON, METHODS, makeParameter } from '../../../utilities/HTTPRequ
 
 
 const URL = "https://api.seatgeek.com/2/events?"
+const PER_PAGE = 50;
+
+
+
+
+
+export const fetchAllConcertsAtLocation = async (clientID, lat, long, radius) => {
+
+    let url = buildBaseURL(clientID, lat, long, radius);
+    // need initial call to get total pages
+    const {initialConerts, totalPages} = await firstCallAndGetTotalPages(url);
+
+
+    console.log('fetching all concerts at location... total pages: ', totalPages);
+    concertCalls = [];
+    // 2 -> totalPages
+    for(let page = 2; page <= totalPages; page += 1){
+        concertCalls.push( new Promise( (resolve, reject) => {
+            return resolve(fetchConcerts(url, page));
+        } ));
+    }
+
+    // execute and wait
+    try {
+        var concerts = await Promise.all(concertCalls);
+    }
+    catch(err) {
+        console.log(err);
+    };
+
+    // join arrays
+    let allConcerts = [...initialConerts];
+    for(let i = 0; i < concerts.length; i += 1){
+        allConcerts.push(...concerts[i]);
+    }
+    return allConcerts;
+}
+
+
+
+const fetchConcerts = async (url, page) => {
+    const pagedURL = url += makeParameter('page', page)
+    const response = await requestJSON(pagedURL, METHODS.GET);
+    const events = getEventsFromResponse(response);
+    return events;
+}
+
+
+
+const firstCallAndGetTotalPages = async (url) => {
+    // page 1
+    const response = await requestJSON(url, METHODS.GET);
+
+    const initialConerts = getEventsFromResponse(response);
+    const totalPages = Math.ceil(response.meta.total / PER_PAGE);
+    return {
+        initialConerts,
+        totalPages,
+    }
+}
+
+
+const getEventsFromResponse = (response) => {
+    if(response.status){
+        console.log('ERROR with status:', response.status, "at url:", url, 'arist:', artist, ":", response);
+        return [];
+    }
+    try {
+        const events = mapEvents(response.events);
+        return events
+    } catch (error) {
+        console.log(error, '\n', response)
+        return [];
+    }
+}
+
+
+
+
+
 
 
 export const fetchConcertsForManyArtists = async(artists, clientId, lat, lon, radius) => {
@@ -96,19 +176,8 @@ const fetchConcertsArtistName= async(url, artistName) => {
     //console.log("attempting url=", url);
 
     const response = await requestJSON(url, METHODS.GET);
-
-    if(response.status){
-        console.log('ERROR with status:', response.status, "at url:", url, 'arist:', artist, ":", response);
-        return [];
-    }
-
-    try {
-        const events = mapEvents(response.events);
-        return events
-    } catch (error) {
-        console.log(error, '\n', response)
-        return []
-    }
+    const events = getEventsFromResponse(response);
+    return events;
 }
 
 
@@ -116,6 +185,9 @@ const fetchConcertsArtistName= async(url, artistName) => {
 const buildBaseURL = (clientId, lat=null, lon=null, radius=null) => {
     var now = new Date();
     var nowISO = now.toISOString().substring(0,10);
+    
+    now.setMonth(now.getMonth() + 1)
+    var endISO = now.toISOString().substring(0,10);
 
     // pre-build URL
     let url = URL;
@@ -123,8 +195,13 @@ const buildBaseURL = (clientId, lat=null, lon=null, radius=null) => {
     if(lat) url += makeParameter("lat", lat);
     if(lon) url += makeParameter("lon", lon);
     if(radius) url += makeParameter("range", radius + 'mi');
+
     url += makeParameter("datetime_utc.gte", nowISO);
+    url += makeParameter('datetime_utc.lte', endISO)
+
     url += makeParameter("sort", "datetime_utc.asc");
+    url += makeParameter('per_page', PER_PAGE);
+
     return url;
 }
 
@@ -223,6 +300,7 @@ const mapVenue = (venue) => {
             name: venue.name,
             id: venue.id,
             city: venue.city,
+            state: venue.state,
             url: venue.url,
         }
     }else{

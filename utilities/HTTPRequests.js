@@ -14,7 +14,13 @@ export const requestJSON = async (URL, method, headers = null, body = null) => {
         headers: headers,
         body: body,
     })
-    const responseJson = await response.json();
+    let responseJson = null;
+    try{
+      responseJson = await response.json();
+    }catch(error){
+      console.log('response.json() error: ', error);
+      return null;
+    }
     
     if(responseJson.error){
       console.log("ERROR while requesting " + URL + " with method " + method

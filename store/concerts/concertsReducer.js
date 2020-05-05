@@ -1,9 +1,9 @@
 
-import { SET_USER_LOCATION, SET_CONCERTS_AT_LOCATION } from './concertsActions'
+import { SET_USER_LOCATION, SET_ALL_CONCERTS } from './concertsActions'
 
 
 const initialState = {
-  concertsAtLocation: null,
+  allConcerts: null,
   userLocation: null,
   searchRadius: 30,
 }
@@ -11,10 +11,10 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     
-    case SET_CONCERTS_AT_LOCATION:
+    case SET_ALL_CONCERTS:
       return {
         ...state,
-        concertsAtLocation: action.payload || [],
+        allConcerts: action.payload || [],
       }
 
     case SET_USER_LOCATION:

@@ -3,36 +3,35 @@ import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-n
 
 import { Colors, Screens, Buttons, Font } from '../../styles'
 
-
-const elementHeight = 100; // 60
-const imageHeightRatio = 0.75;
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 const BasicArtist = ({ artist, pressForDetail, navigation }) => {
 
   const innerContainer = () => (
-    <View style={styles.innerContainer}>
-      <Image
-        style={styles.avatar}
-        source={getImageSource(artist)}
-      />
-      <Text style={styles.title}>{artist.name}{' '}{artist.top_artists_long_term}</Text>
+    <View style={styles.container}>
+        <Image
+          style={styles.avatar}
+          source={getImageSource(artist)}
+        />
+      <Text style={styles.name}>{artist.name}</Text>
+      <Icon style = {styles.arrow} name="keyboard-arrow-right" size={30} color="white" />
     </View>
     )
 
-  return (
-    <View style={styles.outerContainer}>
-      {pressForDetail ? 
+
+    if(pressForDetail){
+      return (
         <TouchableWithoutFeedback onPress={() => navigation.navigate("ArtistDetail", {artist})}>
             {innerContainer()}
         </TouchableWithoutFeedback>
-      :
-          innerContainer()
-      }
-      <View style = {styles.bottomLine}/>
-    </View>
-    );
-}
+      )
+    }else{
+      return innerContainer();
+    }
+  }
+
+
 
 export default BasicArtist;
 
@@ -47,35 +46,33 @@ const getImageSource = (artist) => {
 }
 
 
+const elementHeight = 50;
+const imageHeightRatio = 0.85;
+
+
 const styles = StyleSheet.create({
-    innerContainer: {
+    container: {
       backgroundColor: Colors.SPOTIFY_BLACK,
-      padding: 4,
-      marginVertical: 2,
-      marginHorizontal: 2,
       height: elementHeight,
       flexDirection: 'row',
+      alignItems: 'center',
       flex: 1,
     },
     avatar: {
         borderRadius: (elementHeight * imageHeightRatio)/2 ,
         width: elementHeight * imageHeightRatio,
         height: elementHeight * imageHeightRatio,
+        marginLeft: 6,
     },
-    title: {
-      marginTop: 0,
+    name: {
       marginLeft: 12,
       color: 'white',
-      fontSize: 18,
+      fontSize: 16,
     },
-    outerContainer: {
+    arrow: {
+      position: 'absolute',
+      right: 0,
     },
-    bottomLine: {
-      marginLeft: 6,
-      borderBottomWidth: 0.5,
-      borderBottomColor: 'white',
-      width: '88%',
-    }
   });
 
   

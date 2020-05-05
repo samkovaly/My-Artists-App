@@ -15,7 +15,7 @@ import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
 import { getUserSavedOnStorage } from '../../store/authentication/authenticationStorage';
-import { getSpotifyAppCredentials, getConcertsAPICredentials } from '../../store/authentication/authenticationActions';
+import { getSpotifyAppCredentials, getAPICredentials } from '../../store/authentication/authenticationActions';
 import { setAuthStateFromStorage, login } from '../../store/authentication/authenticationActions';
 import { getMusicProfile } from '../../store/musicProfile/musicProfileActions';
 
@@ -62,7 +62,7 @@ export default function AuthLoadingScreen(props) {
            if(appCredentials.clientId == null){
                // 1. load credentials  [ AUTH SPLASH SCREEN / COMPONENT ]
                dispatch(getSpotifyAppCredentials());
-               dispatch(getConcertsAPICredentials());
+               dispatch(getAPICredentials());
 
            }else{
                // 2. determine if user has auth saved to local

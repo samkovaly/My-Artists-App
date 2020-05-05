@@ -11,18 +11,30 @@ import BasicArtist from '../../components/DisplayArtists/BasicArtist';
 import BasicButton from '../../components/BasicButton';
 
 import { getTracks } from '../../store/musicProfile/musicProfileActions';
-import { getFullArtist } from '../../utilities/spotifyFetches';
+import { getFullArtist, getRelatedArtists } from '../../utilities/spotifyFetches';
 import { fetchAllConcertsForArtist } from '../../store/concerts/effects/seatgeekEffects'
 
 import { getUserLocation } from '../../store/concerts/concertsActions'
 
-export default function ArtistDetail({ route }) {
+import GenreBubbleCards from '../../components/artistDetail/GenreBubbleCards'
+
+
+
+import BasicConcert from '../../components/concerts/BasicConcert'
+import BasicTrack from '../../components/tracks/BasicTrack'
+import RelatedArtist from '../../components/artistDetail/RelatedArtist'
+
+import ExpandableList from '../../components/ExpandableList'
+
+
+
+export default function ArtistDetail({ navigation, route }) {
   
     const dispatch = useDispatch();
 
     const allTracks = useSelector(state => state.musicProfile.tracks);
     const accessToken = useSelector(state => state.authentication.accessToken.token);
-    const seatgeekClientId = useSelector(state => state.authentication.concertsCredentials.seatgeek.client_id);
+    const seatgeekClientId = useSelector(state => state.authentication.APICredentials.seatgeek.client_id);
     const userLocation = useSelector(state => state.concerts.userLocation);
     const radius = useSelector(state => state.concerts.searchRadius);
 
@@ -30,14 +42,16 @@ export default function ArtistDetail({ route }) {
     const [fullArtist, setFullArtist] = useState(null);
     const [concerts, setConcerts] = useState(null);
 
+    const [relatedArtists, setRelatedArtists] = useState(null);
+
     const tracks = getTracks(artist.tracks, allTracks);
-
-
 
 
     useEffect(() => {
         const getAsyncArtistData = async() => {
             setFullArtist(await getFullArtist(accessToken, artist.id));
+            setRelatedArtists(await getRelatedArtists(accessToken, artist.id));
+
             setConcerts(await fetchAllConcertsForArtist(
                 artist, seatgeekClientId, userLocation.coords.latitude, userLocation.coords.longitude, radius))
         }
@@ -51,9 +65,12 @@ export default function ArtistDetail({ route }) {
     }, [userLocation])
 
 
-    console.log(concerts);
 
-    
+
+
+    if(!concerts || !fullArtist || !relatedArtists){
+      return <Text>LOADING...</Text>
+    }
     /* needs to show:
         upcoming concerts for this artist
         similar artists
@@ -69,12 +86,87 @@ export default function ArtistDetail({ route }) {
                     resizeMode='cover'
                     source = {getImageSource(fullArtist)}
                 />
+                <GenreBubbleCards genres={artist.genres} style={styles.genreBubleCards}/>
             </View>
-            <Text style = {styles.test}>{tracks.length}</Text>
+            <View style = {styles.concertsOuterContainer}>
+              {displayConcerts(concerts.localConcerts, navigation, "Upcoming Concerts Near You", "No upcoming concerts near you")}
+              {displayConcerts(concerts.nonLocalConcerts, navigation, "Other Concerts", "No other conerts")}
+            </View>
+            {displayTracksYouLike(tracks, navigation)}
+            {displayRelatedArtists(relatedArtists, navigation)}
         </ScrollView>
     );
 }
 
+const displayConcerts = (concerts, navigation, conertsUpcomingText, noConcertsUpcomingText) => {
+  return (
+    <View style = {styles.concertsInnerContainer}>
+      {concerts.length > 0 ?
+        <View>
+          <View style = {styles.centerText}>
+            <Text style = {styles.conertsUpcomingText}>{conertsUpcomingText}</Text>
+          </View>
+
+          {concerts.map(concert => <BasicConcert key={concert.id} concert = {concert} displayConcertName = {true} pressForDetail = {true} navigation={navigation} />)}
+
+        </View> :
+        <View style = {styles.centerText}>
+          <Text style = {styles.noConcertsUpcomingText}>{noConcertsUpcomingText}</Text>
+        </View>
+      }
+    </View>
+ )
+}
+
+const displayTracksYouLike = (tracks, navigation) => {
+  return (
+    <View style = {styles.TracksContainer}>
+      {tracks.length > 0 ?
+        <View>
+          <View style = {styles.centerText}>
+            <Text style = {styles.tracksUpcomingText}>Tracks you like from them</Text>
+          </View>
+
+          <ExpandableList
+              elements = {tracks}
+              renderElementComponenet={(track) =>
+                <BasicTrack key={track.id} track = {track} navigation={navigation} />
+              }
+              initialPageSize = {4}
+              style = {{}}
+          />
+
+        </View> :
+        <View style = {styles.centerText}>
+          <Text style = {styles.noTracksText}>No tracks</Text>
+        </View>
+      }
+    </View>
+
+  )}
+
+
+
+const displayRelatedArtists = (relatedArtists, navigation) => {
+  return (
+    <View style = {styles.relatedArtistContainer}>
+
+      <View style = {styles.centerText}>
+        <Text style = {styles.relatedArtistsText}>Similar Artists</Text>
+      </View>
+
+      <ExpandableList
+          elements = {relatedArtists}
+          renderElementComponenet={(artist) =>
+              <RelatedArtist key={artist.id} artist = {artist} navigation={navigation} />
+          }
+          initialPageSize = {4}
+          style = {{}}
+      />
+
+    </View>
+  )
+}
 
 /*
 POSSIBLE fullArtist:
@@ -118,12 +210,65 @@ const styles = StyleSheet.create({
   },
   artistPortraitContainer: {
     width: '100%',
-    height: 300,
+    height: 240,
   },
   artistPortrait: {
     width: '100%',
     height: '100%',
-  }
+  },
+  genreBubleCards: {
+    marginTop: -32,
+    marginLeft: 2,
+  },
+
+  concertListContainer: {
+
+  },
+  concertsOuterContainer: {
+    marginTop: 4,
+  },
+  concertsInnerContainer: {
+    marginTop: 14,
+  },
+
+  conertsUpcomingText: {
+    color: 'white',
+    fontSize: 22,
+  },
+  noConcertsUpcomingText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  centerText: {
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+
+
+  TracksContainer: {
+      marginTop: 14,
+  },
+
+  tracksUpcomingText: {
+
+    color: 'white',
+    fontSize: 22,
+  },
+  noTracksText: {
+    color: 'white',
+    fontSize: 18,
+  },
+
+
+  relatedArtistContainer: {
+    marginTop: 14,
+
+  },
+  relatedArtistsText: {
+
+    color: 'white',
+    fontSize: 22,
+  },
 });
 
 // fullArtist: genres, images 
@@ -143,14 +288,7 @@ const styles = StyleSheet.create({
       "top_artists_short_term": false,
       }
     ]*/
-/*tracks: [
-    {
-      name: ""
-      id: "id"
-      top_tracks_long_term: T/F
-      top_tracks_medium_term: T/F
-      top_tracks_short_term: T/F
-      saved_tracks: T/F
-      playlist: T/F
-    }
+/*tracks: MAP object
+[
+
   ] */

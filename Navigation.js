@@ -35,6 +35,10 @@ import { Colors } from './styles'
 
 
 
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import Feather from 'react-native-vector-icons/Feather'
+
     
 
 
@@ -51,17 +55,22 @@ import { Colors } from './styles'
         <Stack.Screen
           name="MyArtists"
           component={MyArtists}
-          options={{title: 'Artists'}}
+          options={{ title: 'Artists' }}
         />
         <Stack.Screen
           name="AllArtists"
           component={AllArtists}
-          options={{title: 'All Artists'}}
+          options={{title: 'My Artists'}}
         />
         <Stack.Screen
           name="ArtistDetail"
           component={ArtistDetail}
-          options={{title: 'Artist Detail'}}
+          options={({ route }) => ({ title: route.params.artist.name })}
+        />
+        <Stack.Screen
+          name="ConcertDetail"
+          component={ConcertDetail}
+          options={({ route }) => ({ title: route.params.concert.artists[0].name })}
         />
       </Stack.Navigator>
       )
@@ -77,28 +86,55 @@ import { Colors } from './styles'
         <Stack.Screen
           name="ConcertDetail"
           component={ConcertDetail}
-          options={{title: 'Concert Detail'}}
+          options={({ route }) => ({ title: route.params.concert.artists[0].name })}
         />
       </Stack.Navigator>
       )
   }
 
-    const tabOptions = {
-      activeTintColor: 'green',
-      labelStyle: {
-        fontSize: 20,
-      }
-    }
+
+    
     
     const MainTabs = () => {
-    return (
-      <Tab.Navigator tabBarOptions = {tabOptions}>
-        <Tab.Screen name="Artists" component={ArtistsStack} />
-        <Tab.Screen name="Concerts" component={ConcertsStack} />
-        <Tab.Screen name="Discovery" component={Discovery} />
-        <Tab.Screen name="Settings" component={Settings} />
-      </Tab.Navigator>
-    );
+      return (
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+
+              if (route.name === 'Artists') {
+                return <MaterialCommunityIcon name = 'artist' style = {{marginBottom: -10}} size = {34} color = {color} />;
+
+              } else if (route.name === 'Concerts') {
+                return <FontAwesome5 name = 'music' style = {{marginBottom: -10}} size = {24} color = {color} />
+              
+
+              } else if (route.name === 'Discovery') {
+                return <Feather name = 'globe' style = {{marginBottom: -5}} size = {26} color = {color} />
+              }
+
+              else if (route.name === 'Settings') {
+                return <Feather name = 'settings' style = {{marginBottom: -5}} size = {26} color = {color} />
+              }
+              
+            },
+          })}
+          tabBarOptions = {{
+            activeTintColor: '#3e84e6',
+            inactiveTintColor: '#c2c2c2',
+            labelStyle: {
+              fontSize: 14,
+            },
+            style: {
+              backgroundColor: '#262626',
+            }
+          }}
+        >
+          <Tab.Screen name="Artists" component={ArtistsStack} />
+          <Tab.Screen name="Concerts" component={ConcertsStack} />
+          <Tab.Screen name="Discovery" component={Discovery} />
+          <Tab.Screen name="Settings" component={Settings} />
+        </Tab.Navigator>
+      );
     }
     
     
