@@ -2,10 +2,12 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 
 import { Colors, Screens, Buttons, Font } from '../../styles'
+import { useNavigation } from '@react-navigation/native'
 
 
+const BasicConcert = ({ concert, displayConcertName, pressForDetail }) => {
 
-const BasicConcert = ({ concert, displayConcertName, pressForDetail, navigation }) => {
+  const navigation = useNavigation();
 
   let name = ''
   if(displayConcertName){

@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Linking } from 'expo';
 
 
-const RelatedArtist = ({ artist, navigation }) => {
+const RelatedArtist = ({ artist }) => {
 
     return (
         <TouchableWithoutFeedback onPress={() => openSpotifyArtist(artist.uri)}>

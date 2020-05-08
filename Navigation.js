@@ -119,7 +119,7 @@ import Feather from 'react-native-vector-icons/Feather'
             },
           })}
           tabBarOptions = {{
-            activeTintColor: '#3e84e6',
+            activeTintColor: Colors.THEME_BLUE,
             inactiveTintColor: '#c2c2c2',
             labelStyle: {
               fontSize: 14,

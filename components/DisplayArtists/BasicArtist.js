@@ -4,16 +4,18 @@ import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-n
 import { Colors, Screens, Buttons, Font } from '../../styles'
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
+const BasicArtist = ({ artist, pressForDetail }) => {
 
-const BasicArtist = ({ artist, pressForDetail, navigation }) => {
-
+  const navigation = useNavigation();
+  
   const innerContainer = () => (
     <View style={styles.container}>
-        <Image
-          style={styles.avatar}
-          source={getImageSource(artist)}
-        />
+      <Image
+        style={styles.avatar}
+        source={getImageSource(artist)}
+      />
       <Text style={styles.name}>{artist.name}</Text>
       <Icon style = {styles.arrow} name="keyboard-arrow-right" size={30} color="white" />
     </View>
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
         borderRadius: (elementHeight * imageHeightRatio)/2 ,
         width: elementHeight * imageHeightRatio,
         height: elementHeight * imageHeightRatio,
-        marginLeft: 6,
+        marginLeft: 0,
     },
     name: {
       marginLeft: 12,

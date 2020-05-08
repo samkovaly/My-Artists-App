@@ -25,14 +25,14 @@ export const requestJSON = async (URL, method, headers = null, body = null) => {
     if(responseJson.error){
       console.log("ERROR while requesting " + URL + " with method " + method
         + " and headers " + headers + " and body " + body)
+
       if(responseJson.error.hasOwnProperty('status')){
-        // non-auth error
-        console.log("Non-auth error: Status: ", responseJson.error.status, 'message:', responseJson.error.message);
+        console.log("Status:", responseJson.error.status, ', message:', responseJson.error.message);
       }else{
-        // auth-error
-        console.log("Auth error: error: ", responseJson.error, 'error description:', responseJson.error_description);
+        console.log(responseJson.error, 'error description:', responseJson.error_description);
       }
-      return null;
+
+      return responseJson;
     }
 
     return responseJson;

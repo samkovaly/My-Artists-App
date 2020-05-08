@@ -18,7 +18,7 @@ import { Linking } from 'expo';
 }
   */
 
-const BasicTrack = ({ track, navigation }) => {
+const BasicTrack = ({ track }) => {
 
 
     let trackName = track.name;

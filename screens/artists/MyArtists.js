@@ -11,14 +11,13 @@ import BasicButton from '../../components/BasicButton'
 
 import { FlatList } from 'react-native';
 
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function MyArtists(props) {
-
-  const artists = useSelector(state => state.musicProfile.artists);
+  const navigation = useNavigation();
 
   const gotoAllArtists = () => {
-    props.navigation.navigate('AllArtists');
+    navigation.navigate('AllArtists');
   }
   
   return (

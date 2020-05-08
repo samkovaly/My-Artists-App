@@ -16,26 +16,28 @@ import SearchableFlatList from '../../components/SearchableFlatList';
 const PAGE_SIZE = 20;
 
 
-const getSortedArtists = (artists) => {
-  return artists.sort((a, b) => (a.name > b.name) ? 1 : -1);
-}
+//const getSortedArtists = (artists) => {
+//  return artists.sort((a, b) => (a.name > b.name) ? 1 : -1);
+//}
 
 // https://dev.to/raicuparta/compute-values-on-component-mount-with-react-hooks-state-vs-ref-4epk
 export default function AllArtists(props) {
-  const artists = useSelector(state => state.musicProfile.artists);
-  const sortedArtists = useMemo(() => getSortedArtists(artists), []);
+  const artistsMap = useSelector(state => state.musicProfile.artists);
+  const sortedArtists = Array.from(artistsMap.values())
+  //const sortedArtists = useMemo(() => getSortedArtists(artists), []);
   const [artistsQuery, setArtistsQuery] = useState("");
 
     return (
       <View style={styles.container}>
-        <SearchBar
-          style = {styles.searchBar}
-          searchCallback = {setArtistsQuery}
-          placeholderText = "Filter Artists"
-          autoCapitalize = 'none'
-          autoCorrect = {false}
-          autoFocus = {true}
-        />
+        <View style = {styles.searchBar}>
+          <SearchBar
+            searchCallback = {setArtistsQuery}
+            placeholderText = "Filter Artists"
+            autoCapitalize = 'none'
+            autoCorrect = {false}
+            autoFocus = {true}
+          />
+          </View>
 
         <Text style = {styles.white}>Display: (All Alphabetical) (top long term) (medium term) (short term) (genre) (playlists?)</Text>
         
@@ -44,7 +46,7 @@ export default function AllArtists(props) {
             query = {artistsQuery}
             elements = {sortedArtists}
             queryKey = {"name"}
-            renderElementComponenet = {(item) => <BasicArtist artist = {item} pressForDetail = {true} navigation={props.navigation} />}
+            renderElementComponenet = {(item) => <BasicArtist artist = {item} pressForDetail = {true} />}
             pageSize = {PAGE_SIZE}
             // passing a different key from the previous key tells react to
             // load a new component and thus reset the component's state to initial.
@@ -58,16 +60,17 @@ export default function AllArtists(props) {
 
 
 const styles = StyleSheet.create({
-  white: {
-    color: 'white',
-  },
-  container: {
-      ...Screens.screenContainer,
+    white: {
+      color: 'white',
+    },
+    container: {
+        flex: 1,
+        padding: 4,
     },
     list: {
       marginHorizontal: 6,
     },
     searchBar: {
-      margin: 4,
+      marginVertical: 2,
     }
 });

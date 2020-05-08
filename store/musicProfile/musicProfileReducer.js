@@ -1,18 +1,25 @@
 
-import { SET_ARTISTS, SET_TRACKS, SET_ANALYZING_SPOTIFY } from './musicProfileActions';
+import { SET_ARTISTS, SET_TRACKS, SET_ANALYZING_SPOTIFY, REFRESH_SPOTIFY_ERROR } from './musicProfileActions';
 
 const initialState = {
     artists: null,
     tracks: null,
     analyzingSpotify: false,
+    refreshSpotifyError: false,
 }
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    
+    case REFRESH_SPOTIFY_ERROR:
+        return {
+            ...state,
+            refreshSpotifyError: action.payload,
+        }
     case SET_ANALYZING_SPOTIFY:
         return {
             ...state,
-            analyzingSpotify: action.payload
+            analyzingSpotify: action.payload,
         }
     case SET_ARTISTS:
         return {

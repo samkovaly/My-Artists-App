@@ -5,6 +5,8 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 
 import { Colors, Screens, Buttons, Font } from '../styles'
 
+import { Keyboard } from 'react-native'
+
 
 const queryElements = (elements, query, queryKey) => {
     const queriedElements = elements.filter(element =>
@@ -36,6 +38,7 @@ const SearchableFlatList = ({query, elements, queryKey, renderElementComponenet,
             keyExtractor={item => item.id}
             onEndReached={loadNextPage}
             onEndReachedThreshold={1}
+            onScrollBeginDrag={() => Keyboard.dismiss()}
         />
   );
 }

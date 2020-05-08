@@ -7,3 +7,6 @@ export const DISABLED_GREY = 'grey';
 
 
 export const COOL_GREY = '#3b382f';
+
+
+export const THEME_BLUE = '#3e84e6';

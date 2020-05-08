@@ -28,7 +28,7 @@ import ExpandableList from '../../components/ExpandableList'
 
 
 
-export default function ArtistDetail({ navigation, route }) {
+export default function ArtistDetail({ route }) {
   
     const dispatch = useDispatch();
 
@@ -89,16 +89,17 @@ export default function ArtistDetail({ navigation, route }) {
                 <GenreBubbleCards genres={artist.genres} style={styles.genreBubleCards}/>
             </View>
             <View style = {styles.concertsOuterContainer}>
-              {displayConcerts(concerts.localConcerts, navigation, "Upcoming Concerts Near You", "No upcoming concerts near you")}
-              {displayConcerts(concerts.nonLocalConcerts, navigation, "Other Concerts", "No other conerts")}
+              {displayConcerts(concerts.localConcerts, "Upcoming Concerts Near You", "No upcoming concerts near you")}
+              {displayConcerts(concerts.nonLocalConcerts, "Other Concerts", "No other conerts")}
             </View>
-            {displayTracksYouLike(tracks, navigation)}
-            {displayRelatedArtists(relatedArtists, navigation)}
+            {displayTracksYouLike(tracks)}
+            {displayRelatedArtists(relatedArtists)}
+            {displayFoundIn(artist)}
         </ScrollView>
     );
 }
 
-const displayConcerts = (concerts, navigation, conertsUpcomingText, noConcertsUpcomingText) => {
+const displayConcerts = (concerts, conertsUpcomingText, noConcertsUpcomingText) => {
   return (
     <View style = {styles.concertsInnerContainer}>
       {concerts.length > 0 ?
@@ -107,7 +108,14 @@ const displayConcerts = (concerts, navigation, conertsUpcomingText, noConcertsUp
             <Text style = {styles.conertsUpcomingText}>{conertsUpcomingText}</Text>
           </View>
 
-          {concerts.map(concert => <BasicConcert key={concert.id} concert = {concert} displayConcertName = {true} pressForDetail = {true} navigation={navigation} />)}
+          <ExpandableList
+              elements = {concerts}
+              renderElementComponenet={(concert) =>
+                <BasicConcert key={concert.id} concert = {concert} displayConcertName = {true} pressForDetail = {true} />
+              }
+              initialPageSize = {4}
+              style = {{}}
+          />
 
         </View> :
         <View style = {styles.centerText}>
@@ -118,7 +126,7 @@ const displayConcerts = (concerts, navigation, conertsUpcomingText, noConcertsUp
  )
 }
 
-const displayTracksYouLike = (tracks, navigation) => {
+const displayTracksYouLike = (tracks) => {
   return (
     <View style = {styles.TracksContainer}>
       {tracks.length > 0 ?
@@ -130,7 +138,7 @@ const displayTracksYouLike = (tracks, navigation) => {
           <ExpandableList
               elements = {tracks}
               renderElementComponenet={(track) =>
-                <BasicTrack key={track.id} track = {track} navigation={navigation} />
+                <BasicTrack key={track.id} track = {track} />
               }
               initialPageSize = {4}
               style = {{}}
@@ -147,23 +155,50 @@ const displayTracksYouLike = (tracks, navigation) => {
 
 
 
-const displayRelatedArtists = (relatedArtists, navigation) => {
+const displayRelatedArtists = (relatedArtists) => {
   return (
     <View style = {styles.relatedArtistContainer}>
-
       <View style = {styles.centerText}>
         <Text style = {styles.relatedArtistsText}>Similar Artists</Text>
       </View>
-
       <ExpandableList
           elements = {relatedArtists}
           renderElementComponenet={(artist) =>
-              <RelatedArtist key={artist.id} artist = {artist} navigation={navigation} />
+              <RelatedArtist key={artist.id} artist = {artist} />
           }
           initialPageSize = {4}
           style = {{}}
       />
-
+    </View>
+  )
+}
+/*artists: [
+      {
+      "followed_artist": false,
+      "id": "0r371dCcixw9isainQEkD6",
+      "image_url": "https://i.scdn.co/image/ab67616d0000b2738d3ae370b3ee10754ee0a87e",
+      "name": "Verbal",
+      "tracks" : [id, id, ...],
+      "genres" : ['edm', 'trap', ...]
+      "showConcert": true,
+      "top_artists_long_term": false,
+      "top_artists_medium_term": false,
+      "top_artists_short_term": false,
+      }
+    ]*/
+const displayFoundIn = (artist) => {
+  return (
+    <View style = {styles.foundInContainer}>
+      <View style = {styles.centerText}>
+        <Text style = {styles.foundInText}>Found In</Text>
+      </View>
+      <View>
+        {artist.top_artists_long_term ? <Text  style = {styles.foundInSubText}>Your favorite long term artists (several years)</Text> : null }
+        {artist.top_artists_medium_term ? <Text  style = {styles.foundInSubText}>Your favorite medium term artists (6 months)</Text> : null }
+        {artist.top_artists_short_term ? <Text  style = {styles.foundInSubText}>Your favorite short term artists (4 weeks)</Text> : null }
+        {artist.followed_artist ? <Text  style = {styles.foundInSubText}>Your followed artists</Text> : null }
+        {artist.playlist ? <Text  style = {styles.foundInSubText}>Your playlists</Text> : null }
+      </View>
     </View>
   )
 }
@@ -269,26 +304,21 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 22,
   },
+
+  foundInContainer: {
+    marginTop: 14,
+
+  },
+
+  foundInText: {
+
+    color: 'white',
+    fontSize: 22,
+  },
+
+  foundInSubText: {
+    marginLeft: 6,
+    color: 'white',
+    fontSize: 16,
+  },
 });
-
-// fullArtist: genres, images 
-
-
-/*artists: [
-      {
-      "followed_artist": false,
-      "id": "0r371dCcixw9isainQEkD6",
-      "image_url": "https://i.scdn.co/image/ab67616d0000b2738d3ae370b3ee10754ee0a87e",
-      "name": "Verbal",
-      "tracks" : [id, id, ...],
-      "genres" : ['edm', 'trap', ...]
-      "showConcert": true,
-      "top_artists_long_term": false,
-      "top_artists_medium_term": false,
-      "top_artists_short_term": false,
-      }
-    ]*/
-/*tracks: MAP object
-[
-
-  ] */
