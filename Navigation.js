@@ -3,9 +3,6 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
-import {
-  Text,
-} from 'react-native';
 
 import { DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,20 +11,28 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native'
 
 // My screens
+// AUTH
 import LoginWithSpotify from './screens/authenticationFlow/LoginWithSpotify';
 import AuthLoadingScreen from './screens/authenticationFlow/AuthLoadingScreen';
 
+// Concerts
 import Concerts from './screens/concerts/Concerts';
 import ConcertDetail from './screens/concerts/ConcertDetail';
 
+// Artists
 import MyArtists from './screens/artists/MyArtists';
 import AllArtists from './screens/artists/AllArtists';
 import ArtistDetail from './screens/artists/ArtistDetail';
 
+// Discovery
+import Discovery from './screens/discover/Discovery';
+import ArtistSearch from './screens/discover/ArtistSearch';
+import ConcertSearch from './screens/discover/ConcertSearch';
 
-import Discovery from './screens/Discovery';
-
-import Settings from './screens/Settings';
+import Settings from './screens/settings/Settings';
+import NotificationSettings from './screens/settings/NotificationSettings';
+import TermsOfUse from './screens/settings/TermsOfUse';
+import AnalyzeSpotify from './screens/settings/AnalyzeSpotify'
 
 
 import { Colors } from './styles'
@@ -41,17 +46,27 @@ import Feather from 'react-native-vector-icons/Feather'
 
     
 
-
-
-
-
   const Tab = createBottomTabNavigator();
   const Stack = createStackNavigator();
 
 
+
+  const stackScreenOptions = {
+    headerStyle: {
+      backgroundColor: Colors.FOREGROUND_BLUE,
+      shadowOffset: { height: 0, width: 0 },
+    },
+    headerTintColor: 'white',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  }
+
     const ArtistsStack = () => {
       return (
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={stackScreenOptions}
+      >
         <Stack.Screen
           name="MyArtists"
           component={MyArtists}
@@ -75,9 +90,12 @@ import Feather from 'react-native-vector-icons/Feather'
       </Stack.Navigator>
       )
     }
+
   const ConcertsStack = () => {
       return (
-      <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={stackScreenOptions}
+        >
         <Stack.Screen
           name="Concerts"
           component={Concerts}
@@ -92,8 +110,74 @@ import Feather from 'react-native-vector-icons/Feather'
       )
   }
 
+  
+  const DiscoveryStack = () => {
+    return (
+    <Stack.Navigator
+      screenOptions={stackScreenOptions}
+    >
+      <Stack.Screen
+        name="Discover"
+        component={Discovery}
+        options={{ title: 'Discovery' }}
+      />
+      <Stack.Screen
+        name="ArtistSearch"
+        component={ArtistSearch}
+        options={{ title: 'Discover Artists' }}
+      />
+      <Stack.Screen
+        name="ConcertSearch"
+        component={ConcertSearch}
+        options={{ title: 'Discover Concerts' }}
+      />
+      <Stack.Screen
+        name="ConcertDetail"
+        component={ConcertDetail}
+        options={({ route }) => ({ title: route.params.concert.artists[0].name })}
+      />
+      <Stack.Screen
+        name="ArtistDetail"
+        component={ArtistDetail}
+        options={({ route }) => ({ title: route.params.artist.name })}
+      />
+    </Stack.Navigator>
+    )
+  }
 
-    
+  const SettingsStack = () => {
+    return (
+      <Stack.Navigator
+        screenOptions={stackScreenOptions}
+      >
+      <Stack.Screen
+        name="Settings"
+        component={Settings}
+        options={{title: 'Settings'}}
+      />
+      <Stack.Screen
+        name="NotificationSettings"
+        component={NotificationSettings}
+        options={{title: 'Notifications'}}
+      />
+      <Stack.Screen
+        name="TermsOfUse"
+        component={TermsOfUse}
+        options={{title: 'Terms of use'}}
+      />
+      <Stack.Screen
+        name="AnalyzeSpotify"
+        component={AnalyzeSpotify}
+        options={{
+          title: 'Spotify',
+        }}
+      />
+    </Stack.Navigator>
+    )
+}
+
+
+
     
     const MainTabs = () => {
       return (
@@ -119,20 +203,21 @@ import Feather from 'react-native-vector-icons/Feather'
             },
           })}
           tabBarOptions = {{
-            activeTintColor: Colors.THEME_BLUE,
-            inactiveTintColor: '#c2c2c2',
+            activeTintColor: Colors.TAB_NAV_BLUE,
+            inactiveTintColor: Colors.TAB_NAV_GREY,
             labelStyle: {
               fontSize: 14,
             },
             style: {
-              backgroundColor: '#262626',
+              backgroundColor: Colors.FOREGROUND_BLUE,
+              borderTopWidth: 0,
             }
           }}
         >
-          <Tab.Screen name="Artists" component={ArtistsStack} />
           <Tab.Screen name="Concerts" component={ConcertsStack} />
-          <Tab.Screen name="Discovery" component={Discovery} />
-          <Tab.Screen name="Settings" component={Settings} />
+          <Tab.Screen name="Artists" component={ArtistsStack} />
+          <Tab.Screen name="Discovery" component={DiscoveryStack} />
+          <Tab.Screen name="Settings" component={SettingsStack} />
         </Tab.Navigator>
       );
     }
@@ -148,23 +233,13 @@ import Feather from 'react-native-vector-icons/Feather'
       )
     }
     
-    const MyTheme = {
-      dark: true,
-      colors: {
-        primary: 'white',
-        background: Colors.SPOTIFY_BLACK,
-        card: Colors.SPOTIFY_BLACK,
-        text: 'white',
-        border: Colors.SPOTIFY_BLACK,
-      },
-    };
 
 export default function Navigation(props) {
   const loggedIn = useSelector(state => state.authentication.loggedIn);
 
 
   return (
-    <NavigationContainer theme = {MyTheme}>
+    <NavigationContainer>
       { loggedIn ? (
         <MainTabs/>
       ) : (

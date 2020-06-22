@@ -2,16 +2,17 @@ import React from 'react';
 import { useState, useMemo } from 'react'
 import { useSelector} from 'react-redux';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
-import BasicArtist from '../../components/DisplayArtists/BasicArtist';
+import BasicArtist from '../../components/artists/BasicArtist';
 import SearchBar from '../../components/SearchBar';
 import SearchableFlatList from '../../components/SearchableFlatList';
 
 
+import BaseText from '../../components/BaseText'
 //const sortedArtists = artists.sort((a, b) => (a.name > b.name) ? 1 : -1);
 const PAGE_SIZE = 20;
 
@@ -22,6 +23,7 @@ const PAGE_SIZE = 20;
 
 // https://dev.to/raicuparta/compute-values-on-component-mount-with-react-hooks-state-vs-ref-4epk
 export default function AllArtists(props) {
+  
   const artistsMap = useSelector(state => state.musicProfile.artists);
   const sortedArtists = Array.from(artistsMap.values())
   //const sortedArtists = useMemo(() => getSortedArtists(artists), []);
@@ -37,40 +39,37 @@ export default function AllArtists(props) {
             autoCorrect = {false}
             autoFocus = {true}
           />
-          </View>
-
-        <Text style = {styles.white}>Display: (All Alphabetical) (top long term) (medium term) (short term) (genre) (playlists?)</Text>
-        
-        <View style = {styles.listPadding}>
-          <SearchableFlatList
-            query = {artistsQuery}
-            elements = {sortedArtists}
-            queryKey = {"name"}
-            renderElementComponenet = {(item) => <BasicArtist artist = {item} pressForDetail = {true} />}
-            pageSize = {PAGE_SIZE}
-            // passing a different key from the previous key tells react to
-            // load a new component and thus reset the component's state to initial.
-            key = {artistsQuery}
-            style = {styles.list}
-          />
         </View>
+
+        <BaseText style = {styles.white}>Display: (All Alphabetical) (top long term) (medium term) (short term) (genre) (playlists?)</BaseText>
+        
+        <SearchableFlatList
+          query = {artistsQuery}
+          elements = {sortedArtists}
+          queryKey = {"name"}
+          renderElementComponent = {(item) => <BasicArtist artist = {item} userArtist = {true} pressForDetail = {true} />}
+          pageSize = {PAGE_SIZE}
+          // passing a different key from the previous key tells react to
+          // load a new component and thus reset the component's state to initial.
+          key = {artistsQuery}
+          style = {styles.list}
+        />
       </View>
   );
 }
 
 
 const styles = StyleSheet.create({
-    white: {
-      color: 'white',
-    },
-    container: {
-        flex: 1,
-        padding: 4,
-    },
+
+  container: {
+    ...Screens.screenContainer,
+    //padding: 4,
+  },
+
     list: {
       marginHorizontal: 6,
     },
     searchBar: {
-      marginVertical: 2,
+      //marginVertical: 2,
     }
 });

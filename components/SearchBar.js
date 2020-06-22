@@ -1,16 +1,17 @@
 import React from 'react';
 import { useState } from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput } from 'react-native';
 
 import { Colors } from '../styles'
 import { TouchableWithoutFeedback } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
 
 
 
-const SearchBar = ({ searchCallback, placeholderText, autoCapitalize, autoCorrect, autoFocus }) => {
-  const [text, setText] = useState('')
+const SearchBar = ({ initialText, searchCallback, placeholderText, containerStyle, autoCapitalize, autoCorrect, autoFocus }) => {
+  const [text, setText] = useState(initialText)
 
   const onChangeText = (text) => {
     setText(text);
@@ -18,7 +19,14 @@ const SearchBar = ({ searchCallback, placeholderText, autoCapitalize, autoCorrec
   }
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle]}>
+          <IconAntDesign
+            name='search1'
+            size = {20}
+            color = "white"
+            style = {styles.searchIcon}
+          />
+        
         <TextInput
             style = {styles.typingText}
             placeholder = {placeholderText}
@@ -28,12 +36,13 @@ const SearchBar = ({ searchCallback, placeholderText, autoCapitalize, autoCorrec
             autoCorrect = {autoCorrect}
             autoFocus = {autoFocus}
             value = {text}
+            keyboardAppearance = {'dark'}
+            returnKeyType = {'search'}
         />
-        <View style = {styles.closeContainer}>
-          <TouchableWithoutFeedback onPress = {() => onChangeText('')}>
+        <TouchableWithoutFeedback style = {styles.closeContainer} onPress = {() => onChangeText('')}>
             <Icon style = {styles.close} name = 'close-circle' size = {22} color = "#b3b3b3"/>
           </TouchableWithoutFeedback>
-        </View>
+        
       </View>
     );
   }
@@ -45,20 +54,24 @@ const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
+      backgroundColor: '#2a2e33',
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      borderRadius: 10,
+      marginHorizontal: 6,
+      marginVertical: 6,
     },
     typingText: {
         color: '#d6d6d6',
         fontSize: 16,
-        backgroundColor: '#404040',
-        paddingVertical: 10,
-        paddingHorizontal: 18,
-        borderRadius: 20,
-        width: '100%'
+        flex: 10,
+    },
+    searchIcon: {
+      flex: 1,
+      marginRight: 2,
     },
     closeContainer: {
-      position: 'absolute',
-      right: 10,
+      flex: 1,
     },
     close: {
       marginTop: 2,

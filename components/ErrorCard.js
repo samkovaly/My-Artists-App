@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
 
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View,  StyleSheet } from 'react-native';
 import { TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import BaseText from './BaseText'
+
+import { Colors } from '../styles'
 
 const ErrorCard = ({ showError, close, header, message }) => {
 
-    return (
-        <View style = {[styles.modalContainer, {opacity: showError}]}>
-            <Text style = {styles.header }>{header}</Text>
-            <Text style = {styles.message }>{message}</Text>
-            <TouchableHighlight style = {styles.close} onPress={() => close()}>
-                    <Icon name = "close" size = {25} color = 'white' />
-            </TouchableHighlight>
-        </View>
-    )
+    if(showError){
+        return (
+            <View style = {[styles.modalContainer, {opacity: showError}]}>
+                <BaseText style = {styles.header }>{header}</BaseText>
+                <BaseText style = {styles.message }>{message}</BaseText>
+                <TouchableHighlight style = {styles.close} onPress={() => close()}>
+                        <Icon name = "close" size = {25} color = 'white' />
+                </TouchableHighlight>
+            </View>
+        )
+    }else{
+        return null;
+    }
 }
-
-
 
 
 export default ErrorCard;
@@ -48,26 +53,22 @@ const styles = StyleSheet.create({
         marginHorizontal: 14,
         marginTop: 38,
         padding: 18,
-        backgroundColor: '#c93524',
+        backgroundColor: Colors.ERROR_MODAL_RED,
 
         borderRadius: 8,
         //...shadow,
-
-        zIndex: 1,
 
         flexDirection: 'column',
         justifyContent: 'space-between',
     },
     header: {
         fontSize: 20,
-        color: 'white',
         fontWeight: 'bold',
         marginBottom: 6,
         marginTop: -2,
     },
     message: {
         fontSize: 17,
-        color: 'white',
     },
     close: {
         position: 'absolute',

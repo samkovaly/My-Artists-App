@@ -1,9 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
 
 import { Linking } from 'expo';
 
+import { Colors, Screens } from '../../styles'
 
+import BaseText from '../BaseText'
+import { getTrackImageSource } from '../../utilities/imageSources'
 
 
 /* track object
@@ -30,9 +33,9 @@ const BasicTrack = ({ track }) => {
             <View style={styles.container}>
                 <Image
                     style={styles.trackImage}
-                    source={getImageSource(track)}
+                    source={getTrackImageSource(track)}
                 />
-                <Text style={styles.trackName}>{trackName}</Text>
+                <BaseText style={styles.trackName}>{trackName}</BaseText>
                 <Image
                     style={styles.spotifyLogo}
                     source={getSpotifyLogo()}
@@ -51,10 +54,6 @@ const openSpotifyTrack = (uri) => {
 }
 
 
-const getImageSource = (track) => {
-    return {uri: track.image_url}
-}
-
 const getSpotifyLogo = () => {
     return require('../../graphics/spotify-icon-green-transparent.png');
 }
@@ -67,14 +66,14 @@ const imageHorizontalMargin = (elementHeight - (elementHeight * imageHeightRatio
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: '#222222',
+        flex: 1,
+      backgroundColor: Colors.FOREGROUND_BLUE,
       marginVertical: 2,
       marginHorizontal: 6,
       height: elementHeight,
       flexDirection: 'row',
       alignItems: 'center',
       borderRadius: elementHeight /2 ,
-      flex: 1,
     },
 
     
@@ -87,9 +86,9 @@ const styles = StyleSheet.create({
 
     trackName: {
         marginLeft: 10,
-        color: 'white',
         fontSize: 16,
     },
+    
     spotifyLogo: {
         width: elementHeight * imageHeightRatio,
         height: elementHeight * imageHeightRatio,

@@ -1,11 +1,11 @@
 import React from 'react';
-import { useState, useMemo } from 'react'
-
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { useMemo } from 'react'
 
 import { Colors, Screens, Buttons, Font } from '../styles'
 
 import { Keyboard } from 'react-native'
+
+import PagedFlatlist from './PagedFlatlist'
 
 
 const queryElements = (elements, query, queryKey) => {
@@ -17,28 +17,16 @@ const queryElements = (elements, query, queryKey) => {
 
 
 
-const SearchableFlatList = ({query, elements, queryKey, renderElementComponenet, pageSize, style}) => {
+const SearchableFlatList = ({query, elements, queryKey, renderElementComponent, pageSize, style}) => {
     // elements must have a queryKey property to be indexable.
-
-    const [page, setPage] = useState(1);
     const queriedElements = useMemo(() => queryElements(elements, query, queryKey), [query])
 
-    const loadNextPage = () => {
-        if(pageSize * page < queriedElements.length){
-            setPage(page + 1);
-        }
-    }
-
-      
     return (
-        <FlatList
-            style = {style}
-            data={queriedElements.slice(0, pageSize * page)}
-            renderItem={({ item }) => renderElementComponenet(item)}
-            keyExtractor={item => item.id}
-            onEndReached={loadNextPage}
-            onEndReachedThreshold={1}
-            onScrollBeginDrag={() => Keyboard.dismiss()}
+        <PagedFlatlist
+            style={style}
+            elements={queriedElements}
+            renderElementComponent = {renderElementComponent}
+            pageSize={pageSize}
         />
   );
 }

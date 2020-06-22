@@ -1,12 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../../styles'
+import { Colors, Screens } from '../../styles'
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
-const BasicArtist = ({ artist, pressForDetail }) => {
+import BaseText from '../BaseText'
+import { getArtistImageSource } from '../../utilities/imageSources'
+
+
+const BasicArtist = ({ artist, userArtist, pressForDetail }) => {
 
   const navigation = useNavigation();
   
@@ -14,9 +18,9 @@ const BasicArtist = ({ artist, pressForDetail }) => {
     <View style={styles.container}>
       <Image
         style={styles.avatar}
-        source={getImageSource(artist)}
+        source={getArtistImageSource(artist)}
       />
-      <Text style={styles.name}>{artist.name}</Text>
+      <BaseText style={styles.name}>{artist.name}</BaseText>
       <Icon style = {styles.arrow} name="keyboard-arrow-right" size={30} color="white" />
     </View>
     )
@@ -24,7 +28,7 @@ const BasicArtist = ({ artist, pressForDetail }) => {
 
     if(pressForDetail){
       return (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("ArtistDetail", {artist})}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("ArtistDetail", {artist, userArtist})}>
             {innerContainer()}
         </TouchableWithoutFeedback>
       )
@@ -38,27 +42,17 @@ const BasicArtist = ({ artist, pressForDetail }) => {
 export default BasicArtist;
 
 
-
-const getImageSource = (artist) => {
-  if(artist.image_url){
-    return {uri: artist.image_url}
-  }else{
-    return require('../../graphics/blank-artist.jpg')
-  }
-}
-
-
 const elementHeight = 50;
 const imageHeightRatio = 0.85;
 
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: Colors.SPOTIFY_BLACK,
+      flex: 1,
+      backgroundColor: Colors.BACKGROUND_DARK_BLUE,
       height: elementHeight,
       flexDirection: 'row',
       alignItems: 'center',
-      flex: 1,
     },
     avatar: {
         borderRadius: (elementHeight * imageHeightRatio)/2 ,
@@ -68,7 +62,6 @@ const styles = StyleSheet.create({
     },
     name: {
       marginLeft: 12,
-      color: 'white',
       fontSize: 16,
     },
     arrow: {
@@ -89,7 +82,7 @@ Object {
   "genres_length": 2,
   "id": "00FQb4jTyendYWaN8pK0wa",
   "image_size": 160,
-  "image_url": "https://i.scdn.co/image/6e8dc460cfb6b89d7970302259febd0aa73b38c6",
+  "image": "https://i.scdn.co/image/6e8dc460cfb6b89d7970302259febd0aa73b38c6",
   "name": "Lana Del Rey",
   "showConcert": true,
   "top_artists_long_term": true,

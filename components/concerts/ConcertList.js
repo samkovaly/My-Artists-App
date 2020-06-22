@@ -1,18 +1,19 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import { StyleSheet, View, Image, FlatList } from 'react-native';
 
 
 import BasicConcert from './BasicConcert'
+import PagedFlatlist from '../PagedFlatlist'
 
 
 function ConcertList({concerts, style }) {
 
     return (
         <View style={style}>
-            <FlatList
-                data={concerts}
-                renderItem={({ item }) => <BasicConcert concert = {item} pressForDetail = {true} />}
-                keyExtractor = {(item, index) => `list-item-${index}`}
+            <PagedFlatlist
+                elements={concerts}
+                renderElementComponent = {(item) => <BasicConcert concert = {item} pressForDetail = {true} />}
+                pageSize={20}
             />
       </View>
     )

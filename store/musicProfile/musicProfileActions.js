@@ -104,3 +104,13 @@ export const getTracks = (trackIDs, allTracks) => {
     const tracks = trackIDs.map((id) => allTracks.get(id));
     return tracks
 }
+
+export const filterArtists = (artists, filter) => {
+    const filteredArtists = artists.filter((artist) => artist[filter]);
+    return filteredArtists
+}
+export const sortByProperty = (artists, property) => {
+    // for example: top_artists_long_term_ranking
+    const sortedArtists = artists.sort((a, b) => (a[property] > b[property]) ? 1 : -1);
+    return sortedArtists;
+}

@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../../styles'
+import { Colors, Screens } from '../../styles'
 import { useNavigation } from '@react-navigation/native'
 
+import BaseText from '../BaseText'
+import { getConcertImageSource } from '../../utilities/imageSources'
 
 const BasicConcert = ({ concert, displayConcertName, pressForDetail }) => {
 
@@ -28,34 +30,29 @@ const BasicConcert = ({ concert, displayConcertName, pressForDetail }) => {
     <View style={styles.container}>
       <Image
           style={styles.avatar}
-          source={getImageSource(concert)}
+          source={getConcertImageSource(concert)}
        />
        <View style = {styles.textContaier}>
-        <Text style={styles.artist}>{name}</Text>
+        <BaseText style={styles.artist}>{name}</BaseText>
         <View style={styles.venueCityContainer}>
-          <Text style={styles.venue}>{concert.venue ? concert.venue.name: "N/A"}</Text>
-          <Text style={styles.city}>{concert.venue.city}</Text>
+          <BaseText style={styles.venue}>{concert.venue ? concert.venue.name: "N/A"}</BaseText>
+          <BaseText style={styles.city}>{concert.venue.city}</BaseText>
         </View>
-        <Text style={styles.date}>{displayDate}</Text>
+        <BaseText style={styles.date}>{displayDate}</BaseText>
       </View>
     </View>
     )
 
-    let displayDate = 'N/A'
-    if(concert.datetime_utc){
-      displayDate = getDisplayDate(concert.datetime_utc);
-    }
-
-
+    
 
     if(pressForDetail){
       return (
         <TouchableWithoutFeedback onPress={() => navigation.navigate("ConcertDetail", {concert})}>
-            {innerContainer(displayDate)}
+            {innerContainer(concert.displayDate)}
         </TouchableWithoutFeedback>
       )
     }else{
-      return innerContainer(displayDate);
+      return innerContainer(concert.displayDate);
     }
 
 }
@@ -63,52 +60,41 @@ const BasicConcert = ({ concert, displayConcertName, pressForDetail }) => {
 export default BasicConcert;
 
 
-const getImageSource = (concert) => {
-    if(concert && concert.artists && concert.artists[0] && concert.artists[0].image){
-      return {uri: concert.artists[0].image}
-    }else{
-      return require('../../graphics/blank-artist.jpg');
-    }
-}
 
 
 
 
-
-const elementHeight = 105;
-const imageHeightRatio = 0.85;
+const elementHeight = 90;
 
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: '#222222',
-      padding: 6,
-      marginVertical: 4,
-      marginHorizontal: 4,
+      flex: 1,
+      //backgroundColor: Colors.FOREGROUND_BLUE,
+      backgroundColor: Colors.BACKGROUND_DARK_BLUE,
+      marginVertical: 12,
       height: elementHeight,
       flexDirection: 'row',
       alignItems: 'center',
       borderRadius: 10,
-      flex: 1,
     },
 
     
     avatar: {
-      borderRadius: 10,
-      width: elementHeight * imageHeightRatio,
-      height: elementHeight * imageHeightRatio,
+      borderRadius: 4,
+      width: elementHeight,
+      height: elementHeight,
+      marginVertical: 6,
     },
 
 
     textContaier: {
       flex: 1,
       flexDirection: 'column',
-      alignContent: 'space-between',
       marginLeft: 14,
     },
 
     artist: {
-      color: 'white',
       fontSize: 18,
       flex: 1.25,
     },
@@ -119,54 +105,19 @@ const styles = StyleSheet.create({
     },
 
     venue: {
-      color: '#b5b5b5',
+      color: Colors.SUB_TEXT_GREY,
       fontSize: 14,
     },
     city: {
       marginTop: -2,
-      color: '#b5b5b5',
+      color: Colors.SUB_TEXT_GREY,
       fontSize: 14,
     },
     
     date: {
-      color: '#b5b5b5',
+      color: Colors.SUB_TEXT_GREY,
       fontSize: 14,
       flex: 1,
     },
 
   });
-
-
-
-
-  const getDisplayDate = (isoString) => {
-    const days = ['SUN', 'MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT'];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const date = new Date(isoString);
-    
-    const dayOfWeek = days[date.getDay()];
-    const month = months[date.getMonth()];
-    const dayOfMonth = date.getDate();
-
-    const hour24 = date.getHours();
-    let hour = null;
-
-    // 0 = 12am
-    // 12 = 12pm
-    let period = ''; 
-    if(hour24 < 12){
-      period = 'am';
-      hour = hour24
-    }else{
-      period = 'pm';
-      hour = hour24 - 12;
-    }
-
-    let minute = date.getMinutes();
-    if(minute < 10){
-      minute = '0' + minute;
-    }
-
-    const fullDisplayDate = dayOfWeek + ' ' + month + ' '+ dayOfMonth + ', ' + hour + ':' + minute + period;
-    return fullDisplayDate;
-  }

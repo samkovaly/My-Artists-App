@@ -18,8 +18,9 @@ export const getAllConcerts = () => {
         
         const seatgeekClientId = getState().authentication.APICredentials.seatgeek.client_id;
 
-        //const concerts = await seatgeekEffects.fetchConcertsForManyArtists(artists.slice(100), seatgeekClientId, userLocation.latitude, userLocation.longitude, radius);
-        const concerts = await seatgeekEffects.fetchAllConcertsAtLocation(seatgeekClientId, userLocation.latitude, userLocation.longitude, radius)
+        const months = 6;
+        const concerts = await seatgeekEffects.fetchAllConcertsAtLocation(seatgeekClientId, months, userLocation.latitude, userLocation.longitude, radius)
+        //console.log(concerts)
 
         // await dispatch the result
         dispatch(setAllConcertsAction(concerts));

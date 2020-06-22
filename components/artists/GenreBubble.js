@@ -1,15 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, ScrollView } from 'react-native';
 
-
+import { Colors } from '../../styles'
+import BaseText from '../BaseText'
 
 export default function GenreBuble({ genre }) {
-
-
-
   return (
   <View style = {styles.container}>
-    <Text style = {styles.text}>{genre}</Text>
+    <BaseText style = {styles.text}>{genre}</BaseText>
   </View>
   )
 }
@@ -21,7 +19,7 @@ const styles = StyleSheet.create({
     height: HEIGHT,
     marginHorizontal: 4,
     borderRadius: HEIGHT/2,
-    backgroundColor: '#de1c07',
+    backgroundColor: Colors.GENRE_BACKGROUND_COLOR,
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: 'white',
@@ -29,7 +27,6 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   text: {
-    color: 'white',
     fontSize: 14,
     marginHorizontal: 8,
   },

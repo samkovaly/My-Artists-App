@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useMemo } from 'react'
 
-import { StyleSheet, Text, View, FlatList, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, FlatList, TouchableHighlight } from 'react-native';
 
 import { Colors, Screens, Buttons, Font } from '../styles'
 
@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 
 
-const ExpandableList = ({elements, renderElementComponenet, initialPageSize, style}) => {
+const ExpandableList = ({elements, renderElementComponent, initialPageSize, style}) => {
 
     const [pageSize, setPageSize] = useState(initialPageSize);
 
@@ -20,7 +20,7 @@ const ExpandableList = ({elements, renderElementComponenet, initialPageSize, sty
     return (
         <View style = {style}>
             <View>
-                {elements.slice(0,pageSize).map(element => renderElementComponenet(element))}
+                {elements.slice(0,pageSize).map(element => renderElementComponent(element))}
             </View>
 
             {elements.length > initialPageSize && pageSize != elements.length?

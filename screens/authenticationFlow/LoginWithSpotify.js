@@ -1,14 +1,18 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, TouchableHighlight, Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Colors, Screens, Buttons} from '../../styles';
+import { Colors, Screens } from '../../styles';
 
 import { getRefreshToken, registerWithRefreshToken, login } from '../../store/authentication/authenticationActions';
 
 import { refreshAndGetMusicProfile, setAnalyzingSpotifyAction } from '../../store/musicProfile/musicProfileActions';
-import AnalyzingSpotifyArt from '../../components/AnalyzingSpotifyArt';
+import AnalyzeSpotifyBackgroundAnimation from '../../components/AnalyzeSpotifyBackgroundAnimation'
+
+
+import BaseText from '../../components/BaseText'
+import BasicButton from '../../components/BasicButton'
 
 
 /*
@@ -28,10 +32,8 @@ LOGIN to trigger auth nav screen change
 
 export default function LoginWithSpotify(props) {
 
+  const screenHeight = Dimensions.get('window').height;
   const dispatch = useDispatch();
-
-
-
 
 
   // ask to sign in to spotify, which will return a refrsh token if successful,
@@ -39,8 +41,12 @@ export default function LoginWithSpotify(props) {
 
   const LoginUserButtonClicked = async () => {
     // user clicking login button
-    await dispatch(getRefreshToken());
-    await registerAnalyzeAndGetMusicProfile();
+    const success = await dispatch(getRefreshToken());
+    if(success){
+      await registerAnalyzeAndGetMusicProfile();
+    }else{
+      console.log('user refused or error, no login')
+    }
   }
 
   const registerAnalyzeAndGetMusicProfile = async () => {
@@ -64,16 +70,26 @@ export default function LoginWithSpotify(props) {
 
   if(analyzingSpotify){
     return (
-      <AnalyzingSpotifyArt/>
+      <AnalyzeSpotifyBackgroundAnimation runAnimation = {analyzingSpotify} screenHeight = {screenHeight}/>
     )
   }else{
     return (
-      <View style = {styles.loginContainer}>
-          <TouchableHighlight
-            style = {styles.loginButton}
-            onPress={() => {LoginUserButtonClicked()}}>
-            <Text style = {styles.loginButtonText}>Login with spotify</Text>
-          </TouchableHighlight>
+      <View style = {styles.container}>
+        <View style = {styles.textContainer}>
+          <BaseText style = {styles.header}>Welcome</BaseText>
+          <BaseText style = {styles.subHeader}>Please connect your spotify account</BaseText>
+        </View>
+
+        <BasicButton text = "Login With Spotify" onPress={() => {LoginUserButtonClicked()}}
+            containerStyle = {{
+                  backgroundColor: Colors.SPOTIFY_GREEN,
+                  marginBottom: 40,
+                }}
+            textStyle = {{
+                fontSize: 18,
+              }}
+          />
+
       </View>
     )
   }
@@ -81,20 +97,27 @@ export default function LoginWithSpotify(props) {
 
 
 const styles = StyleSheet.create({
-  loginContainer: {
-    ...Screens.screenContainerFlexEnd,
+  container: {
+    ...Screens.screenContainer,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  loginButton: {
-    backgroundColor: Colors.SPOTIFY_GREEN,
-    marginBottom: 40,
-    padding: 15,
-    borderRadius: 12,
-    width: 300,
+
+  textContainer: {
+    marginTop: 40,
+    marginHorizontal: 25,
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  loginButtonText: {
-    ...Buttons.largeButtonWhiteText,
-  }
+  header: {
+    fontSize: 36,
+    fontWeight: '400',
+    marginBottom: 10,
+  },
+  subHeader: {
+    fontSize: 26,
+    fontWeight: '200',
+    color: Colors.BLUE_GREY_TEXT,
+  },
 });

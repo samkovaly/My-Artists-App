@@ -1,16 +1,17 @@
 import React from 'react';
-import { StyleSheet, TouchableHighlight, View, Text } from 'react-native';
+import { StyleSheet, TouchableHighlight, View } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../styles'
+import { Colors, Screens } from '../styles'
+
+import BaseText from './BaseText'
 
 
-
-const BasicButton= ({ text, onPress }) => {
+const BasicButton= ({ text, onPress, containerStyle, textStyle }) => {
     return (
         <TouchableHighlight
-            style = {styles.button}
+            style = {[styles.button, containerStyle]}
             onPress={() => {onPress()}}>
-            <Text style = {styles.text}>{text}</Text>
+            <BaseText style = {[styles.text, textStyle]}>{text}</BaseText>
         </TouchableHighlight>
     )
 }
@@ -22,9 +23,14 @@ export default BasicButton;
 
 const styles = StyleSheet.create({
     button: {
-        ...Buttons.mediumButtonCoolGrey,
+        backgroundColor: Colors.FOREGROUND_BLUE,
+        padding: 15,
+        borderRadius: 12,
+        width: 300,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     text: {
-      ...Buttons.largeButtonWhiteText,
+      fontSize: 20,
     }
   });

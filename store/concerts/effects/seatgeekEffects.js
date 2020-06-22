@@ -1,106 +1,64 @@
 
-
 // https://seatgeek.com/account/develop
 // http://platform.seatgeek.com/#performers
 
 import { requestJSON, METHODS, makeParameter } from '../../../utilities/HTTPRequests'
 
 
-
-const URL = "https://api.seatgeek.com/2/events?"
+const URL = "https://api.seatgeek.com/2"
+const EVENTS_URL = URL + "/events?"
 const PER_PAGE = 50;
 
 
 
+export const queryConcertsAtPage = async (query, page, pageSize, clientId) => {
 
+    if(query == null || query == ""){
+        return [];
+    }
 
-export const fetchAllConcertsAtLocation = async (clientID, lat, long, radius) => {
+    let url = EVENTS_URL;
+    formattedQuery = formatQuery(query)
+    url += makeParameter('q', formattedQuery);
+    url += makeParameter("client_id", clientId);
+    url += makeParameter('per_page', pageSize);
+    url += makeParameter("sort", "datetime_utc.asc");
+    url += makeParameter('type', 'concert')
 
-    let url = buildBaseURL(clientID, lat, long, radius);
+    const concerts = await fetchEventsAtPage(url, page)
+    return concerts;
+}
+
+/*
+    user input is messy, needs to be cleaned before passed to seatgeek
+*/
+const formatQuery = (query) => {
+    let queryArray = query.toLowerCase().split(' ');
+    return queryArray.join("+");    
+}
+
+const fetchEventsAtPage = async(url, page) => {
+    const pagedURL = url + makeParameter('page', page);
+    const response = await getSeatgeek(pagedURL);
+    const events = mapEvents(response.events);
+    return events
+}
+
+/*
+    fetches all concerts at this location within this range.
+*/
+export const fetchAllConcertsAtLocation = async (clientID, monthsAhead, lat, long, radius) => {
+
+    let url = buildConcertsLocationURL(clientID, monthsAhead, lat, long, radius);
     // need initial call to get total pages
-    const {initialConerts, totalPages} = await firstCallAndGetTotalPages(url);
-
-
-    console.log('fetching all concerts at location... total pages: ', totalPages);
-    concertCalls = [];
-    // 2 -> totalPages
-    for(let page = 2; page <= totalPages; page += 1){
-        concertCalls.push( new Promise( (resolve, reject) => {
-            return resolve(fetchConcerts(url, page));
-        } ));
-    }
-
-    // execute and wait
-    try {
-        var concerts = await Promise.all(concertCalls);
-    }
-    catch(err) {
-        console.log(err);
-    };
-
-    // join arrays
-    let allConcerts = [...initialConerts];
-    for(let i = 0; i < concerts.length; i += 1){
-        allConcerts.push(...concerts[i]);
-    }
-    return allConcerts;
-}
-
-
-
-const fetchConcerts = async (url, page) => {
-    const pagedURL = url += makeParameter('page', page)
-    const response = await requestJSON(pagedURL, METHODS.GET);
-    const events = getEventsFromResponse(response);
-    return events;
-}
-
-
-
-const firstCallAndGetTotalPages = async (url) => {
-    // page 1
-    const response = await requestJSON(url, METHODS.GET);
-
-    const initialConerts = getEventsFromResponse(response);
-    const totalPages = Math.ceil(response.meta.total / PER_PAGE);
-    return {
-        initialConerts,
-        totalPages,
-    }
-}
-
-
-const getEventsFromResponse = (response) => {
-    if(response.status){
-        console.log('ERROR with status:', response.status, "at url:", url, 'arist:', artist, ":", response);
-        return [];
-    }
-    try {
-        const events = mapEvents(response.events);
-        return events
-    } catch (error) {
-        console.log(error, '\n', response)
-        return [];
-    }
-}
-
-
-
-
-
-
-
-export const fetchConcertsForManyArtists = async(artists, clientId, lat, lon, radius) => {
-
-    let url = buildBaseURL(clientId, lat, lon, radius);
+    const totalPages = await getTotalPages(url);
     
-    //const testArtists = ['andrey pushkarev', 'chet porter', 'heerhorst', 'nicola cruz']
-    
+    console.log('PAGES', totalPages)
     concertCalls = [];
 
-    for(let i = 0; i < artists.length; i += 1){
+    for(let page = 1; page <= totalPages; page += 1){
         concertCalls.push( new Promise( (resolve, reject) => {
-            return resolve(fetchConcertsArtistName(url, artists[i].name_ascii));
+            return resolve(fetchEventsAtPage(url, page));
         } ));
     }
 
@@ -117,17 +75,29 @@ export const fetchConcertsForManyArtists = async(artists, clientId, lat, lon, ra
     for(let i = 0; i < concerts.length; i += 1){
         allConcerts.push(...concerts[i]);
     }
+
     return allConcerts;
 }
 
 
+/*
+    Used to get the total pages that this URL fetch will produce.
+*/
+const getTotalPages = async (url) => {
+    const response = await getSeatgeek(url);
+    const totalPages = Math.ceil(response.meta.total / PER_PAGE);
+    return totalPages
+}
 
-// get concerts for this artist within the range, and all other ones outside the range.
-export const fetchAllConcertsForArtist = async(artist, clientId, lat, lon, radius) => {
 
-    let locationURL = buildBaseURL(clientId, lat, lon, radius);
-    let nonLocationURL = buildBaseURL(clientId);
+/*
+    Fetches local concerts (within radius) and non-local concerts (all) at this location
+    and for only one artist. This is used by the artist's dtail screen and not the concerts screen.
+*/
+export const fetchAllConcertsForArtist = async(artist, monthsAhead, clientId, lat, lon, radius) => {
 
+    let locationURL = buildConcertsLocationURL(clientId, monthsAhead, lat, lon, radius);
+    let nonLocationURL = buildConcertsLocationURL(clientId, monthsAhead);
 
     // run location and non-location calls at the same time to save time.
     concertCalls = [];
@@ -137,7 +107,6 @@ export const fetchAllConcertsForArtist = async(artist, clientId, lat, lon, radiu
     concertCalls.push( new Promise( (resolve, reject) => {
         return resolve(fetchConcertsArtistName(nonLocationURL, artist.name_ascii))
     } ));
-
 
     // execute and wait
     try {
@@ -166,31 +135,51 @@ export const fetchAllConcertsForArtist = async(artist, clientId, lat, lon, radiu
     }
 }
 
-
-const fetchConcertsArtistName= async(url, artistName) => {
+/*
+    append artist name to this URL call so call only returns
+    events by this artist
+*/
+const fetchConcertsArtistName = async(url, artistName) => {
 
     name = artistName.trim()
+    // seatgeek specific slug convention
+    // for example: W&W -> W-W
     name = name.replace(/&| & | /g,"-")
     url += makeParameter("performers.slug", name);
     
     //console.log("attempting url=", url);
 
-    const response = await requestJSON(url, METHODS.GET);
-    const events = getEventsFromResponse(response);
+    const response = await getSeatgeek(url);
+    const events = mapEvents(response.events);
+
     return events;
 }
 
+/*
+    fetches the seatgeek url with GET and checks for errors.
+*/
+const getSeatgeek = async (url) => {
+    const response = await requestJSON(url, METHODS.GET);
+    if(response.status){
+        console.log('ERROR with status:', response.status, "at url:", url, ":", response);
+        return null;
+    }
+    return response;
+}
 
 
-const buildBaseURL = (clientId, lat=null, lon=null, radius=null) => {
+/*
+    Builds the URL fetch call for seatgeek.
+    These are the basic parameters, more can be appended on after this URL is returned
+*/
+const buildConcertsLocationURL = (clientId, monthsAhead=1, lat=null, lon=null, radius=null) => {
     var now = new Date();
     var nowISO = now.toISOString().substring(0,10);
     
-    now.setMonth(now.getMonth() + 1)
+    now.setMonth(now.getMonth() + monthsAhead)
     var endISO = now.toISOString().substring(0,10);
 
-    // pre-build URL
-    let url = URL;
+    let url = EVENTS_URL;
     url += makeParameter("client_id", clientId);
     if(lat) url += makeParameter("lat", lat);
     if(lon) url += makeParameter("lon", lon);
@@ -202,95 +191,148 @@ const buildBaseURL = (clientId, lat=null, lon=null, radius=null) => {
     url += makeParameter("sort", "datetime_utc.asc");
     url += makeParameter('per_page', PER_PAGE);
 
+    // hmmm
+    url += makeParameter('type', 'concert')
+
     return url;
 }
 
 
+/*
+    params:
+        isoString: date as ISO string
+    returns:
+        (example) 'FRI, Mar 12, 8:30pm'
+*/
+const getDisplayDate = (isoString) => {
+    const days = ['SUN', 'MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const date = new Date(isoString);
+    
+    const dayOfWeek = days[date.getDay()];
+    const month = months[date.getMonth()];
+    const dayOfMonth = date.getDate();
+
+    const hour24 = date.getHours();
+    let hour = null;
+
+    // 0 = 12am
+    // 12 = 12pm
+    let period = ''; 
+    if(hour24 < 12){
+      period = 'am';
+      hour = hour24
+    }else{
+      period = 'pm';
+      hour = hour24 - 12;
+    }
+
+    let minute = date.getMinutes();
+    if(minute < 10){
+      minute = '0' + minute;
+    }
+
+    const fullDisplayDate = dayOfWeek + ' ' + month + ' '+ dayOfMonth + ', ' + hour + ':' + minute + period;
+    return fullDisplayDate;
+  }
 
 
-
+  
 const mapEvents = (events) => {
     if(events){
         const mappedEvents = Object.values(events).map((event) => {
-
-            const venue = mapVenue(event.venue);
-            const performers = mapPerformers(event.performers);
-
-            return {
-                name: event.title,
-                type: event.type, 
-                status: event.status,
-                id: event.id,
-                description: event.description,
-                datetime_local: event.datetime_local,
-                datetime_utc: event.datetime_utc,
-
-                date_tbd: event.date_tbd,
-
-                url: event.url,
-
-                venue: venue,
-                artists: performers,
-            }
+            return mapEvent(event)
         })
         return mappedEvents;
     }else{
-        return [];
+        return []
     }
-
 }
 
+const mapEvent = (event) => {
+    if(event){
+        const venue = mapVenue(event.venue);
+        const performers = mapPerformers(event.performers);
+
+        return {
+            name: event.title,
+            status: event.status,
+            id: event.id,
+            description: event.description,
+            datetime_local: event.datetime_local,
+            datetime_utc: event.datetime_utc,
+            displayDate: getDisplayDate(event.datetime_utc),
+            date_tbd: event.date_tbd,
+            url: event.url,
+            venue: venue,
+            artists: performers,
+        }
+    }else{
+        return null;
+    }
+}
 
 const mapPerformers = (performers) => {
     if(performers){
         const mappedPerformers = Object.values(performers).map((performer) => {
-            const genres = mapGenres(performer.genres);
-            return {
-                id: performer.id,
-                name: performer.name,
-                slug: performer.slug,
-                url: performer.url,
-                image: performer.image,
-                primary: performer.primary,
-                type: performer.type,
-                genres: genres,
-            }
+            return mapPerformer(performer)
         })
         return mappedPerformers;
     }else{
-        //return null;
-        // to keep same structure
-        const genres = mapGenres(null);
-        return [{
-            id: null,
-            name: null,
-            url: null,
-            image: null,
-            primary: null,
-            type: null,
-            genres: genres
-        }]
+        return []
     }
-
 }
+
+const mapPerformer = (performer) => {
+    if(performer){
+        const genres = mapGenres(performer.genres);
+        return {
+            id: performer.id,
+            name: performer.name,
+            slug: performer.slug,
+            url: performer.url,
+            image: performer.image,
+            primary: performer.primary,
+            type: performer.type,
+            genres: genres,
+        }
+    }else{
+        return null;
+    }
+}
+
 
 const mapGenres = (genres) => {
     if(genres){
         const mappedGenres = Object.values(genres).map((genre) => {
-            return {
-                id: genre.id,
-                name: genre.name,
-                primary: genre.primary,
-            }
+            return mapGenre(genre)
         })
         return mappedGenres;
     }else{
-        //return null;
-        return [{
-            id: null,
-            name: null,
-            primary: null,
-        }]
+        return []
+    }
+}
+
+const mapGenre = (genre) => {
+    if(genre){
+        return {
+            id: genre.id,
+            name: genre.name,
+            primary: genre.primary,
+        }
+    }else{
+        return null;
+    }
+}
+
+const mapVenues = (venues) => {
+    if(venues){
+        const mappedVenues = Object.values(venues).map((venue) => {
+            return mapVenue(venue)
+        })
+        return mappedVenues;
+    }else{
+        return []
     }
 }
 
@@ -299,6 +341,155 @@ const mapVenue = (venue) => {
         return {
             name: venue.name,
             id: venue.id,
+            address: venue.address,
+            city: venue.city,
+            state: venue.state,
+            url: venue.url,
+        }
+    }else{
+        return null;
+    }
+}
+
+
+/*
+  Maps event object from seatgeek database to an event object with only the fields MyArtists needs
+  Calls:
+    mapVenue(), mapPerformers() and getDisplayDate()
+*/
+/*
+const mapEvents = (events) => {
+    if(events){
+        const mappedEvents = Object.values(events).map((event) => {
+            return mapEvent(event)
+        })
+        return mappedEvents;
+    }else{
+        return [mapEvent(null)]
+    }
+}
+
+const mapEvent = (event) => {
+    if(event){
+        const venue = mapVenue(event.venue);
+        const performers = mapPerformers(event.performers);
+
+        return {
+            name: event.title,
+            status: event.status,
+            id: event.id,
+            description: event.description,
+            datetime_local: event.datetime_local,
+            datetime_utc: event.datetime_utc,
+            displayDate: getDisplayDate(event.datetime_utc),
+            date_tbd: event.date_tbd,
+            url: event.url,
+            venue: venue,
+            artists: performers,
+        }
+    }else{
+        const venue = mapVenue(null);
+        const performers = mapPerformers(null);
+
+        return {
+            name: null,
+            status: null,
+            id: null,
+            description: null,
+            datetime_local: null,
+            datetime_utc: null,
+            displayDate: null,
+            date_tbd: null,
+            url: null,
+            venue: venue,
+            artists: performers,
+        }
+    }
+}
+
+const mapPerformers = (performers) => {
+    if(performers){
+        const mappedPerformers = Object.values(performers).map((performer) => {
+            return mapPerformer(performer)
+        })
+        return mappedPerformers;
+    }else{
+        return [mapPerformer(null)]
+    }
+}
+
+const mapPerformer = (performer) => {
+    if(performer){
+        const genres = mapGenres(performer.genres);
+        return {
+            id: performer.id,
+            name: performer.name,
+            slug: performer.slug,
+            url: performer.url,
+            image: performer.image,
+            primary: performer.primary,
+            type: performer.type,
+            genres: genres,
+        }
+    }else{
+        const genres = mapGenres(null);
+        return {
+            id: null,
+            name: null,
+            url: null,
+            image: null,
+            primary: null,
+            type: null,
+            genres: genres
+        }
+    }
+}
+
+
+const mapGenres = (genres) => {
+    if(genres){
+        const mappedGenres = Object.values(genres).map((genre) => {
+            return mapGenre(genre)
+        })
+        return mappedGenres;
+    }else{
+        return [mapGenre(null)]
+    }
+}
+
+const mapGenre = (genre) => {
+    if(genre){
+        return {
+            id: genre.id,
+            name: genre.name,
+            primary: genre.primary,
+        }
+    }else{
+        return {
+            id: null,
+            name: null,
+            primary: null,
+        }
+    }
+}
+
+const mapVenues = (venues) => {
+    if(venues){
+        const mappedVenues = Object.values(venues).map((venue) => {
+            return mapVenue(venue)
+        })
+        return mappedVenues;
+    }else{
+        return [mapVenue(null)]
+    }
+}
+
+const mapVenue = (venue) => {
+    if(venue){
+        return {
+            name: venue.name,
+            id: venue.id,
+            address: venue.address,
             city: venue.city,
             state: venue.state,
             url: venue.url,
@@ -307,8 +498,11 @@ const mapVenue = (venue) => {
         return {
             name: null,
             id: null,
+            address: null,
             city: null,
+            state: null,
             url: null,
         }
     }
 }
+*/

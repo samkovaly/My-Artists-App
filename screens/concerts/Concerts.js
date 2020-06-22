@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState, useMemo } from 'react';
-import { StyleSheet, Text, View, ScrollView, FlatList, Dimensions  } from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, Dimensions, ActivityIndicator  } from 'react-native';
 
 
 import { Colors, Screens, Buttons, Font } from '../../styles'
@@ -13,6 +13,7 @@ import { getUserLocation, getAllConcerts } from "../../store/concerts/concertsAc
 
 import ConcertList from '../../components/concerts/ConcertList'
 import ConcertsTabs from '../../components/concerts/ConcertsTabs'
+import BaseText from '../../components/BaseText'
 
 
 const filterConcertsForArtists = (concerts, artists) => {
@@ -58,9 +59,9 @@ export default function Concerts(props) {
 
   const [concertsTabIndex, setConcertsTabIndex] = useState(0);
   const [concertsRoutes] = useState([
-    { key: 'artistConcerts', title: 'My Artists' },
+    { key: 'artistConcerts', title: "My Concerts" },
     { key: 'allConcerts', title: 'All Concerts' },
-    { key: 'genreConcerts', title: 'Genres' },
+    //{ key: 'genreConcerts', title: 'Genres' },
   ]);
  
 
@@ -87,8 +88,8 @@ export default function Concerts(props) {
         return <ConcertList concerts = {artistConcerts} displayConcertName={false} style = {styles.concertListContainer} />;
       case 'allConcerts':
         return <ConcertList concerts = {allConcerts} displayConcertName={false} style = {styles.concertListContainer} />;
-      case 'genreConcerts':
-        return <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+      //case 'genreConcerts':
+      //  return <View style={styles.concertListContainer} />
       default:
         return null;
     }
@@ -113,8 +114,11 @@ export default function Concerts(props) {
 
 const loadingScreen = () => {
   return (
-      <View style = {styles.container}>
-          <Text style = {styles.loadingText} >Loading...</Text>
+      <View style = {styles.loadingContainer}>
+          <ActivityIndicator
+            size = 'large'
+            color = {Colors.TAB_NAV_BLUE}
+          />
       </View>
   )
 }
@@ -122,18 +126,19 @@ const loadingScreen = () => {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: 'black',
+  loadingContainer: {
+    ...Screens.screenContainer,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+
+  
   loadingText: {
-    color: 'white',
     fontSize: 28,
   },
+
   concertListContainer: {
-    flex: 1,
+    ...Screens.screenContainer,
     padding: 10,
-    backgroundColor: 'black',
   },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 
-import GenreBubble from '../../components/artistDetail/GenreBubble'
+import GenreBubble from './GenreBubble';
 
 export default function GenreBubleCards({ genres, style }) {
 

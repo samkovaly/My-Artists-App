@@ -1,12 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../../styles'
+import { Colors, Screens } from '../../styles'
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { Linking } from 'expo';
 
+import BaseText from '../BaseText'
+import { getArtistImageSource } from '../../utilities/imageSources'
 
 const RelatedArtist = ({ artist }) => {
 
@@ -15,9 +17,9 @@ const RelatedArtist = ({ artist }) => {
             <View style={styles.container}>
                 <Image
                     style={styles.avatar}
-                    source={getImageSource(artist.images)}
+                    source={getArtistImageSource(artist)}
                 />
-                <Text style={styles.name}>{artist.name}</Text>
+                <BaseText style={styles.name}>{artist.name}</BaseText>
                 <Image
                     style={styles.spotifyLogo}
                     source={getSpotifyLogo()}
@@ -30,16 +32,6 @@ const RelatedArtist = ({ artist }) => {
 
 
 export default RelatedArtist;
-
-
-
-const getImageSource = (artistImages) => {
-  if(artistImages.length > 0){
-    return {uri: artistImages[0].url}
-  }else{
-    return require('../../graphics/blank-artist.jpg')
-  }
-}
 
 
 
@@ -61,7 +53,7 @@ const imageHorizontalMargin = (elementHeight - (elementHeight * imageHeightRatio
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: '#222222',
+      backgroundColor: Colors.ARTIST_CARD_BACKGROUND,
       marginVertical: 2,
       marginHorizontal: 6,
       height: elementHeight,
@@ -81,7 +73,6 @@ const styles = StyleSheet.create({
 
     name: {
         marginLeft: 10,
-        color: 'white',
         fontSize: 16,
     },
 

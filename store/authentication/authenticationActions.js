@@ -94,9 +94,11 @@ export const getRefreshToken = () => {
         newUserTokens = await fetchNewUserTokens(auth.appCredentials);
         if(newUserTokens){
             await dispatch(setRefreshTokenAction(newUserTokens.refreshToken));
+            return true;
         }else{
             // dispatches null if the user refused (or some other error)
             await dispatch(setRefreshTokenAction(null));
+            return false;
         }
     }
 }

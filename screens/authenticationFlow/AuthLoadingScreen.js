@@ -14,7 +14,7 @@ import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
 
-import { getUserSavedOnStorage } from '../../store/authentication/authenticationStorage';
+import { getUserSavedOnStorage, getUsernameStorage } from '../../store/authentication/authenticationStorage';
 import { getSpotifyAppCredentials, getAPICredentials } from '../../store/authentication/authenticationActions';
 import { setAuthStateFromStorage, login } from '../../store/authentication/authenticationActions';
 import { getMusicProfile } from '../../store/musicProfile/musicProfileActions';
@@ -67,8 +67,10 @@ export default function AuthLoadingScreen(props) {
            }else{
                // 2. determine if user has auth saved to local
                const userSavedOnStorage = await getUserSavedOnStorage();
+               const username = await getUsernameStorage();
+                // if usersavedontrue = ture but null username means username was saved improperly and thus no storage is valid.
 
-               if(userSavedOnStorage){
+               if(userSavedOnStorage && username){
                    // 3. Y:
                    console.log('automatic login..')
                    // set state to what's found on local storage
@@ -97,6 +99,22 @@ export default function AuthLoadingScreen(props) {
 
 const loadingScreen = () => {
     return (
-        <SplashArt/>
+        <View style = {styles.loadingScreen}>
+            <ActivityIndicator
+                size = 'large'
+                color = {Colors.TAB_NAV_BLUE}
+            />
+        </View>
+        //<SplashArt/>
     )
 }
+
+
+
+const styles = StyleSheet.create({
+    loadingScreen: {
+      ...Screens.screenContainer,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+});  
