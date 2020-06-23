@@ -14,7 +14,6 @@ export const getAllConcerts = () => {
         // fetch...
         const userLocation = getState().concerts.userLocation.coords;
         const radius = getState().concerts.searchRadius;
-        const artists = getState().musicProfile.artists;
         
         const seatgeekClientId = getState().authentication.APICredentials.seatgeek.client_id;
 

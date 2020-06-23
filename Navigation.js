@@ -106,6 +106,11 @@ import Feather from 'react-native-vector-icons/Feather'
           component={ConcertDetail}
           options={({ route }) => ({ title: route.params.concert.artists[0].name })}
         />
+        <Stack.Screen
+          name="ArtistDetail"
+          component={ArtistDetail}
+          options={({ route }) => ({ title: route.params.artist.name })}
+        />
       </Stack.Navigator>
       )
   }

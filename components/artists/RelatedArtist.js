@@ -37,8 +37,6 @@ export default RelatedArtist;
 
 const openSpotifyArtist = (artistURI) => {
     Linking.openURL(artistURI);
-
-
 } 
 
 const getSpotifyLogo = () => {

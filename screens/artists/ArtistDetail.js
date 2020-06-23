@@ -31,6 +31,7 @@ import ArtistSection from '../../components/artists/ArtistSection'
 
 
 import BaseText from '../../components/BaseText'
+import BasicArtist from '../../components/artists/BasicArtist';
 
 export default function ArtistDetail({ route }) {
   
@@ -186,8 +187,11 @@ const displayRelatedArtists = (relatedArtists) => {
     renderItem = {() => (
       <ExpandableList
           elements = {relatedArtists}
+          //renderElementComponent={(artist) =>
+          //    <RelatedArtist key={artist.id} artist = {artist} />
+          //}
           renderElementComponent={(artist) =>
-              <RelatedArtist key={artist.id} artist = {artist} />
+            <BasicArtist key={artist.id} artist = {artist} userArtist = {false} pressForDetail = {true} />
           }
           initialPageSize = {4}
           style = {{}}

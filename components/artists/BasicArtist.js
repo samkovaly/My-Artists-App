@@ -28,7 +28,7 @@ const BasicArtist = ({ artist, userArtist, pressForDetail }) => {
 
     if(pressForDetail){
       return (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("ArtistDetail", {artist, userArtist})}>
+        <TouchableWithoutFeedback onPress={() => navigation.push("ArtistDetail", {artist, userArtist})}>
             {innerContainer()}
         </TouchableWithoutFeedback>
       )

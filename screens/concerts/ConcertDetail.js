@@ -24,25 +24,14 @@ import BaseText from '../../components/BaseText';
 
 
 import BasicArtist from '../../components/artists/BasicArtist';
+import { getArtists } from '../../utilities/spotifyFetches'
 
 export default function ConcertDetail({ route }) {
-    /*
-    const allTracks = useSelector(state => state.musicProfile.tracks);
-    const accessToken = useSelector(state => state.authentication.accessToken.token);
-
-    const [fullConcert, setFullConcert] = useState(null);
-    const tracks = getTracks(concert.tracks, allTracks);
-
-    useEffect(() => {
-        const getFullConcertAsync = async() => {
-            setFullConcert(await getFullConcert(accessToken, concert.id));
-        }
-        getFullConcertAsync();
-    }, [])
-    */
 
 
    const accessToken = useSelector(state => state.authentication.accessToken.token);
+   const userArtistsMap = useSelector(state => state.musicProfile.artists);
+   const userArtists = Array.from(userArtistsMap.values());
 
     const { concert } = route.params;
     const concertArtists = concert.artists;
@@ -52,45 +41,24 @@ export default function ConcertDetail({ route }) {
     }else{
       concertMainArtist = null;
     }
+    const [spotifyLineupArtists, setSpotifyLineupArtists] = useState([]);
     
     const venue = concert.venue;
 
-    /*
-    const artistsMap = useSelector(state => state.musicProfile.artists);
 
-
-    let myArtist = null;
-    for(concertArtist of concert.artists){
-        myArtist = artistsMap.get(concertArtist.slug);
-        if(myArtist != undefined){
-            break;
-        }
-    }
-    */
-
-
-    /*
-    const [fetchedArtist, setFetchedArtist] = useState(null);
     useEffect(() => {
-        const getAsyncArtistData = async() => {
-            setFetchedArtist(await getArtist(accessToken, artist.id));
-            //setRelatedArtists(await getRelatedArtists(accessToken, artist.id));
-        }
+      const getSpotifyLineupArtists = async () => {
+        const artists = await getArtists(concertArtists, userArtists, accessToken);
+        setSpotifyLineupArtists(artists);
+      }
+      getSpotifyLineupArtists();
 
-        getAsyncArtistData();
-    }, [])
+    }, [concertArtists])
 
-    if(!fetchedArtist){
-        return <BaseText>LOADING...</BaseText>
-    }
-    */
     
     return (
         <ScrollView style={styles.container}>
             
-            {/* <ArtistAvatar artist = {fetchedArtist}/> */}
-            {/*  <ArtistAvatar artist = {concertMainArtist} genres = {concertMainArtist.genres.map((g) => g.name)}/> */}
-
             <View style = {styles.headerSection}>
                 <CircleAvatar artist={concertMainArtist} radius={200} />
 
@@ -100,7 +68,7 @@ export default function ConcertDetail({ route }) {
             </View>
 
             <View style = {styles.ticketSection}>
-                <TicketButton />
+                <TicketButton url = {concert.url} />
             </View>
 
             <View style = {styles.locationSection}>
@@ -110,46 +78,41 @@ export default function ConcertDetail({ route }) {
                 <BaseText style = {styles.dateText}>{concert.displayDate}</BaseText>
             </View>
 
-            {/*<View style = {styles.description}>
-                <BaseText>{concert.description}</BaseText>
-            </View>
-            */}
 
             {/* artist lineup */}
-            <View style = {styles.artistLineup}>
-              <BaseText style = {styles.artistLineupText}>Artist Lineup</BaseText>
-              { concertArtists.map((artist) => {
-                return (
-                  <BasicArtist key = {artist.id} artist = {artist} userArtist = {false} pressForDetail = {false} />
-                )
-              })}
-            </View>
-
-
-            {/*
-            <ExpandableList
-              elements = {concertArtists}
-              renderElementComponent={(artist) =>
-                <View></View>
-                <BasicConcert key={concert.id} concert = {concert} displayConcertName = {true} pressForDetail = {true} />
-              }
-              initialPageSize = {4}
-              style = {{}}
-            />
-            */}
-
-            {/*displayAllConcertProperties(concert)*/}
+            { allNull(spotifyLineupArtists)?
+              null :
+              <View style = {styles.artistLineup}>
+                <BaseText style = {styles.artistLineupText}>Artist Lineup</BaseText>
+                { spotifyLineupArtists.map((artist) => {
+                  if(artist == null){
+                    return null;
+                  }else{
+                    return (
+                      <BasicArtist key = {artist.id} artist = {artist} userArtist = {artist.userArtist} pressForDetail = {true} />
+                    )
+                  }
+                })}
+              </View>
+            }
         </ScrollView>
     );
 }
 
+const allNull = (array) => {
+  for(a of array){
+    if(a != null){
+      return false;
+    }
+  }
+  return true;
+}
 
 
 const styles = StyleSheet.create({
   container: {
     ...Screens.screenContainer,
   },
-
 
   headerSection: {
       alignItems: 'center',
@@ -159,10 +122,10 @@ const styles = StyleSheet.create({
   },
 
   concertName: {
-    fontSize: 38,
+    fontSize: 36,
     marginTop: 6,
+    marginHorizontal: 12,
   },
-
 
   ticketSection: {
     marginBottom: 12,
@@ -179,7 +142,6 @@ const styles = StyleSheet.create({
     margin: 12,
   },
 
-
   locationSectionText: {
     fontSize: 18,
     margin: 2,
@@ -188,7 +150,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 
-  
   description: {
     padding: 6,
     borderColor: 'white',
@@ -197,8 +158,6 @@ const styles = StyleSheet.create({
   descriptionText: {
     fontSize: 16,
   },
-
-
   artistLineupText: {
     fontSize: 22,
     marginBottom: 6,
@@ -206,77 +165,6 @@ const styles = StyleSheet.create({
   artistLineup: {
     margin: 12,
     padding: 4,
-    borderColor: 'white',
-    borderBottomWidth: 0.5,
   },
-  
-  test: {
-    fontSize: 20,
-  },
-
-
 
 });
-
-
-
-
-const displayAllConcertProperties = (concert) => {
-    return (
-    <View>
-        <BaseText style = {styles.test} >Concerts</BaseText>
-        <BaseText style = {styles.test} >concert.name - {concert.name}</BaseText>
-        <BaseText style = {styles.test} >concert.id - {concert.id}</BaseText>
-        <BaseText style = {styles.test} >concert.type - {concert.type}</BaseText>
-        <BaseText style = {styles.test} >concert.status - {concert.status}</BaseText>
-        <BaseText style = {styles.test} >concert.description - {concert.description}</BaseText>
-        <BaseText style = {styles.test} >concert.datetime_local - {concert.datetime_local}</BaseText>
-        <BaseText style = {styles.test} >concert.datetime_utc - {concert.datetime_utc}</BaseText>
-        <BaseText style = {styles.test} >concert.date_tbd - {concert.date_tbd}</BaseText>
-        <BaseText style = {styles.test} >concert.url - {concert.url}</BaseText>
-
-        <BaseText> </BaseText>
-
-        <BaseText style = {styles.test} >concert.venue.name - {concert.venue.name}</BaseText>
-        <BaseText style = {styles.test} >concert.venue.id - {concert.venue.id}</BaseText>
-        <BaseText style = {styles.test} >concert.venue.city - {concert.venue.city}</BaseText>
-        <BaseText style = {styles.test} >concert.venue.url - {concert.venue.url}</BaseText>
-        
-        <BaseText> </BaseText>
-        <BaseText style = {styles.test} >Artists length: {concert.artists.length}</BaseText>
-        <View>
-            {concert.artists.map((artist, index) => {
-                return (
-                <View key = {index}>
-                    <BaseText> </BaseText>
-                    <BaseText style = {styles.test} >artist index: {index}</BaseText>
-                    <BaseText style = {styles.test} >artist.id - {artist.id}</BaseText>
-                    <BaseText style = {styles.test} >artist.slug - {artist.slug}</BaseText>
-                    <BaseText style = {styles.test} >artist.name - {artist.name}</BaseText>
-                    <BaseText style = {styles.test} >artist.url - {artist.url}</BaseText>
-                    <BaseText style = {styles.test} >artist.image - {artist.image}</BaseText>
-                    <BaseText style = {styles.test} >artist.primary - {artist.primary}</BaseText>
-                    <BaseText style = {styles.test} >artist.type - {artist.type}</BaseText>
-                    <BaseText style = {styles.test} >Genres length - {artist.genres.length}</BaseText>
-                    <View>
-                        {artist.genres.map((genre, index) => {
-                            return(
-                            <View key={index}>
-                                <BaseText> </BaseText>
-                                <BaseText style = {styles.test} >genre index: {index}</BaseText>
-                                <BaseText style = {styles.test} >genre.id - {genre.id}</BaseText>
-                                <BaseText style = {styles.test} >genre.name - {genre.name}</BaseText>
-                                <BaseText style = {styles.test} >genre.primary - {genre.primary}</BaseText>
-                            </View>
-                            )
-                        })}
-                    </View>
-                </View>
-                )
-            })}
-        </View>
-    </View>
-    )
-}
-
-

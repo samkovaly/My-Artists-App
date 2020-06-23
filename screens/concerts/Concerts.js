@@ -44,8 +44,6 @@ export default function Concerts(props) {
 
   const dispatch = useDispatch();
 
-  //const [searchingLocation, setSearchingLocation] = useState(false);
-
   const userLocation = useSelector(state => state.concerts.userLocation);
 
   const allConcerts = useSelector(state => state.concerts.allConcerts);
@@ -72,9 +70,6 @@ export default function Concerts(props) {
     return loadingScreen()
   }else if(!allConcerts){
     dispatch(getAllConcerts());
-    return loadingScreen();
-  }else if(!artistConcerts){
-    setArtistConcerts(filterConcertsForArtists(allConcerts, artistsMap));
     return loadingScreen();
   }
 

@@ -22,9 +22,6 @@ import { filterArtists, sortByProperty } from '../../store/musicProfile/musicPro
 
 export default function MyArtists(props) {
   const navigation = useNavigation();
-  
-  //const artistsMap = useSelector(state => state.musicProfile.artists);
-  //const sortedArtists = Array.from(artistsMap.values())
 
   const artistsMap = useSelector(state => state.musicProfile.artists);
   const artists = Array.from(artistsMap.values());

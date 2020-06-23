@@ -3,14 +3,16 @@ import { StyleSheet, TouchableHighlight, View } from 'react-native';
 
 import { Colors, Screens } from '../../styles'
 
+import { Linking } from 'expo';
+
 import BaseText from '../BaseText'
 
 
-const TicketButton= ({ }) => {
+const TicketButton= ({ url }) => {
     return (
         <TouchableHighlight
             style = {styles.button}
-            onPress={() => linkToSeatGeek()}>
+            onPress={() => linkToSeatGeek(url)}>
             <BaseText style = {styles.text}>Get Tickets</BaseText>
         </TouchableHighlight>
     )
@@ -20,8 +22,8 @@ export default TicketButton;
 
 
 
-const linkToSeatGeek = () => {
-    console.log('linking to seatgeek...')
+const linkToSeatGeek = (url) => {
+    Linking.openURL(url);
 }
 
 
