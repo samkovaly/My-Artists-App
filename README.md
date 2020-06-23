@@ -14,7 +14,7 @@ will fill this out later but Technologies include: React Native, Expo and Redux
 5. "expo login" to account
 5. install yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
 6. run "yarn install" 
-7. manual installs:
+7. OR manual installs:
     a. "expo install redux"
     b. "expo install react-redux"
     c. "expo install redux-thunk"
