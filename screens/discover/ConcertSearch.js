@@ -8,7 +8,7 @@ import { Colors, Screens, Buttons, Font } from '../../styles'
 
 import { queryConcertsAtPage } from '../../store/concerts/effects/seatgeekEffects';
 import ResourceResults from '../../components/discover/ResourceResults';
-import BasicConcert from '../../components/concerts/BasicConcert';
+import ConcertItemSmall from '../../components/concerts/ConcertItemSmall';
 
 const PAGE_SIZE = 12;
 
@@ -24,7 +24,7 @@ export default function ConcertSearch({ route }) {
     <ResourceResults
       queryFunc = {async (query, page) => {return await queryConcertsAtPage(query, page, PAGE_SIZE, seatgeekClientId)}}
       initialQuery = {initialQuery}
-      renderElementComponent = {(item) => <BasicConcert concert = {item} pressForDetail = {true} />}
+      renderElementComponent = {(item) => <ConcertItemSmall concert = {item} pressForDetail = {true} />}
       pageSize = {PAGE_SIZE}
     />
   );

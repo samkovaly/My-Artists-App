@@ -75,3 +75,4 @@ export const makeParameter = (key, value, andSymbol = true) => {
   parameter += key + "=" + value;
   return parameter;
 }
+

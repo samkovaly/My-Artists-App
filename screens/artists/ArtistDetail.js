@@ -17,9 +17,9 @@ import { getUserLocation } from '../../store/concerts/concertsActions'
 
 
 
-import BasicConcert from '../../components/concerts/BasicConcert'
+import ConcertItemBig from '../../components/concerts/ConcertItemBig'
 import BasicTrack from '../../components/tracks/BasicTrack'
-import RelatedArtist from '../../components/artists/RelatedArtist'
+//import RelatedArtist from '../../components/artists/RelatedArtist'
 
 import ExpandableList from '../../components/ExpandableList'
 
@@ -28,41 +28,54 @@ import ArtistAvatar from '../../components/artists/ArtistAvatar'
 import ArtistSection from '../../components/artists/ArtistSection'
 
 
-
+import { spotifyArtistsGetArtists } from '../../utilities/artists'
 
 import BaseText from '../../components/BaseText'
-import BasicArtist from '../../components/artists/BasicArtist';
+import ArtistItem from '../../components/artists/ArtistItem';
+
+import { updateAndGetAccessToken } from '../../utilities/updateAndGetState';
+
+
+
 
 export default function ArtistDetail({ route }) {
   
     const dispatch = useDispatch();
 
-    const allTracks = useSelector(state => state.musicProfile.tracks);
-    const accessToken = useSelector(state => state.authentication.accessToken.token);
-    const seatgeekClientId = useSelector(state => state.authentication.APICredentials.seatgeek.client_id);
-    const userLocation = useSelector(state => state.concerts.userLocation);
-    const radius = useSelector(state => state.concerts.searchRadius);
+    const extractedArtistsSlugMap = useSelector(state => state.musicProfile.artistSlugMap)
+    const trackIDMap = useSelector(state => state.musicProfile.trackIDMap);
 
-    const { artist, userArtist } = route.params;
+    const seatgeekClientId = useSelector(state => state.authentication.APICredentials.seatgeek.client_id);
+
+    const userLocation = useSelector(state => state.concerts.userLocation);
+    //const radius = useSelector(state => state.concerts.searchRadius);
+    const radius = 15;
+
+    const { artist } = route.params;
 
     // spotify dependent
-    const [fetchedArtist, setFetchedArtist] = useState(null);
+    //const [fetchedArtist, setFetchedArtist] = useState(null);
     const [relatedArtists, setRelatedArtists] = useState(null);
 
     const [concerts, setConcerts] = useState(null);
 
     let tracks = null
-    if(userArtist){
-      tracks = getTracks(artist.tracks, allTracks);
+    if(artist.userExtracted){
+      tracks = getTracks(artist.tracks, trackIDMap);
     }
 
     useEffect(() => {
         const getAsyncArtistData = async() => {
-            setFetchedArtist(await getArtist(accessToken, artist.id));
-            setRelatedArtists(await getRelatedArtists(accessToken, artist.id));
+
+            const accessToken = await updateAndGetAccessToken(dispatch);
+            //setFetchedArtist(await getArtist(accessToken, artist.id));
+
+            let relatedArtists = await getRelatedArtists(accessToken, artist.id);
+            relatedArtists = spotifyArtistsGetArtists(relatedArtists, extractedArtistsSlugMap);
+            setRelatedArtists(relatedArtists);
 
             const months = 6;
-            setConcerts(await fetchAllConcertsForArtist(artist, months, seatgeekClientId, userLocation.coords.latitude, userLocation.coords.longitude, radius))
+            setConcerts(await fetchAllConcertsForArtist(artist, months, seatgeekClientId, userLocation.latitude, userLocation.longitude, radius))
         }
 
         if (userLocation){
@@ -108,7 +121,7 @@ fetched artist:  Object {
 
 
 
-    if(!concerts || !fetchedArtist || !relatedArtists){
+    if(!concerts || !relatedArtists){
       return(
         <View style = {styles.loadingScreen}>
           <ActivityIndicator color={Colors.TAB_NAV_BLUE} size = "large" />
@@ -119,7 +132,7 @@ fetched artist:  Object {
 
     return (
         <ScrollView style={styles.container}>
-            <ArtistAvatar artist={fetchedArtist} genres={fetchedArtist.genres} />
+            <ArtistAvatar artist={artist} genres={artist.genres} />
 
             <View style = {{marginTop: 20}}/>
 
@@ -129,7 +142,7 @@ fetched artist:  Object {
             {tracks? displayTracks(tracks): null}
             {displayRelatedArtists(relatedArtists)}
 
-            {userArtist? displayFoundIn(artist): null}
+            {artist.userExtracted? displayFoundIn(artist): null}
         </ScrollView>
     );
 }
@@ -145,7 +158,7 @@ const displayConcerts = (concerts, concertsUpcomingText, noConcertsUpcomingText)
           <ExpandableList
               elements = {concerts}
               renderElementComponent={(concert) =>
-                <BasicConcert key={concert.id} concert = {concert} displayConcertName = {true} pressForDetail = {true} />
+                <ConcertItemBig key={concert.id} concert = {concert} displayConcertName = {true} pressForDetail = {true} />
               }
               initialPageSize = {4}
               style = {{}}
@@ -156,9 +169,6 @@ const displayConcerts = (concerts, concertsUpcomingText, noConcertsUpcomingText)
       />
   )
 }
-
-
-
 
 const displayTracks = (tracks) => {
   return (
@@ -181,24 +191,26 @@ const displayTracks = (tracks) => {
 
 const displayRelatedArtists = (relatedArtists) => {
   return (
-  <ArtistSection
-    contentPresent={ relatedArtists.length > 0 }
-    contentText = "Similar Artists"
-    renderItem = {() => (
-      <ExpandableList
-          elements = {relatedArtists}
-          //renderElementComponent={(artist) =>
-          //    <RelatedArtist key={artist.id} artist = {artist} />
-          //}
-          renderElementComponent={(artist) =>
-            <BasicArtist key={artist.id} artist = {artist} userArtist = {false} pressForDetail = {true} />
-          }
-          initialPageSize = {4}
-          style = {{}}
+    <View style = {styles.relatedArtists}>
+      <ArtistSection
+        contentPresent={ relatedArtists.length > 0 }
+        contentText = "Similar Artists"
+        renderItem = {() => (
+          <ExpandableList
+              elements = {relatedArtists}
+              //renderElementComponent={(artist) =>
+              //    <RelatedArtist key={artist.id} artist = {artist} />
+              //}
+              renderElementComponent={(artist) =>
+                <ArtistItem key={artist.id} artist = {artist} pressForDetail = {true} />
+              }
+              initialPageSize = {4}
+              style = {{}}
+          />
+        )}
+        noContentText = "No similar artists"
       />
-    )}
-    noContentText = "No similar artists"
-  />
+  </View>
   )
 }
 
@@ -223,8 +235,6 @@ const displayFoundIn = (artist) => {
 
 
 
-
-
 const styles = StyleSheet.create({
   loadingScreen: {
     ...Screens.screenContainer,
@@ -239,4 +249,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
   },
+
+  relatedArtists: {
+    marginHorizontal: 8,
+  }
 });

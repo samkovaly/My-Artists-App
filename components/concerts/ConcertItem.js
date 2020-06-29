@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 import BaseText from '../BaseText'
 import { getConcertImageSource } from '../../utilities/imageSources'
 
-const BasicConcert = ({ concert, displayConcertName, pressForDetail }) => {
+const ConcertItem = ({ concert, elementHeight, titleFontSize, subtextFontSize, marginVertical, displayConcertName, pressForDetail }) => {
 
   const navigation = useNavigation();
 
@@ -15,8 +15,8 @@ const BasicConcert = ({ concert, displayConcertName, pressForDetail }) => {
   if(displayConcertName){
     name = concert.name;
   }else{
-    if(concert.artists){
-      name = concert.artists[0].name;
+    if(concert.performers){
+      name = concert.performers[0].name;
     }else{
       name = concert.name;
     }
@@ -27,23 +27,25 @@ const BasicConcert = ({ concert, displayConcertName, pressForDetail }) => {
   }
 
   const innerContainer = (displayDate) => (
-    <View style={styles.container}>
+    <View style={[styles.container, {height: elementHeight, marginVertical: marginVertical}]}>
       <Image
-          style={styles.avatar}
+          style={[styles.avatar, 
+            {
+            width: elementHeight,
+            height: elementHeight,
+          }]}
           source={getConcertImageSource(concert)}
        />
        <View style = {styles.textContaier}>
-        <BaseText style={styles.artist}>{name}</BaseText>
+        <BaseText style={[styles.artist, {fontSize: titleFontSize}]}>{name}</BaseText>
         <View style={styles.venueCityContainer}>
-          <BaseText style={styles.venue}>{concert.venue ? concert.venue.name: "N/A"}</BaseText>
-          <BaseText style={styles.city}>{concert.venue.city}</BaseText>
+          <BaseText style={[styles.venue, {fontSize: subtextFontSize}]}>{concert.venue ? concert.venue.name: "N/A"}</BaseText>
+          <BaseText style={[styles.city, {fontSize: subtextFontSize}]}>{concert.venue.city}, {concert.venue.state}</BaseText>
         </View>
-        <BaseText style={styles.date}>{displayDate}</BaseText>
+        <BaseText style={[styles.date, {fontSize: subtextFontSize}]}>{displayDate}</BaseText>
       </View>
     </View>
     )
-
-    
 
     if(pressForDetail){
       return (
@@ -57,33 +59,23 @@ const BasicConcert = ({ concert, displayConcertName, pressForDetail }) => {
 
 }
 
-export default BasicConcert;
+export default ConcertItem;
 
 
 
-
-
-
-const elementHeight = 90;
 
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      //backgroundColor: Colors.FOREGROUND_BLUE,
       backgroundColor: Colors.BACKGROUND_DARK_BLUE,
-      marginVertical: 12,
-      height: elementHeight,
       flexDirection: 'row',
       alignItems: 'center',
       borderRadius: 10,
     },
-
     
     avatar: {
       borderRadius: 4,
-      width: elementHeight,
-      height: elementHeight,
       marginVertical: 6,
     },
 
@@ -95,7 +87,6 @@ const styles = StyleSheet.create({
     },
 
     artist: {
-      fontSize: 18,
       flex: 1.25,
     },
     
@@ -106,18 +97,12 @@ const styles = StyleSheet.create({
 
     venue: {
       color: Colors.SUB_TEXT_GREY,
-      fontSize: 14,
     },
     city: {
       marginTop: -2,
       color: Colors.SUB_TEXT_GREY,
-      fontSize: 14,
     },
-    
     date: {
       color: Colors.SUB_TEXT_GREY,
-      fontSize: 14,
-      flex: 1,
     },
-
   });

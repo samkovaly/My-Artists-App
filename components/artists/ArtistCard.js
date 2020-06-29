@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image, ScrollView, TouchableWithoutFeedback } from 'react-native';
 
-import { getArtistImageSource } from '../../utilities/imageSources'
+import { getArtistImageSourceBig } from '../../utilities/imageSources'
 import { useNavigation } from '@react-navigation/native';
 
 import { Colors } from '../../styles'
@@ -12,14 +12,14 @@ export default function ArtistCard({ artist }) {
     const navigation = useNavigation();
 
   return (
-    <TouchableWithoutFeedback onPress={() => navigation.navigate("ArtistDetail", {artist, userArtist: true})}>
+    <TouchableWithoutFeedback onPress={() => navigation.navigate("ArtistDetail", { artist })}>
         <View style = {[styles.container, styles.shadow]}>
             <BaseText style = {[styles.name, styles.textShadow]}>{artist.name}</BaseText>
             <View style = {styles.artistPortraitContainer}>
                 <Image
                     style={styles.artistPortrait}
                     resizeMode='cover'
-                    source = {getArtistImageSource(artist)}
+                    source = {getArtistImageSourceBig(artist)}
                 />
             </View>
         </View>

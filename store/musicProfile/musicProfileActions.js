@@ -2,18 +2,23 @@ export const SET_ARTISTS = 'SET_ARTISTS';
 export const SET_TRACKS = 'SET_TRACKS';
 export const SET_ANALYZING_SPOTIFY = 'SET_ANALYZING_SPOTIFY';
 export const REFRESH_SPOTIFY_ERROR = 'REFRESH_SPOTIFY_ERROR';
+export const SET_LAST_REFRESHED = 'SET_LAST_REFRESHED'
 
 
+
+import { LOGOUT } from '../globalActions'
 
 import { makeAction } from '../../utilities/actions';
 import { loadNewMusicProfile, fetchMusicProfile } from './musicProfileEffects';
 import { refreshAccessToken } from '../authentication/authenticationActions'
+import { spotifyArtistsToArtists } from '../../utilities/artists'
 
+import { getDisplayDate } from '../../utilities/displayStrings'
 
 export const refreshAndGetMusicProfile = () => {
     return async(dispatch, getState) => {
         console.log("analyzing spotify...");
-
+        console.log('refreshAndGetMusicProfile')
         await dispatch(refreshAccessToken());
 
         const auth = getState().authentication;
@@ -40,39 +45,42 @@ export const getMusicProfile = () => {
         const musicProfile = await fetchMusicProfile(auth.username, auth.backendAuthToken);
 
         const musicProfileJSON = JSON.parse(musicProfile.music_profile_JSON)
-        const lastRefreshed = musicProfile.last_refreshed
+        let lastRefreshed = musicProfile.last_refreshed
+        lastRefreshed = getDisplayDate(lastRefreshed)
 
         const artists = JSON.parse(musicProfileJSON.artists)
         const artistsMap = makeArtistsIntoSlugMap(artists)
 
         const tracks = JSON.parse(musicProfileJSON.tracks)
-        const tracksMap = makeTracksIntoMap(tracks)
+        const tracksMap = makeTracksIntoIDMap(tracks)
 
         console.log('dispatching new music profile to redux state...')
         await dispatch(setArtistsAction(artistsMap))
         await dispatch(setTracksAction(tracksMap))
+        await dispatch(setLastRefreshed(lastRefreshed));
     }
 }
 
-
-const makeArtistsIntoSlugMap = (artists) => {
-
+const makeArtistsIntoSlugMap = (spotifyArtists) => {
     // first sort alphabetically
-    let sortedArtists = artists.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    let sortedArtists = spotifyArtists.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+    // convert to artist*
+    let artists = spotifyArtistsToArtists(sortedArtists, true);
     
     // now add to map in sorted order using slug as key
     let artistsMap = new Map();
-    for(var artist of sortedArtists){
-        let slug = artist.name.trim()
-        slug = slug.replace(/&| & | /g,"-")
-        slug = slug.toLowerCase();
+    for(var artist of artists){
+        let slug = artist.slug
         artistsMap.set(slug, artist);
     }
     return artistsMap;
 }
 
 
-const makeTracksIntoMap = (tracks) => {
+
+
+const makeTracksIntoIDMap = (tracks) => {
     let tracksMap = new Map();
     for(var track of tracks){
         tracksMap.set(track.id, track);
@@ -94,6 +102,9 @@ const setArtistsAction = (artists) => {
 }
 const setTracksAction = (tracks) => {
     return makeAction(SET_TRACKS, tracks);
+}
+const setLastRefreshed = (lastRefreshed) => {
+    return makeAction(SET_LAST_REFRESHED, lastRefreshed);
 }
 
 export const setAnalyzingSpotifyAction = (toValue) => {

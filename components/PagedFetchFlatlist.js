@@ -1,15 +1,16 @@
 import React from 'react';
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { FlatList, Keyboard } from 'react-native';
 
-import { Colors, Screens, Buttons, Font } from '../styles'
+//import { Colors, Screens, Buttons, Font } from '../styles'
 
 
-const PagedFetchFlatlist = ({fetchData, query, pageSize, renderElementComponent, style}) => {
+const PagedFetchFlatlist = ({data, setData, fetchData, query, pageSize, renderElementComponent, style}) => {
 
+    // changing query causes fetchData to be called which changes data and causes a re-render
+    // useRef does not cause a re-render when it's .current property is changed
     const page = useRef(0);
     const dataExhausted = useRef(false)
-    const [data, setData] = useState([]);
     // prevent race condition with api calls and setState()
     const lastQueryPromise = useRef(null);
 
@@ -49,6 +50,7 @@ const PagedFetchFlatlist = ({fetchData, query, pageSize, renderElementComponent,
 
         resetData();
     }, [query])
+
 
     return (
         <FlatList

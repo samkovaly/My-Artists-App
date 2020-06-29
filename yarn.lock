@@ -1144,6 +1144,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.5.tgz#25421be6cd943a4b1660b62cfbcd45be8891462c"
   integrity sha512-Lj1DzfCmW0f4HnmHtEuX8Yy2f7cnUA8r5KGGUuDDGtQt1so6QJkKeUmsnLo2zYDtsF8due6hvIL06Vdo5xxuLQ==
 
+"@react-native-community/slider@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-3.0.0.tgz#ffbf78689fc0572fb5c1e2ccb61b2ef074d3dcd2"
+  integrity sha512-deNc3JHBHz24YN+0DTAocXfrYFIFc1DvsIriMJSsJlR/MvsLzoq2+qwaEN+0/LJ37pstv85wZWY0pNugk4e41g==
+
 "@react-navigation/bottom-tabs@^5.2.7":
   version "5.2.7"
   resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-5.2.7.tgz#6f3eca9ba323cd9e80dd4ceba1f1c8e84955091f"
@@ -1266,7 +1271,7 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.1.tgz#937fab3194766256ee09fcd40b781740758617e7"
   integrity sha512-lhbQXx9HKZAPgBkISrBcmAcMpZsmpe/Cd/hY7LGZS5OfkySUBItnPZHgQPssWYUET8elF+yCFBbP1Q0RZPTdaw==
 
-"@types/react-native-vector-icons@^6.4.4":
+"@types/react-native-vector-icons@^6.4.0":
   version "6.4.5"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.5.tgz#74cbfc564bd8435e43ad6728572a0e5b49c335d1"
   integrity sha512-JBpcjWQE4n0GlE0p6HpDDclT+uXpFC453T5k4h+B38q0utlGJhvgNr8899BoJGc1xOktA2cgqFKmFMJd0h7YaA==
@@ -3459,6 +3464,16 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+  integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
+
 lodash.isfunction@^3.0.8:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.9.tgz#06de25df4db327ac931981d1bdb067e5af68d051"
@@ -4409,7 +4424,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -4435,6 +4450,11 @@ qs@^6.5.0:
   version "6.9.3"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.3.tgz#bfadcd296c2d549f1dffa560619132c977f5008e"
   integrity sha512-EbZYNarm6138UKKq46tdx08Yo/q9ZhFoAXAI1meAFd2GtbRDhbZY2WQSICskT0c5q99aFzLG1D4nvTk9tqfXIw==
+
+qs@~6.9.1:
+  version "6.9.4"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
+  integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
 
 query-string@^6.11.1, query-string@^6.12.0:
   version "6.12.1"
@@ -4483,19 +4503,25 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-native-elements@^1.2.7:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-1.2.7.tgz#1eca2db715c41722aeb67aea62bd2a4621adb134"
-  integrity sha512-0S+0R1cbItl15i64qrkWnyMztwpw60d0SUsZGVDKRAMf0Jvq9Clgyh/MzxJx2sr42mbedQP1sg5Et4fZM7Fp1w==
+react-native-elements@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-2.0.2.tgz#2819d556cea481cad29fa79c6a8ccb47ef6f456e"
+  integrity sha512-RLs8vx3sqVPfA2TCO5y9MzlfZrVpNoXahoFgSLLf/uTGIvb0T+w2/FwJWj31M0B8jQNEBMtzsH3ns9rbTEpATg==
   dependencies:
-    "@types/react-native-vector-icons" "^6.4.4"
+    "@types/react-native-vector-icons" "^6.4.0"
     color "^3.1.0"
     deepmerge "^3.1.0"
     hoist-non-react-statics "^3.1.0"
+    lodash.isequal "^4.5.0"
     opencollective-postinstall "^2.0.0"
     prop-types "^15.7.2"
-    react-native-ratings "^6.3.0"
+    react-native-ratings "^7.2.0"
     react-native-status-bar-height "^2.2.0"
+
+react-native-geolocation-service@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-geolocation-service/-/react-native-geolocation-service-5.0.0.tgz#eaf0541c99db9cbed5af5e2ad2822d166e3a7543"
+  integrity sha512-y0uTtt/wT78i/7QestJJrZea9ZoYOzCP4fBgGbINWXU4f+OV3D8ndH7+nEOtnDKDhQc6YtJUeV7VqNxRI+hwBQ==
 
 react-native-gesture-handler@~1.5.0:
   version "1.5.6"
@@ -4508,15 +4534,36 @@ react-native-gesture-handler@~1.5.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-google-places-autocomplete@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.7.2.tgz#94f41e5c8becc23e576ffb98dcc462eebe322e29"
+  integrity sha512-N0kWkcaZ6XA7oNUPJE0O+Jl0nMiEFls/xXGZaTWnGxTnJ+hMvCGhodfWvp9bNWkmbgbqdKB6wHVhc8pHjJOwVg==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    prop-types "^15.5.10"
+    qs "~6.9.1"
+
+react-native-google-places@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-google-places/-/react-native-google-places-3.1.2.tgz#6aa11f76da6bd58aa9ec1d1b3e2c85edb4ced2ce"
+  integrity sha512-aKPbGHga3k/Vkfw9NMf/1t0sivdqxn4qzCbEyAfmhxO7Mlqv9Nljjnez6rp6MZGwh89ss3/a9lhM4ulyZ6o0ew==
+
 react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
-react-native-ratings@^6.3.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-6.5.0.tgz#a1606ccba3c5b54eec8e6cfa4765a45cf0e4ab8d"
-  integrity sha512-YMcfQ7UQCmXGEc/WPlukHSHs5yvckTwjq5fTRk1FG8gaO7fZCNygEUGPuw4Dbvvp3IlsCUn0bOQd63RYsb7NDQ==
+react-native-places-input@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-places-input/-/react-native-places-input-1.1.5.tgz#f3552a689de69084347a1b34f7c8b0c81a17a030"
+  integrity sha512-achRubHTBa053qKMBI9BmKJKriBdUqMl46JbKqwsaRmP5oE6Ab9y5eKXgkM/0PtWTRVKSll0McA7rfEvvvqKsg==
+  dependencies:
+    prop-types "^15.7.2"
+
+react-native-ratings@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-7.2.0.tgz#8523e98868470855ec1d2feb112e466e17a1fd9f"
+  integrity sha512-oSrkQ4rnpYjCw+d6MPJQghXfrfb3uQKoTJx1exdk7xqzw4jnv3pyu0PAuxCDJk/rfDSD/sirIAudz+zdGxrBog==
   dependencies:
     lodash "^4.17.4"
     prop-types "^15.5.10"
@@ -4544,6 +4591,13 @@ react-native-screens@2.0.0-alpha.12:
   integrity sha512-x9M7FEdcm97bVDp3pi//nhduJHLFMrmDQs0fq299yx3kHdgHbrmhsa8jgW4HvDQhjyPE0FWADY/GrXFuPRj80w==
   dependencies:
     debounce "^1.2.0"
+
+react-native-slider@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/react-native-slider/-/react-native-slider-0.11.0.tgz#b68a0bc43c8422b24cd57947cc5ac2bcdb58fadc"
+  integrity sha512-jV9K87eu9uWr0uJIyrSpBLnCKvVlOySC2wynq9TFCdV9oGgjt7Niq8Q1A8R8v+5GHsuBw/s8vEj1AAkkUi+u+w==
+  dependencies:
+    prop-types "^15.5.6"
 
 react-native-status-bar-height@^2.2.0:
   version "2.5.0"

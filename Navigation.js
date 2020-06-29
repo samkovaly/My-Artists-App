@@ -18,6 +18,7 @@ import AuthLoadingScreen from './screens/authenticationFlow/AuthLoadingScreen';
 // Concerts
 import Concerts from './screens/concerts/Concerts';
 import ConcertDetail from './screens/concerts/ConcertDetail';
+import ConcertFilters from './screens/concerts/ConcertFilters';
 
 // Artists
 import MyArtists from './screens/artists/MyArtists';
@@ -37,7 +38,7 @@ import AnalyzeSpotify from './screens/settings/AnalyzeSpotify'
 
 import { Colors } from './styles'
 
-
+import { TouchableOpacity, Text } from 'react-native'
 
 
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -48,7 +49,6 @@ import Feather from 'react-native-vector-icons/Feather'
 
   const Tab = createBottomTabNavigator();
   const Stack = createStackNavigator();
-
 
 
   const stackScreenOptions = {
@@ -62,6 +62,44 @@ import Feather from 'react-native-vector-icons/Feather'
     },
   }
 
+  const concertDetailScreen = () => {
+    const trimLength = 24;
+    return (
+      <Stack.Screen
+      name="ConcertDetail"
+      component={ConcertDetail}
+      //options={({ route }) => ({ title: route.params.concert.performers[0].name })}
+      options={({ route }) => {
+        let name =  route.params.concert.name;
+        if(name.length > trimLength){
+          name = name.slice(0,trimLength) + "...";
+        }
+        return {
+          title: name
+        }
+      }}
+    />
+    )
+  }
+  const ArtistDetailScreen = () => {
+    const trimLength = 24;
+    return (
+      <Stack.Screen
+      name="ArtistDetail"
+      component={ArtistDetail}
+      options={({ route }) => {
+        let name =  route.params.artist.name;
+        if(name.length > trimLength){
+          name = name.slice(0,trimLength) + "...";
+        }
+        return {
+          title: name
+        }
+      }}
+    />
+    )
+  }
+
     const ArtistsStack = () => {
       return (
       <Stack.Navigator
@@ -70,50 +108,41 @@ import Feather from 'react-native-vector-icons/Feather'
         <Stack.Screen
           name="MyArtists"
           component={MyArtists}
-          options={{ title: 'Artists' }}
+          options={{
+            //title: 'Artists',
+            headerShown: true,
+          }}
         />
         <Stack.Screen
           name="AllArtists"
           component={AllArtists}
           options={{title: 'My Artists'}}
         />
-        <Stack.Screen
-          name="ArtistDetail"
-          component={ArtistDetail}
-          options={({ route }) => ({ title: route.params.artist.name })}
-        />
-        <Stack.Screen
-          name="ConcertDetail"
-          component={ConcertDetail}
-          options={({ route }) => ({ title: route.params.concert.artists[0].name })}
-        />
+        { concertDetailScreen() }
+        { ArtistDetailScreen() }
+
       </Stack.Navigator>
       )
     }
 
-  const ConcertsStack = () => {
+
+    const ConcertsStack = () => {
       return (
-        <Stack.Navigator
-          screenOptions={stackScreenOptions}
-        >
-        <Stack.Screen
-          name="Concerts"
-          component={Concerts}
-          options={{title: 'Concerts'}}
-        />
-        <Stack.Screen
-          name="ConcertDetail"
-          component={ConcertDetail}
-          options={({ route }) => ({ title: route.params.concert.artists[0].name })}
-        />
-        <Stack.Screen
-          name="ArtistDetail"
-          component={ArtistDetail}
-          options={({ route }) => ({ title: route.params.artist.name })}
-        />
+        <Stack.Navigator screenOptions={stackScreenOptions}>
+          <Stack.Screen
+            name="Concerts"
+            component={Concerts}
+            options={{
+              //title: 'Concerts',
+              headerShown: false,
+            }}
+          />
+          { concertDetailScreen() }
+          { ArtistDetailScreen() }
       </Stack.Navigator>
-      )
+    )
   }
+
 
   
   const DiscoveryStack = () => {
@@ -124,7 +153,10 @@ import Feather from 'react-native-vector-icons/Feather'
       <Stack.Screen
         name="Discover"
         component={Discovery}
-        options={{ title: 'Discovery' }}
+        options={{
+          //title: 'Discover',
+          headerShown: true,
+        }}
       />
       <Stack.Screen
         name="ArtistSearch"
@@ -136,16 +168,9 @@ import Feather from 'react-native-vector-icons/Feather'
         component={ConcertSearch}
         options={{ title: 'Discover Concerts' }}
       />
-      <Stack.Screen
-        name="ConcertDetail"
-        component={ConcertDetail}
-        options={({ route }) => ({ title: route.params.concert.artists[0].name })}
-      />
-      <Stack.Screen
-        name="ArtistDetail"
-        component={ArtistDetail}
-        options={({ route }) => ({ title: route.params.artist.name })}
-      />
+      { concertDetailScreen() }
+      { ArtistDetailScreen() }
+
     </Stack.Navigator>
     )
   }
@@ -158,7 +183,10 @@ import Feather from 'react-native-vector-icons/Feather'
       <Stack.Screen
         name="Settings"
         component={Settings}
-        options={{title: 'Settings'}}
+        options={{
+          //title: 'Settings',
+          headerShown: true,
+        }}
       />
       <Stack.Screen
         name="NotificationSettings"
@@ -179,55 +207,87 @@ import Feather from 'react-native-vector-icons/Feather'
       />
     </Stack.Navigator>
     )
-}
+  }
 
 
 
     
     const MainTabs = () => {
       return (
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ focused, color, size }) => {
 
-              if (route.name === 'Artists') {
-                return <MaterialCommunityIcon name = 'artist' style = {{marginBottom: -10}} size = {34} color = {color} />;
+                if (route.name === 'Artists') {
+                  return <MaterialCommunityIcon name = 'artist' style = {{marginBottom: -10}} size = {34} color = {color} />;
 
-              } else if (route.name === 'Concerts') {
-                return <FontAwesome5 name = 'music' style = {{marginBottom: -10}} size = {24} color = {color} />
-              
+                } else if (route.name === 'Concerts') {
+                  return <FontAwesome5 name = 'music' style = {{marginBottom: -10}} size = {24} color = {color} />
+                
 
-              } else if (route.name === 'Discovery') {
-                return <Feather name = 'globe' style = {{marginBottom: -5}} size = {26} color = {color} />
+                } else if (route.name === 'Discovery') {
+                  return <Feather name = 'globe' style = {{marginBottom: -5}} size = {26} color = {color} />
+                }
+
+                else if (route.name === 'Settings') {
+                  return <Feather name = 'settings' style = {{marginBottom: -5}} size = {26} color = {color} />
+                }
+                
+              },
+            })}
+            tabBarOptions = {{
+              activeTintColor: Colors.TAB_NAV_BLUE,
+              inactiveTintColor: Colors.TAB_NAV_GREY,
+              labelStyle: {
+                fontSize: 14,
+              },
+              style: {
+                backgroundColor: Colors.FOREGROUND_BLUE,
+                borderTopWidth: 0,
               }
-
-              else if (route.name === 'Settings') {
-                return <Feather name = 'settings' style = {{marginBottom: -5}} size = {26} color = {color} />
-              }
-              
-            },
-          })}
-          tabBarOptions = {{
-            activeTintColor: Colors.TAB_NAV_BLUE,
-            inactiveTintColor: Colors.TAB_NAV_GREY,
-            labelStyle: {
-              fontSize: 14,
-            },
-            style: {
-              backgroundColor: Colors.FOREGROUND_BLUE,
-              borderTopWidth: 0,
-            }
-          }}
-        >
-          <Tab.Screen name="Concerts" component={ConcertsStack} />
-          <Tab.Screen name="Artists" component={ArtistsStack} />
-          <Tab.Screen name="Discovery" component={DiscoveryStack} />
-          <Tab.Screen name="Settings" component={SettingsStack} />
-        </Tab.Navigator>
+            }}
+          >
+            <Tab.Screen name="Concerts" component={ConcertsStack} />
+            <Tab.Screen name="Artists" component={ArtistsStack} />
+            <Tab.Screen name="Discovery" component={DiscoveryStack} />
+            <Tab.Screen name="Settings" component={SettingsStack} />
+          </Tab.Navigator>
       );
     }
     
     
+    const MainApp = () => {
+      return (
+        <Stack.Navigator mode="modal"
+          screenOptions={stackScreenOptions} >
+          <Stack.Screen
+            name = "MainTabs"
+            component = {MainTabs}
+            options = {{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name = "ConcertFilters"
+            component = {ConcertFilters}
+            options={{
+              title: 'Filter Concerts',
+              headerLeft: ( { onPress } ) => (
+                // onPress defaults to goBack()
+                <TouchableOpacity onPress={onPress} >
+                  <Text style = {{
+                      color: Colors.TAB_NAV_BLUE,
+                      fontSize: 17,
+                      fontWeight: '700',
+                      marginLeft: 12,
+                    }}>Cancel</Text>
+                </TouchableOpacity>
+              ),
+            }}
+          />
+        </Stack.Navigator>
+      )
+    }
     
     const AuthFlow = () => {
       return (
@@ -241,16 +301,13 @@ import Feather from 'react-native-vector-icons/Feather'
 
 export default function Navigation(props) {
   const loggedIn = useSelector(state => state.authentication.loggedIn);
-
-
   return (
     <NavigationContainer>
       { loggedIn ? (
-        <MainTabs/>
+        <MainApp/>
       ) : (
         <AuthFlow/>
       )}
     </NavigationContainer>
   )
-  
 }

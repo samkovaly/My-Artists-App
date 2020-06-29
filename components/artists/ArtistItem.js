@@ -7,10 +7,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
 import BaseText from '../BaseText'
-import { getArtistImageSource } from '../../utilities/imageSources'
+import { getArtistImageSourceSmall } from '../../utilities/imageSources'
 
 
-const BasicArtist = ({ artist, userArtist, pressForDetail }) => {
+const ArtistItem = ({ artist, pressForDetail }) => {
 
   const navigation = useNavigation();
   
@@ -18,7 +18,7 @@ const BasicArtist = ({ artist, userArtist, pressForDetail }) => {
     <View style={styles.container}>
       <Image
         style={styles.avatar}
-        source={getArtistImageSource(artist)}
+        source={getArtistImageSourceSmall(artist)}
       />
       <BaseText style={styles.name}>{artist.name}</BaseText>
       <Icon style = {styles.arrow} name="keyboard-arrow-right" size={30} color="white" />
@@ -28,7 +28,7 @@ const BasicArtist = ({ artist, userArtist, pressForDetail }) => {
 
     if(pressForDetail){
       return (
-        <TouchableWithoutFeedback onPress={() => navigation.push("ArtistDetail", {artist, userArtist})}>
+        <TouchableWithoutFeedback onPress={() => navigation.push("ArtistDetail", { artist })}>
             {innerContainer()}
         </TouchableWithoutFeedback>
       )
@@ -39,7 +39,7 @@ const BasicArtist = ({ artist, userArtist, pressForDetail }) => {
 
 
 
-export default BasicArtist;
+export default ArtistItem;
 
 
 const elementHeight = 50;

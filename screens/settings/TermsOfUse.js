@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, View, StyleSheet, Text } from 'react-native';
 
 import { Colors, Screens} from '../../styles'
 import BaseText from '../../components/BaseText'
@@ -8,21 +8,47 @@ import BaseText from '../../components/BaseText'
 export default function TermsOfUse(props) {
 
 
+  const getSection = (title, text) => {
+    return (
+      <View style = {styles.sectionContainer}>
+        <BaseText style = {styles.header}>
+          {title}
+        </BaseText>
+        <Text style = {styles.text}>
+          {text}
+        </Text>
+      </View>
+    )
+  }
+
+    // https://www.websitepolicies.com/policies
     return (
       <ScrollView style = {styles.container}>
+        { getSection("Terms and conditions", 
+          "These terms and conditions (\"Terms\", \"Agreement\") are an agreement between Mobile Application Developer (\"Mobile Application Developer\", \"us\", \"we\" or \"our\") and you (\"User\", \"you\" or \"your\"). This Agreement sets forth the general terms and conditions of your use of the My Concerts mobile application and any of its products or services (collectively, \"Mobile Application\" or \"Services\")."
+        )}
 
-            <BaseText style = {styles.text}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque semper pretium libero eget commodo. Vivamus id auctor nunc. Cras cursus quis ipsum id fringilla. Proin in malesuada mauris. Aliquam venenatis ullamcorper dui at aliquam. Praesent vestibulum, felis quis consequat convallis, justo odio lobortis arcu, et luctus ligula ligula a neque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec tristique velit nec mollis scelerisque. Integer justo tellus, malesuada non bibendum eget, dictum quis mauris. Nulla dignissim, diam vitae suscipit pharetra, enim nisi facilisis massa, efficitur semper nunc justo tempor erat.
+        { getSection("Age requirement", 
+          "You must be at least 13 years of age to use this Mobile Application. By using this Mobile Application and by agreeing to this Agreement you warrant and represent that you are at least 13 years of age."
+        )}
 
-Mauris sit amet euismod massa. Praesent fringilla turpis eget ligula viverra placerat eget a odio. Etiam a molestie lectus. Sed nulla nunc, maximus non neque vitae, aliquam eleifend lectus. Aenean quis efficitur ligula, at dictum lacus. Nullam tristique mi sapien, et tempus justo sollicitudin nec. Ut at elementum augue, eget faucibus mi. In blandit felis quis diam varius, sit amet posuere dolor maximus. Quisque arcu nulla, semper in urna et, pretium ornare enim. Ut nec dictum elit, a gravida massa. Cras et suscipit est. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus varius odio a sapien fringilla, et volutpat mi pharetra.
+        { getSection("Links to other mobile applications", 
+          "Although this Mobile Application may link to other mobile applications, we are not, directly or indirectly, implying any approval, association, sponsorship, endorsement, or affiliation with any linked mobile application, unless specifically stated herein. We are not responsible for examining or evaluating, and we do not warrant the offerings of, any businesses or individuals or the content of their mobile applications. We do not assume any responsibility or liability for the actions, products, services, and content of any other third parties. You should carefully review the legal statements and other conditions of use of any mobile application which you access through a link from this Mobile Application. Your linking to any other off-site mobile applications is at your own risk."
+        )}
 
-Maecenas eleifend diam at nisi lobortis pellentesque. Maecenas ullamcorper arcu et nisl congue pellentesque. Duis ac ex maximus, mattis velit nec, mollis massa. Nunc malesuada tempus neque, efficitur gravida mi volutpat in. Nunc posuere tempor dapibus. Sed ac cursus quam. Etiam ipsum nulla, convallis ac viverra vitae, tincidunt non massa. Donec vitae bibendum ipsum. Etiam fermentum lacus sed nulla malesuada placerat. Aliquam facilisis quis ligula sit amet cursus. Quisque in nulla lectus. Quisque ut commodo magna.
+        { getSection("Changes and amendments", 
+          "We reserve the right to modify this Agreement or its policies relating to the Mobile Application or Services at any time, effective upon posting of an updated version of this Agreement in the Mobile Application. When we do, we will revise the updated date at the bottom of this page. Continued use of the Mobile Application after any such changes shall constitute your consent to such changes."
+        )}
 
-Duis consectetur faucibus mi nec congue. Duis volutpat facilisis ultrices. Ut odio elit, mollis id pretium nec, aliquet sit amet tortor. In pretium mauris vel sapien rhoncus, sit amet ultricies arcu mattis. Etiam venenatis tincidunt finibus. Pellentesque sed odio neque. Pellentesque quis accumsan lorem, a interdum lorem. Interdum et malesuada fames ac ante ipsum primis in faucibus. Proin eget risus lacinia, pulvinar diam eu, commodo ex. Etiam tincidunt at libero non hendrerit. Quisque eget congue velit. Aenean ullamcorper malesuada convallis. Pellentesque nec efficitur diam. Etiam sed ultrices urna, at accumsan augue. Quisque congue neque lectus, vitae laoreet massa vehicula ac. Proin blandit dolor quis magna maximus feugiat.
+        { getSection("Acceptance of these terms", 
+          "You acknowledge that you have read this Agreement and agree to all its terms and conditions. By using the Mobile Application or its Services you agree to be bound by this Agreement. If you do not agree to abide by the terms of this Agreement, you are not authorized to use or access the Mobile Application and its Services."
+        )}
 
-Fusce fermentum, ante facilisis iaculis faucibus, velit erat luctus diam, nec bibendum dolor ex eget nibh. Phasellus pulvinar tortor et felis lobortis ultrices. In tortor ante, sodales ut placerat non, interdum non quam. Morbi placerat, dui id sollicitudin tristique, neque quam sodales magna, ut tempus lorem ante eget augue. Integer et volutpat orci. Curabitur condimentum ut ligula in euismod. Maecenas id lacus massa. Vivamus maximus consectetur vestibulum. Maecenas vel ligula nec elit posuere tincidunt nec vitae velit. In vestibulum imperdiet lacus nec tincidunt.
-            </BaseText>
+        { getSection("Contacting us", 
+          "If you would like to contact us to understand more about this Agreement or wish to contact us concerning any matter relating to it, you may send an email to xilernet@gmail.com"
+        )}
 
+        <Text style = {[styles.text, {marginBottom: 20}]}>This document was last updated on June 25, 2020</Text>
       </ScrollView>
     );
 }
@@ -31,9 +57,18 @@ Fusce fermentum, ante facilisis iaculis faucibus, velit erat luctus diam, nec bi
 const styles = StyleSheet.create({
   container: {
     ...Screens.screenContainer,
-    padding: 20,
+    paddingHorizontal: 16,
+    paddingTop: 10,
+  },
+  sectionContainer: {
+    marginBottom: 10,
+  },
+  header: {
+    fontSize: 20,
+    marginBottom: 2,
   },
   text: {
-      fontSize: 16,
-  }
+      fontSize: 14,
+      color: Colors.SUB_TEXT_GREY,
+  },
 })

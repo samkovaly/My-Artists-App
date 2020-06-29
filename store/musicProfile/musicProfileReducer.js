@@ -1,11 +1,17 @@
 
-import { SET_ARTISTS, SET_TRACKS, SET_ANALYZING_SPOTIFY, REFRESH_SPOTIFY_ERROR } from './musicProfileActions';
+import { SET_ARTISTS, SET_TRACKS, 
+        SET_ANALYZING_SPOTIFY, REFRESH_SPOTIFY_ERROR, 
+        SET_LAST_REFRESHED
+    } from './musicProfileActions';
+
+import { LOGOUT } from '../globalActions'
 
 const initialState = {
-    artists: null,
-    tracks: null,
+    artistSlugMap: null,
+    trackIDMap: null,
     analyzingSpotify: false,
     refreshSpotifyError: false,
+    lastRefreshed: null,
 }
 
 export default function(state = initialState, action) {
@@ -24,13 +30,21 @@ export default function(state = initialState, action) {
     case SET_ARTISTS:
         return {
             ...state,
-            artists: action.payload || [],
+            artistSlugMap: action.payload || [],
         }
     case SET_TRACKS:
         return {
             ...state,
-            tracks: action.payload || [],
+            trackIDMap: action.payload || [],
         }
+    case SET_LAST_REFRESHED:
+        return {
+            ...state,
+            lastRefreshed: action.payload,
+        }
+    
+    case LOGOUT:
+        return initialState;
 
     default:
       return state;

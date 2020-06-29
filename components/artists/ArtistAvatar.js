@@ -2,13 +2,11 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 
 import GenreBubbleCards from './GenreBubbleCards'
-import { getArtistImageSource } from '../../utilities/imageSources'
+import { getArtistImageSourceBig } from '../../utilities/imageSources'
 import { TouchableWithoutFeedback } from 'react-native';
 import { Linking } from 'expo';
 
 const ArtistAvatar = ({ artist, genres }) => {
-
-
     return (
         <View style = {styles.artistPortraitContainer}>
             <View style = {styles.spotifyLinkButtonContainer}>
@@ -24,7 +22,7 @@ const ArtistAvatar = ({ artist, genres }) => {
             <Image
                 style={styles.artistPortrait}
                 resizeMode='cover'
-                source = {getArtistImageSource(artist)}
+                source = {getArtistImageSourceBig(artist)}
             />
             <GenreBubbleCards genres={genres} style={styles.genreBubleCards}/>
         </View>
@@ -65,7 +63,7 @@ const styles = StyleSheet.create({
     },
     spotifyLinkButtonContainer: {
         position: 'absolute',
-        top: 10,
+        top: 8,
         right: 12,
         zIndex: 1,
     },

@@ -7,7 +7,7 @@ import { StyleSheet, View } from 'react-native';
 import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
-import BasicArtist from '../../components/artists/BasicArtist';
+import ArtistItem from '../../components/artists/ArtistItem';
 import SearchBar from '../../components/SearchBar';
 import SearchableFlatList from '../../components/SearchableFlatList';
 
@@ -24,7 +24,7 @@ const PAGE_SIZE = 20;
 // https://dev.to/raicuparta/compute-values-on-component-mount-with-react-hooks-state-vs-ref-4epk
 export default function AllArtists(props) {
   
-  const artistsMap = useSelector(state => state.musicProfile.artists);
+  const artistsMap = useSelector(state => state.musicProfile.artistSlugMap);
   const sortedArtists = Array.from(artistsMap.values())
   //const sortedArtists = useMemo(() => getSortedArtists(artists), []);
   const [artistsQuery, setArtistsQuery] = useState("");
@@ -37,7 +37,7 @@ export default function AllArtists(props) {
             placeholderText = "Filter Artists"
             autoCapitalize = 'none'
             autoCorrect = {false}
-            autoFocus = {true}
+            autoFocus = {false}
           />
         </View>
 
@@ -47,7 +47,7 @@ export default function AllArtists(props) {
           query = {artistsQuery}
           elements = {sortedArtists}
           queryKey = {"name"}
-          renderElementComponent = {(item) => <BasicArtist artist = {item} userArtist = {true} pressForDetail = {true} />}
+          renderElementComponent = {(item) => <ArtistItem artist = {item} pressForDetail = {true} />}
           pageSize = {PAGE_SIZE}
           // passing a different key from the previous key tells react to
           // load a new component and thus reset the component's state to initial.

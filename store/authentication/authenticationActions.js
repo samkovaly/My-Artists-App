@@ -11,8 +11,9 @@ export const SET_USERNAME = 'SET_USERNAME';
 export const SET_BACKEND_AUTH_TOKEN = 'SET_BACKEND_AUTH_TOKEN';
 
 export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
 
+
+import { LOGOUT } from '../globalActions'
 
 import { makeAction } from '../../utilities/actions';
 import { fetchNewUserTokens, fetchUsername, fetchAccessToken } from './authenticationEffects/spotifyRequests';
@@ -50,6 +51,7 @@ export const setAuthStateFromStorage = () => {
         
         refreshToken = await getRefreshTokenStorage();
         await dispatch(setRefreshTokenAction(refreshToken));
+        console.log('setAuthStateFromStorage')
         await dispatch(refreshAccessToken());
 
         username = await getUsernameStorage();
@@ -77,6 +79,7 @@ export const registerWithRefreshToken = () => {
         console.log('rwrt')
         // prompts for user to sign into spotify with their username / password
 
+        console.log('registerWithRefreshToken')
         await dispatch(refreshAccessToken());
         await dispatch(getUsername());
         await dispatch(getBackendAuthToken());
@@ -114,6 +117,7 @@ export const getUsername = () => {
 export const refreshAccessToken = () => {
     return async (dispatch, getState) => {
         const auth = getState().authentication
+        console.log('refreshAccessToken')
         if(needNewAccessToken(auth.accessToken.expireTime)){
             const newUserTokens = await fetchAccessToken(auth.appCredentials, auth.refreshToken)
             await dispatch(setAccessTokenAction(newUserTokens.accessToken, newUserTokens.expireTime))
@@ -155,7 +159,9 @@ export const logout = () => {
 
 
 const needNewAccessToken = (expireTime) => {
+    //console.log('need new access token?')
     const currentTime = new Date().getTime();
+    //console.log('expireTime: ', expireTime, 'currentTime:', currentTime)
     return currentTime >= expireTime;
 }
 

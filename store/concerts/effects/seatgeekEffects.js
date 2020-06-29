@@ -3,7 +3,7 @@
 // http://platform.seatgeek.com/#performers
 
 import { requestJSON, METHODS, makeParameter } from '../../../utilities/HTTPRequests'
-
+import { getDisplayDate } from '../../../utilities/displayStrings'
 
 const URL = "https://api.seatgeek.com/2"
 const EVENTS_URL = URL + "/events?"
@@ -44,6 +44,7 @@ const fetchEventsAtPage = async(url, page) => {
     return events
 }
 
+
 /*
     fetches all concerts at this location within this range.
 */
@@ -53,7 +54,6 @@ export const fetchAllConcertsAtLocation = async (clientID, monthsAhead, lat, lon
     // need initial call to get total pages
     const totalPages = await getTotalPages(url);
     
-    console.log('PAGES', totalPages)
     concertCalls = [];
 
     for(let page = 1; page <= totalPages; page += 1){
@@ -102,10 +102,10 @@ export const fetchAllConcertsForArtist = async(artist, monthsAhead, clientId, la
     // run location and non-location calls at the same time to save time.
     concertCalls = [];
     concertCalls.push( new Promise( (resolve, reject) => {
-        return resolve(fetchConcertsArtistName(locationURL, artist.name_ascii))
+        return resolve(fetchConcertsArtistSlug(locationURL, artist.slug))
     } ));
     concertCalls.push( new Promise( (resolve, reject) => {
-        return resolve(fetchConcertsArtistName(nonLocationURL, artist.name_ascii))
+        return resolve(fetchConcertsArtistSlug(nonLocationURL, artist.slug))
     } ));
 
     // execute and wait
@@ -139,15 +139,9 @@ export const fetchAllConcertsForArtist = async(artist, monthsAhead, clientId, la
     append artist name to this URL call so call only returns
     events by this artist
 */
-const fetchConcertsArtistName = async(url, artistName) => {
+const fetchConcertsArtistSlug = async(url, slug) => {
 
-    name = artistName.trim()
-    // seatgeek specific slug convention
-    // for example: W&W -> W-W
-    name = name.replace(/&| & | /g,"-")
-    url += makeParameter("performers.slug", name);
-    
-    //console.log("attempting url=", url);
+    url += makeParameter("performers.slug", slug);
 
     const response = await getSeatgeek(url);
     const events = mapEvents(response.events);
@@ -158,7 +152,7 @@ const fetchConcertsArtistName = async(url, artistName) => {
 /*
     fetches the seatgeek url with GET and checks for errors.
 */
-const getSeatgeek = async (url) => {
+export const getSeatgeek = async (url) => {
     const response = await requestJSON(url, METHODS.GET);
     if(response.status){
         console.log('ERROR with status:', response.status, "at url:", url, ":", response);
@@ -204,37 +198,6 @@ const buildConcertsLocationURL = (clientId, monthsAhead=1, lat=null, lon=null, r
     returns:
         (example) 'FRI, Mar 12, 8:30pm'
 */
-const getDisplayDate = (isoString) => {
-    const days = ['SUN', 'MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT'];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const date = new Date(isoString);
-    
-    const dayOfWeek = days[date.getDay()];
-    const month = months[date.getMonth()];
-    const dayOfMonth = date.getDate();
-
-    const hour24 = date.getHours();
-    let hour = null;
-
-    // 0 = 12am
-    // 12 = 12pm
-    let period = ''; 
-    if(hour24 < 12){
-      period = 'am';
-      hour = hour24
-    }else{
-      period = 'pm';
-      hour = hour24 - 12;
-    }
-
-    let minute = date.getMinutes();
-    if(minute < 10){
-      minute = '0' + minute;
-    }
-
-    const fullDisplayDate = dayOfWeek + ' ' + month + ' '+ dayOfMonth + ', ' + hour + ':' + minute + period;
-    return fullDisplayDate;
-  }
 
 
   
@@ -265,7 +228,7 @@ const mapEvent = (event) => {
             date_tbd: event.date_tbd,
             url: event.url,
             venue: venue,
-            artists: performers,
+            performers: performers,
         }
     }else{
         return null;

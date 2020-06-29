@@ -12,7 +12,7 @@ const ErrorCard = ({ showError, close, header, message }) => {
 
     if(showError){
         return (
-            <View style = {[styles.modalContainer, {opacity: showError}]}>
+            <View style = { styles.modalContainer }>
                 <BaseText style = {styles.header }>{header}</BaseText>
                 <BaseText style = {styles.message }>{message}</BaseText>
                 <TouchableHighlight style = {styles.close} onPress={() => close()}>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 
         borderRadius: 8,
         //...shadow,
-
+        zIndex: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
     },

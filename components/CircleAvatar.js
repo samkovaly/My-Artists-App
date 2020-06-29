@@ -2,23 +2,21 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 
 import { Colors, Screens, Buttons, Font } from '../styles'
-import { getArtistImageSource } from '../utilities/imageSources'
+import { getConcertImageSource } from '../utilities/imageSources'
 
 
-
-const CircleAvatar = ({ artist, radius }) => {
-
+const CircleAvatar = ({ concert, radius }) => {
 
     return (
         <View style = {styles.container}>
             <Image
                 style={{
-                    width: radius / 2,
-                    height: radius / 2,
+                    width: radius * 2,
+                    height: radius * 2,
                     borderRadius: radius,
                 }}
                 //resizeMode='cover'
-                source = {getArtistImageSource(artist)}
+                source = {getConcertImageSource(concert)}
             />
         </View>
   );

@@ -6,7 +6,7 @@ import { Colors, Screens, Buttons, Font } from '../../styles'
 
 import { useSelector} from 'react-redux';
 
-//import BasicArtist from '../../components/artists/BasicArtist'
+//import ArtistItem from '../../components/artists/ArtistItem'
 import BasicButton from '../../components/BasicButton'
 
 import { FlatList } from 'react-native';
@@ -23,7 +23,7 @@ import { filterArtists, sortByProperty } from '../../store/musicProfile/musicPro
 export default function MyArtists(props) {
   const navigation = useNavigation();
 
-  const artistsMap = useSelector(state => state.musicProfile.artists);
+  const artistsMap = useSelector(state => state.musicProfile.artistSlugMap);
   const artists = Array.from(artistsMap.values());
 
   // example: top_artists_long_term_ranking
@@ -36,6 +36,9 @@ export default function MyArtists(props) {
   let shortTermArtists = filterArtists(artists, 'top_artists_short_term');
   shortTermArtists = sortByProperty(shortTermArtists, "top_artists_short_term_ranking")
 
+  let followedArtists = filterArtists(artists, 'followed_artist');
+  followedArtists = followedArtists.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
   console.log('dreadful reload...')
 
   const gotoAllArtists = () => {
@@ -47,6 +50,9 @@ export default function MyArtists(props) {
 
         <BasicButton text = "See all artists" onPress = {gotoAllArtists}
           containerStyle = { styles.allArtistsButton }
+          textStyle = {{
+            fontSize: 18,
+          }}
         />
 
         <ArtistHorizontalCards
@@ -60,6 +66,10 @@ export default function MyArtists(props) {
         <ArtistHorizontalCards
           title = "Favorite recent artists"
           artists = {shortTermArtists}
+        />
+        <ArtistHorizontalCards
+          title = "Artists you follow"
+          artists = {followedArtists}
         />
     </ScrollView>
   );
@@ -81,11 +91,11 @@ const styles = StyleSheet.create({
   },
   allArtistsButton: {
     backgroundColor: Colors.CONCERT_CARD_BACKGROUND,
-    width: '90%',
+    //width: '90%',
     alignSelf: 'center',
-    padding: 8,
+    //padding: 8,
     marginTop: 16,
     marginBottom: 16,
-    borderRadius: 3,
+    //borderRadius: 3,
   }
 });

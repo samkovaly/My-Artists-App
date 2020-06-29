@@ -3,6 +3,7 @@ import { AuthSession } from 'expo';
 import Base64 from 'Base64';
 import { requestJSON, METHODS } from '../../../utilities/HTTPRequests';
 
+
 const ACCOUNTS_URL = 'https://accounts.spotify.com/';
 const CODE_ENDPOINT = ACCOUNTS_URL + 'authorize';
 const TOKEN_ENDPOINT = ACCOUNTS_URL + 'api/token';

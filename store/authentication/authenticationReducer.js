@@ -1,7 +1,10 @@
 
 import { SET_APP_CREDENTIALS, SET_API_CREDENTIALS, 
   SET_REFRESH_TOKEN, SET_ACCESS_TOKEN, SET_USERNAME, SET_BACKEND_AUTH_TOKEN, 
-  SET_ANALYZING_SPOTIFY, LOGIN, LOGOUT } from './authenticationActions'
+  SET_ANALYZING_SPOTIFY, LOGIN } from './authenticationActions'
+
+import { LOGOUT } from '../globalActions'
+
 
 const initialState = {
   loggedIn: false,
@@ -15,6 +18,9 @@ const initialState = {
     seatgeek: {
       client_id: null
     },
+    googlePlacesAPI: {
+      key: null,
+    }
   },
   
   accessToken: {

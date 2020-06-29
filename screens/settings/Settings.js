@@ -20,12 +20,13 @@ import BaseText from '../../components/BaseText';
 const SUPPORT_EMAIL = 'xilernet@gmail.com';
 const EMAIL_SUBJECT = 'My Artists App';
 const EMAIL_BODY = '';
-const lastRefreshed = 'date here';
 
 export default function Settings(props) {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const lastRefreshed = useSelector(state => state.musicProfile.lastRefreshed);
+    console.log(lastRefreshed);
 
     const logoutClicked = async() =>{
       twoButtonConfirmAlert("Logout", "Are you sure?", logoutConfirmed, null);

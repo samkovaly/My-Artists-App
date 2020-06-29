@@ -1,5 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
+import { useDispatch } from 'react-redux'
+
 import { StyleSheet, View, Image, ScrollView } from 'react-native';
 
 import { Colors, Screens, Buttons, Font } from '../../styles'
@@ -7,68 +9,60 @@ import { Colors, Screens, Buttons, Font } from '../../styles'
 
 import { useSelector} from 'react-redux';
 
-import BasicButton from '../../components/BasicButton';
-
-import { getTracks } from '../../store/musicProfile/musicProfileActions';
-import { getFullConcert } from '../../utilities/spotifyFetches';
-
-
-import { getArtist, getRelatedArtists } from '../../utilities/spotifyFetches';
-
 import CircleAvatar from '../../components/CircleAvatar'
 
 import TicketButton from '../../components/concerts/TicketButton'
+import InterestedButton from '../../components/concerts/InterestedButton'
 
-import ExpandableList from '../../components/ExpandableList'
 import BaseText from '../../components/BaseText';
 
 
-import BasicArtist from '../../components/artists/BasicArtist';
-import { getArtists } from '../../utilities/spotifyFetches'
+import ArtistItem from '../../components/artists/ArtistItem';
+import { performersToArtists } from '../../utilities/artists';
+
+import { updateAndGetAccessToken } from '../../utilities/updateAndGetState';
+
 
 export default function ConcertDetail({ route }) {
+   const dispatch = useDispatch();
 
-
-   const accessToken = useSelector(state => state.authentication.accessToken.token);
-   const userArtistsMap = useSelector(state => state.musicProfile.artists);
-   const userArtists = Array.from(userArtistsMap.values());
+   
+   const [interested, setInterested] = useState(interested);
+   const userArtistsMap = useSelector(state => state.musicProfile.artistSlugMap);
+   //const userArtists = Array.from(userArtistsMap.values());
 
     const { concert } = route.params;
-    const concertArtists = concert.artists;
-    let concertMainArtist = null;
-    if(concertArtists){
-      concertMainArtist = concertArtists[0];
-    }else{
-      concertMainArtist = null;
-    }
-    const [spotifyLineupArtists, setSpotifyLineupArtists] = useState([]);
+    const performers = concert.performers;
+
+    const [lineupArtists, setLineupArtists] = useState([]);
     
     const venue = concert.venue;
 
 
     useEffect(() => {
-      const getSpotifyLineupArtists = async () => {
-        const artists = await getArtists(concertArtists, userArtists, accessToken);
-        setSpotifyLineupArtists(artists);
+      const getLineupArtists = async () => {
+        const accessToken = await updateAndGetAccessToken(dispatch);
+        const artists = await performersToArtists(performers, accessToken, userArtistsMap)
+        setLineupArtists(artists);
       }
-      getSpotifyLineupArtists();
+      getLineupArtists();
 
-    }, [concertArtists])
+    }, [performers])
 
     
     return (
         <ScrollView style={styles.container}>
             
             <View style = {styles.headerSection}>
-                <CircleAvatar artist={concertMainArtist} radius={200} />
-
+                <CircleAvatar concert={concert} radius={75} />
                 <BaseText style = {styles.concertName}>
                     {concert.name}
                 </BaseText>
             </View>
 
-            <View style = {styles.ticketSection}>
+            <View style = {styles.buttons}>
                 <TicketButton url = {concert.url} />
+                <InterestedButton interested = {interested} setInterested = {setInterested}/>
             </View>
 
             <View style = {styles.locationSection}>
@@ -80,16 +74,16 @@ export default function ConcertDetail({ route }) {
 
 
             {/* artist lineup */}
-            { allNull(spotifyLineupArtists)?
+            { allNull(lineupArtists)?
               null :
               <View style = {styles.artistLineup}>
                 <BaseText style = {styles.artistLineupText}>Artist Lineup</BaseText>
-                { spotifyLineupArtists.map((artist) => {
+                { lineupArtists.map((artist) => {
                   if(artist == null){
                     return null;
                   }else{
                     return (
-                      <BasicArtist key = {artist.id} artist = {artist} userArtist = {artist.userArtist} pressForDetail = {true} />
+                      <ArtistItem key = {artist.id} artist = {artist} pressForDetail = {true} />
                     )
                   }
                 })}
@@ -118,19 +112,21 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       flexDirection: 'column',
       marginTop: 6,
-      marginBottom: 26,
+      marginBottom: 20,
   },
 
   concertName: {
     fontSize: 36,
-    marginTop: 6,
+    marginTop: 4,
     marginHorizontal: 12,
   },
 
-  ticketSection: {
+  buttons: {
+    flexDirection: 'row',
     marginBottom: 12,
+    justifyContent: 'space-around',
     alignItems: 'center',
-    padding: 12,
+    paddingVertical: 12,
     backgroundColor: '#383838'
   },
 

@@ -1,11 +1,25 @@
 
-import { SET_USER_LOCATION, SET_ALL_CONCERTS } from './concertsActions'
+import { SET_USER_LOCATION, SET_ALL_CONCERTS, SET_FILTERS } from './concertsActions'
 
+import { LOGOUT } from '../globalActions'
 
 const initialState = {
-  allConcerts: null,
+  //allConcerts: null,
   userLocation: null,
-  searchRadius: 30,
+  //searchRadius: 30,
+  filters: {
+    radius: 5, // 2 - 20
+    months: 6,
+    location: {
+      latitude: null,
+      longitude: null,
+      city: null,
+      state: null,
+      country: null,
+      USA: null,
+      displayString: "no location",
+    }
+  }
 }
 
 export default function(state = initialState, action) {
@@ -22,6 +36,15 @@ export default function(state = initialState, action) {
         ...state,
         userLocation: action.payload,
       }
+    case SET_FILTERS:
+      return {
+        ...state,
+        filters: action.payload,
+      }
+  
+
+    case LOGOUT:
+      return initialState;
 
     default:
       return state;

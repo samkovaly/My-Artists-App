@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Linking } from 'expo';
 
 import BaseText from '../BaseText'
-import { getArtistImageSource } from '../../utilities/imageSources'
+import { getArtistImageSourceSmall } from '../../utilities/imageSources'
 
 const RelatedArtist = ({ artist }) => {
 
@@ -17,7 +17,7 @@ const RelatedArtist = ({ artist }) => {
             <View style={styles.container}>
                 <Image
                     style={styles.avatar}
-                    source={getArtistImageSource(artist)}
+                    source={getArtistImageSourceSmall(artist)}
                 />
                 <BaseText style={styles.name}>{artist.name}</BaseText>
                 <Image

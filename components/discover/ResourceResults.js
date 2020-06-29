@@ -15,6 +15,7 @@ import PagedFetchFlatlist from '../../components/PagedFetchFlatlist';
 export default function ArtistSearch({ queryFunc, initialQuery, renderElementComponent, pageSize }) {
 
   const [query, setQuery] = useState(initialQuery);
+  const [data, setData] = useState([]);
 
 
   const fetchNewPage = async (page) => {
@@ -32,12 +33,14 @@ export default function ArtistSearch({ queryFunc, initialQuery, renderElementCom
             placeholderText = ""
             autoCapitalize = 'none'
             autoCorrect = {false}
-            autoFocus = {true}
+            autoFocus = {false}
           />
         </View>
 
         <View style = {styles.listContainer}>
             <PagedFetchFlatlist
+            data = {data}
+            setData = {(data) => setData(data)}
             query = {query}
             fetchData = {(page) => fetchNewPage(page)}
             pageSize = {pageSize}

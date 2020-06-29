@@ -8,7 +8,7 @@ export const FOREGROUND_BLUE = '#192a38';
 export const TAB_NAV_BLUE = '#3e84e6';
 export const TAB_NAV_GREY = '#c2c2c2';
 
-
+export const SUPER_DARK_BLUE = '#030305';
 
 export const BUTTON_TICKET_DARK_BLUE = '#070a59';
 
