@@ -14,7 +14,8 @@ import SearchableFlatList from '../../components/SearchableFlatList';
 
 import BaseText from '../../components/BaseText'
 //const sortedArtists = artists.sort((a, b) => (a.name > b.name) ? 1 : -1);
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 100;
+const onEndReachedThreshold = 20;
 
 
 //const getSortedArtists = (artists) => {
@@ -40,8 +41,6 @@ export default function AllArtists(props) {
             autoFocus = {false}
           />
         </View>
-
-        <BaseText style = {styles.white}>Display: (All Alphabetical) (top long term) (medium term) (short term) (genre) (playlists?)</BaseText>
         
         <SearchableFlatList
           query = {artistsQuery}
@@ -49,6 +48,7 @@ export default function AllArtists(props) {
           queryKey = {"name"}
           renderElementComponent = {(item) => <ArtistItem artist = {item} pressForDetail = {true} />}
           pageSize = {PAGE_SIZE}
+          onEndReachedThreshold = {onEndReachedThreshold}
           // passing a different key from the previous key tells react to
           // load a new component and thus reset the component's state to initial.
           key = {artistsQuery}

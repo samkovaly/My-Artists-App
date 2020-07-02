@@ -8,14 +8,14 @@ import PagedFlatlist from '../PagedFlatlist'
 import { Colors, Screens, Buttons, Font } from '../../styles'
 import BaseText from '../BaseText';
 
-function ConcertList({concerts, loading, displayConcertName, style }) {
+function ConcertList({concerts, loading, displayConcertName, style, noConcertsHeader, noConcertsText }) {
 
     if(loading) {
         return loadingScreen();
     }
 
     if(!concerts || concerts.length == 0){
-        return noConcerts();
+        return noConcerts(noConcertsHeader, noConcertsText);
     }
 
     return (
@@ -42,11 +42,11 @@ const loadingScreen = () => {
         </View>
     )
 }
-const noConcerts = () => {
+const noConcerts = (noConcertsHeader, noConcertsText) => {
     return (
     <View style = {styles.noConcertsContainer}>
-        <BaseText style = {styles.noConcertsHeader}>Sorry, no concerts found.</BaseText>
-        <BaseText style = {styles.noConcertsText}>Try expanding your filters to include more results.</BaseText>
+        <BaseText style = {styles.noConcertsHeader}>{noConcertsHeader}</BaseText>
+        <BaseText style = {styles.noConcertsText}>{noConcertsText}</BaseText>
     </View>
     )
 }
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
     noConcertsText: {
         fontSize: 18,
-        color: '#e6e6e6',
+        color: Colors.SEARCH_BAR_INPUT,
     }
 })
 

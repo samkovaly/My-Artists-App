@@ -83,7 +83,7 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
         }
         renderRightButton = { () =>
             <TouchableWithoutFeedback style = {styles.closeContainer} onPress = {() => googlePlacesRef.current.clearDatur()}>
-                <Icon style = {styles.close} name = 'close-circle' size = {22} color = "#b3b3b3"/>
+                <Icon style = {styles.close} name = 'close-circle' size = {22} color = {Colors.TAB_NAV_GREY}/>
             </TouchableWithoutFeedback>
         }
 
@@ -99,7 +99,7 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
             textInputContainer: {
                 flexDirection: 'row',
                 alignItems: 'center',
-                backgroundColor: '#2a2e33',
+                backgroundColor: Colors.SEARCH_BAR_BACKGROUND,
                 paddingVertical: 10,
                 paddingHorizontal: 12,
                 borderRadius: 6,
@@ -107,8 +107,7 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
             },
             textInput: {
                 backgroundColor: null,
-
-                color: '#d6d6d6',
+                color: Colors.SEARCH_BAR_INPUT,
                 fontSize: 16,
                 flex: 10,
             },
@@ -127,7 +126,7 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
                 fontSize: 16,
             },
             predefinedPlacesDescription: {
-                color: '#59cae3',
+                color: Colors.TAB_NAV_BLUE,
                 fontWeight: '500',
             },
         }}

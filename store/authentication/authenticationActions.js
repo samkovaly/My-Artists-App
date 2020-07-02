@@ -133,17 +133,19 @@ export const getBackendAuthToken = () => {
         const auth = getState().authentication;
         //console.log("requesting backend user auth token with current auth state:", auth)
         // register user, does not if they are already registered
+        console.log("registering with: refresh: ", auth.refreshToken)
         await registerUserForAuthToken(auth.username, auth.refreshToken, auth.accessToken.token)
         // login user and get auth token as return value
-        backendAuthToken = await LoginUserForAuthToken(auth.username, auth.refreshToken)
-        await dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthToken))
+        backendAuthTokenResult = await LoginUserForAuthToken(auth.username, auth.refreshToken)
+        console.log('\n', backendAuthTokenResult, '\n')
+        await dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthTokenResult.token))
     }
 }
 
 
 export const login = () => {
     return async(dispatch, getState) => {
-        await dispatch(makeAction(LOGIN))
+        dispatch(makeAction(LOGIN))
     }
 }
 export const logout = () => {
@@ -181,8 +183,17 @@ const setUsernameAction = (username) => {
 }
 
 
-
-
+export const confirmUserBackend = async (username, refreshToken, backendAuthToken) => {
+    const loginResult = await LoginUserForAuthToken(username, refreshToken);
+    if(loginResult.status){
+        return false;
+    }else{
+        if(backendAuthToken != loginResult.token){
+            return false;
+        }
+    }
+    return true;
+}
 
 
 

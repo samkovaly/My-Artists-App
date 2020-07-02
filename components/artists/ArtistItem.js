@@ -10,17 +10,19 @@ import BaseText from '../BaseText'
 import { getArtistImageSourceSmall } from '../../utilities/imageSources'
 
 
-const ArtistItem = ({ artist, pressForDetail }) => {
+const ArtistItem = ({ artist, pressForDetail, containerStyle }) => {
 
   const navigation = useNavigation();
   
   const innerContainer = () => (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <Image
         style={styles.avatar}
         source={getArtistImageSourceSmall(artist)}
       />
-      <BaseText style={styles.name}>{artist.name}</BaseText>
+      <View style = {styles.nameContainer}>
+        <BaseText style={styles.name}>{artist.name}</BaseText>
+      </View>
       <Icon style = {styles.arrow} name="keyboard-arrow-right" size={30} color="white" />
     </View>
     )
@@ -60,8 +62,11 @@ const styles = StyleSheet.create({
         height: elementHeight * imageHeightRatio,
         marginLeft: 0,
     },
-    name: {
+    nameContainer: {
       marginLeft: 12,
+      width: '70%',
+    },
+    name: {
       fontSize: 16,
     },
     arrow: {

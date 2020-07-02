@@ -8,6 +8,7 @@ import { Colors, Screens } from '../../styles';
 import { getRefreshToken, registerWithRefreshToken, login } from '../../store/authentication/authenticationActions';
 
 import { refreshAndGetMusicProfile, setAnalyzingSpotifyAction } from '../../store/musicProfile/musicProfileActions';
+import { setInterestedConcerts } from '../../store/concerts/concertsActions'
 import AnalyzeSpotifyBackgroundAnimation from '../../components/AnalyzeSpotifyBackgroundAnimation'
 
 
@@ -56,8 +57,9 @@ export default function LoginWithSpotify(props) {
     // refreshAndGetMusicProfile sets analyzingSpotify state to on then off again
     await dispatch(refreshAndGetMusicProfile());
     await dispatch(setAnalyzingSpotifyAction(false));
-    
-    await dispatch(login());
+
+    dispatch(setInterestedConcerts());
+    dispatch(login());
   }
   
   //const refreshToken = useSelector(state => state.authentication.refreshToken);

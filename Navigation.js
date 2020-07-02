@@ -109,14 +109,16 @@ import Feather from 'react-native-vector-icons/Feather'
           name="MyArtists"
           component={MyArtists}
           options={{
-            //title: 'Artists',
+            title: 'My Artists',
             headerShown: true,
           }}
         />
         <Stack.Screen
           name="AllArtists"
           component={AllArtists}
-          options={{title: 'My Artists'}}
+          options={{
+            title: 'All Artists'
+          }}
         />
         { concertDetailScreen() }
         { ArtistDetailScreen() }
@@ -134,7 +136,7 @@ import Feather from 'react-native-vector-icons/Feather'
             component={Concerts}
             options={{
               //title: 'Concerts',
-              headerShown: false,
+              headerShown: true,
             }}
           />
           { concertDetailScreen() }
@@ -234,12 +236,12 @@ import Feather from 'react-native-vector-icons/Feather'
                 }
                 
               },
-            })}
+            })} 
             tabBarOptions = {{
               activeTintColor: Colors.TAB_NAV_BLUE,
               inactiveTintColor: Colors.TAB_NAV_GREY,
               labelStyle: {
-                fontSize: 14,
+                fontSize: 12,
               },
               style: {
                 backgroundColor: Colors.FOREGROUND_BLUE,

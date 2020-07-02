@@ -3,7 +3,7 @@
 // http://platform.seatgeek.com/#performers
 
 import { requestJSON, METHODS, makeParameter } from '../../../utilities/HTTPRequests'
-import { getDisplayDate } from '../../../utilities/displayStrings'
+import { getDisplayDate, getDisplayTime } from '../../../utilities/displayStrings'
 
 const URL = "https://api.seatgeek.com/2"
 const EVENTS_URL = URL + "/events?"
@@ -90,6 +90,46 @@ const getTotalPages = async (url) => {
 }
 
 
+export const fetchConcertsByID = async(Ids, clientId) => {
+    // gather promises
+    let url = EVENTS_URL;
+    url += makeParameter("client_id", clientId);
+    url += makeParameter("sort", "datetime_utc.asc");
+    url += makeParameter('type', 'concert')
+
+    concertCalls = [];
+    for(id of Ids){
+        concertCalls.push( new Promise( (resolve, reject) => {
+            return resolve(fetchEventsAtID(url, id));
+        } ));
+    }
+
+    // execute and wait
+    try {
+        var concerts = await Promise.all(concertCalls);
+    }
+    catch(err) {
+        console.log(err);
+    };
+
+    return concerts;
+}
+
+export const fetchConcertByID = async(id, clientId) => {
+    let url = EVENTS_URL;
+    url += makeParameter("client_id", clientId);
+    url += makeParameter('type', 'concert')
+    const concert = await fetchEventsAtID(url, id);
+    return concert;
+}
+
+const fetchEventsAtID = async(url, id) => {
+    const urlID = url + makeParameter('id', id);
+    const response = await getSeatgeek(urlID);
+    const events = mapEvents(response.events);
+    return events[0];
+}
+
 /*
     Fetches local concerts (within radius) and non-local concerts (all) at this location
     and for only one artist. This is used by the artist's dtail screen and not the concerts screen.
@@ -116,7 +156,6 @@ export const fetchAllConcertsForArtist = async(artist, monthsAhead, clientId, la
         console.log(err);
     };
 
-
     const localConcerts = concerts[0]
 
     const nonLocalConcerts = concerts[1].filter(nonLocalConcert => {
@@ -140,12 +179,9 @@ export const fetchAllConcertsForArtist = async(artist, monthsAhead, clientId, la
     events by this artist
 */
 const fetchConcertsArtistSlug = async(url, slug) => {
-
     url += makeParameter("performers.slug", slug);
-
     const response = await getSeatgeek(url);
     const events = mapEvents(response.events);
-
     return events;
 }
 
@@ -190,16 +226,6 @@ const buildConcertsLocationURL = (clientId, monthsAhead=1, lat=null, lon=null, r
 
     return url;
 }
-
-
-/*
-    params:
-        isoString: date as ISO string
-    returns:
-        (example) 'FRI, Mar 12, 8:30pm'
-*/
-
-
   
 const mapEvents = (events) => {
     if(events){
@@ -220,11 +246,12 @@ const mapEvent = (event) => {
         return {
             name: event.title,
             status: event.status,
-            id: event.id,
+            id: event.id.toString(),
             description: event.description,
             datetime_local: event.datetime_local,
             datetime_utc: event.datetime_utc,
             displayDate: getDisplayDate(event.datetime_utc),
+            displayTime: getDisplayTime(event.datetime_utc),
             date_tbd: event.date_tbd,
             url: event.url,
             venue: venue,
@@ -307,165 +334,10 @@ const mapVenue = (venue) => {
             address: venue.address,
             city: venue.city,
             state: venue.state,
+            location: venue.location,
             url: venue.url,
         }
     }else{
         return null;
     }
 }
-
-
-/*
-  Maps event object from seatgeek database to an event object with only the fields MyArtists needs
-  Calls:
-    mapVenue(), mapPerformers() and getDisplayDate()
-*/
-/*
-const mapEvents = (events) => {
-    if(events){
-        const mappedEvents = Object.values(events).map((event) => {
-            return mapEvent(event)
-        })
-        return mappedEvents;
-    }else{
-        return [mapEvent(null)]
-    }
-}
-
-const mapEvent = (event) => {
-    if(event){
-        const venue = mapVenue(event.venue);
-        const performers = mapPerformers(event.performers);
-
-        return {
-            name: event.title,
-            status: event.status,
-            id: event.id,
-            description: event.description,
-            datetime_local: event.datetime_local,
-            datetime_utc: event.datetime_utc,
-            displayDate: getDisplayDate(event.datetime_utc),
-            date_tbd: event.date_tbd,
-            url: event.url,
-            venue: venue,
-            artists: performers,
-        }
-    }else{
-        const venue = mapVenue(null);
-        const performers = mapPerformers(null);
-
-        return {
-            name: null,
-            status: null,
-            id: null,
-            description: null,
-            datetime_local: null,
-            datetime_utc: null,
-            displayDate: null,
-            date_tbd: null,
-            url: null,
-            venue: venue,
-            artists: performers,
-        }
-    }
-}
-
-const mapPerformers = (performers) => {
-    if(performers){
-        const mappedPerformers = Object.values(performers).map((performer) => {
-            return mapPerformer(performer)
-        })
-        return mappedPerformers;
-    }else{
-        return [mapPerformer(null)]
-    }
-}
-
-const mapPerformer = (performer) => {
-    if(performer){
-        const genres = mapGenres(performer.genres);
-        return {
-            id: performer.id,
-            name: performer.name,
-            slug: performer.slug,
-            url: performer.url,
-            image: performer.image,
-            primary: performer.primary,
-            type: performer.type,
-            genres: genres,
-        }
-    }else{
-        const genres = mapGenres(null);
-        return {
-            id: null,
-            name: null,
-            url: null,
-            image: null,
-            primary: null,
-            type: null,
-            genres: genres
-        }
-    }
-}
-
-
-const mapGenres = (genres) => {
-    if(genres){
-        const mappedGenres = Object.values(genres).map((genre) => {
-            return mapGenre(genre)
-        })
-        return mappedGenres;
-    }else{
-        return [mapGenre(null)]
-    }
-}
-
-const mapGenre = (genre) => {
-    if(genre){
-        return {
-            id: genre.id,
-            name: genre.name,
-            primary: genre.primary,
-        }
-    }else{
-        return {
-            id: null,
-            name: null,
-            primary: null,
-        }
-    }
-}
-
-const mapVenues = (venues) => {
-    if(venues){
-        const mappedVenues = Object.values(venues).map((venue) => {
-            return mapVenue(venue)
-        })
-        return mappedVenues;
-    }else{
-        return [mapVenue(null)]
-    }
-}
-
-const mapVenue = (venue) => {
-    if(venue){
-        return {
-            name: venue.name,
-            id: venue.id,
-            address: venue.address,
-            city: venue.city,
-            state: venue.state,
-            url: venue.url,
-        }
-    }else{
-        return {
-            name: null,
-            id: null,
-            address: null,
-            city: null,
-            state: null,
-            url: null,
-        }
-    }
-}
-*/

@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
         height: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        //backgroundColor: '#383838'
     },
     arrow: {
     },

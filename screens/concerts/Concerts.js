@@ -1,31 +1,24 @@
 import React from 'react';
 import { useEffect, useState, useMemo, useRef } from 'react';
-import { StyleSheet, View, ScrollView, FlatList, Dimensions, ActivityIndicator  } from 'react-native';
+import { StyleSheet, View, Dimensions, ActivityIndicator  } from 'react-native';
 
-
-import { Colors, Screens, Buttons, Font } from '../../styles'
+import { Colors, Screens } from '../../styles'
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { TabView } from 'react-native-tab-view';
 
 import { getUserLocation } from "../../store/concerts/concertsActions"
 import { fetchAllConcertsAtLocation } from '../../store/concerts/effects/seatgeekEffects'
 
-//import PagedFlatlist from '../../components/PagedFlatlist'
-//import ConcertItemBig from '../../components/concerts/ConcertItemBig'
-
 import ConcertsTabs from '../../components/concerts/ConcertsTabs'
 import ConcertList from '../../components/concerts/ConcertList'
-import BaseText from '../../components/BaseText'
-
-
-import Icon from 'react-native-vector-icons/AntDesign'
-import { TouchableOpacity } from 'react-native';
-
+import FiltersButton from '../../components/concerts/FiltersButton'
 import { setFiltersAction} from '../../store/concerts/concertsActions'
 
 import { useNavigation } from '@react-navigation/native';
+
+
 
 const filterConcertsForArtists = (concerts, artists) => {
 
@@ -33,7 +26,6 @@ const filterConcertsForArtists = (concerts, artists) => {
   if(!concerts || !artists){
     return [];
   }
-  
 
   const performers = concerts.filter((concert) => {
     // return true to filter in
@@ -51,7 +43,6 @@ const filterConcertsForArtists = (concerts, artists) => {
 
 export default function Concerts( {  } ) {
 
-
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const seatgeekClientId = useSelector(state => state.authentication.APICredentials.seatgeek.client_id);
@@ -67,14 +58,18 @@ export default function Concerts( {  } ) {
   const [loadingConcerts, setLoadingConcerts] = useState(true);
 
 
+  const interestedConcerts = useSelector(state => state.concerts.interestedConcerts);
+
   const test = useMemo(() => {
     console.log('here boy lollll')
     return 8;
   }, [filters])
 
+  navigation.setOptions({
+    headerTitle: props => <FiltersButton filters = {filters} editFilters = {editFilters} />
+  })
 
-
-  useEffect(() => { 
+  useEffect(() => {
     const getAllConcerts = async () => {
       setLoadingConcerts(true);
       const concerts = await fetchAllConcertsAtLocation(seatgeekClientId,
@@ -91,7 +86,6 @@ export default function Concerts( {  } ) {
 
   useEffect(() => {
     if(userLocation){
-
       dispatch(setFiltersAction({
         ...filters,
         location: userLocation,
@@ -122,6 +116,7 @@ export default function Concerts( {  } ) {
   const [concertsRoutes] = useState([
     { key: 'artistConcerts', title: "My Concerts" },
     { key: 'allConcerts', title: 'All Concerts' },
+    { key: 'interestedConcerts', title: 'Favorites' },
   ]);
 
 
@@ -136,9 +131,20 @@ export default function Concerts( {  } ) {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'artistConcerts':
-        return <ConcertList concerts = {artistConcerts} loading = {loadingConcerts}/>;
+        return <ConcertList concerts = {artistConcerts} loading = {loadingConcerts}
+                  noConcertsHeader = "Sorry, no concerts found."
+                  noConcertsText = "Try expanding your filters to include more results."
+              />;
       case 'allConcerts':
-        return <ConcertList concerts = {allConcerts.current} loading = {loadingConcerts} />;
+        return <ConcertList concerts = {allConcerts.current} loading = {loadingConcerts}
+                  noConcertsHeader = "Sorry, no concerts found."
+                  noConcertsText = "Try expanding your filters to include more results or listen to more artists on Spotify"
+              />;
+        case 'interestedConcerts':
+          return <ConcertList concerts = {interestedConcerts} loading = {interestedConcerts == null}
+                  noConcertsHeader = "No conerts you are watching."
+                  noConcertsText = "Any concerts you have an interest for will show up here."
+              />;
       default:
         return null;
     }
@@ -147,13 +153,7 @@ export default function Concerts( {  } ) {
 
   return (
       <View style = {styles.container}>
-        <TouchableOpacity onPress = {() => editFilters() }>
-          <View style = {styles.filterContainer}>
-              <BaseText style = {styles.filterText}>{filters.location.displayString + " (" + filters.radius + "mi)"}</BaseText>
-              <Icon style = {styles.caretdown} name = "caretdown" size = {11} color = 'white' />
-          </View>
-        </TouchableOpacity>
-
+        
         <TabView
           renderTabBar={props => <ConcertsTabs {...props} />}
           navigationState={{
@@ -187,29 +187,13 @@ const loadingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     ...Screens.screenContainer,
-    paddingTop: 25,
-  },
-  filterContainer: {
-    paddingTop: 12,
-    paddingBottom: 2,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  filterText: {
-    fontSize: 18,
-    marginHorizontal: 6,
-    fontWeight: '600',
-  },
-  caretdown: {
-    paddingLeft: 0,
-    paddingTop: 5
+    paddingTop: 0,
   },
   loadingContainer: {
     ...Screens.screenContainer,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   concertListContainer: {
     ...Screens.screenContainer,
     padding: 10,

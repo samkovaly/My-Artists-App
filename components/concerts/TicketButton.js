@@ -30,13 +30,14 @@ const linkToSeatGeek = (url) => {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: Colors.BUTTON_TICKET_DARK_BLUE,
-        padding: 8,
-        borderRadius: 4,
-        width: 150,
-        alignItems: 'center',
-    },
-    text: {
-      fontSize: 22,
-    }
+        backgroundColor: Colors.CONCERT_CARD_BACKGROUND,
+            padding: 10,
+            borderRadius: 2,
+            //width: 165,
+            width: "80%",
+            alignItems: 'center',
+        },
+        text: {
+          fontSize: 18,
+        }
   });

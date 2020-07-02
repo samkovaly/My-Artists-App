@@ -27,14 +27,14 @@ export default function MyArtists(props) {
   const artists = Array.from(artistsMap.values());
 
   // example: top_artists_long_term_ranking
-  let longTermArtists = filterArtists(artists, 'top_artists_long_term');
-  longTermArtists = sortByProperty(longTermArtists, "top_artists_long_term_ranking")
+  let shortTermArtists = filterArtists(artists, 'top_artists_short_term');
+  shortTermArtists = sortByProperty(shortTermArtists, "top_artists_short_term_ranking")
 
   let mediumTermArtists = filterArtists(artists, 'top_artists_medium_term');
   mediumTermArtists = sortByProperty(mediumTermArtists, "top_artists_medium_term_ranking")
 
-  let shortTermArtists = filterArtists(artists, 'top_artists_short_term');
-  shortTermArtists = sortByProperty(shortTermArtists, "top_artists_short_term_ranking")
+  let longTermArtists = filterArtists(artists, 'top_artists_long_term');
+  longTermArtists = sortByProperty(longTermArtists, "top_artists_long_term_ranking")
 
   let followedArtists = filterArtists(artists, 'followed_artist');
   followedArtists = followedArtists.sort((a, b) => (a.name > b.name) ? 1 : -1);
@@ -56,16 +56,16 @@ export default function MyArtists(props) {
         />
 
         <ArtistHorizontalCards
-          title = "Favorite artists of all time"
-          artists = {longTermArtists}
+          title = "Favorite recent artists"
+          artists = {shortTermArtists}
         />
         <ArtistHorizontalCards
           title = "Favorite artists in the past 6 months"
           artists = {mediumTermArtists}
         />
         <ArtistHorizontalCards
-          title = "Favorite recent artists"
-          artists = {shortTermArtists}
+          title = "Favorite artists of all time"
+          artists = {longTermArtists}
         />
         <ArtistHorizontalCards
           title = "Artists you follow"

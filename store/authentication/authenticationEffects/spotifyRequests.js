@@ -1,7 +1,7 @@
 
 import { AuthSession } from 'expo';
 import Base64 from 'Base64';
-import { requestJSON, METHODS } from '../../../utilities/HTTPRequests';
+import { requestSpotify, METHODS } from '../../../utilities/HTTPRequests';
 
 
 const ACCOUNTS_URL = 'https://accounts.spotify.com/';
@@ -20,7 +20,7 @@ export const fetchUsername = async (accessToken) => {
     'Authorization': `Bearer ${accessToken}`,
     'Content-Type': 'application/json',
   }
-  const userProfile = await requestJSON(USER_PROFILE_URL, METHODS.GET, headers);
+  const userProfile = await requestSpotify(USER_PROFILE_URL, METHODS.GET, headers);
   //console.log('userProfile:', userProfile)
   return userProfile.id
 }
@@ -76,7 +76,7 @@ const fetchUserTokens = async (appCredentials, body) =>{
         Authorization: `Basic ${appCredentialsB64}`,
         'Content-Type': 'application/x-www-form-urlencoded',
     }
-    const tokensData = await requestJSON(TOKEN_ENDPOINT, METHODS.POST, headers, body)
+    const tokensData = await requestSpotify(TOKEN_ENDPOINT, METHODS.POST, headers, body)
 
     const expireTime = new Date().getTime() + tokensData.expires_in * 1000;
     const tokens = {

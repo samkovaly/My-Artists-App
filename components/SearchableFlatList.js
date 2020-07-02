@@ -17,7 +17,7 @@ const queryElements = (elements, query, queryKey) => {
 
 
 
-const SearchableFlatList = ({query, elements, queryKey, renderElementComponent, pageSize, style}) => {
+const SearchableFlatList = ({query, elements, queryKey, renderElementComponent, pageSize, style, onEndReachedThreshold}) => {
     // elements must have a queryKey property to be indexable.
     const queriedElements = useMemo(() => queryElements(elements, query, queryKey), [query])
 
@@ -27,6 +27,7 @@ const SearchableFlatList = ({query, elements, queryKey, renderElementComponent, 
             elements={queriedElements}
             renderElementComponent = {renderElementComponent}
             pageSize={pageSize}
+            onEndReachedThreshold = {onEndReachedThreshold}
         />
   );
 }

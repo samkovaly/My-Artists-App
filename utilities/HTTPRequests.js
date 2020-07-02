@@ -4,11 +4,37 @@
 export const METHODS = {
   GET: 'GET',
   POST: 'POST',
+  DELETE: 'DELETE',
 }
 
 
 
+
+/* STANDARD JSON RETURN
+
+*/
+
+export const requestSpotify = async(URL, method, headers = null, body = null) => {
+  const responseJson = await requestJSON(URL, method, headers, body);
+  if(responseJson.error){
+    console.log("ERROR while requesting spotify: " + URL + " with method " + method
+      + " and headers " + headers + " and body " + body)
+    if(responseJson.error.hasOwnProperty('status')){
+      console.log("Status:", responseJson.error.status, ', message:', responseJson.error.message);
+    }else{
+      console.log(responseJson.error, 'error description:', responseJson.error_description);
+    }
+  }
+  return responseJson;
+}
+
+export const requestBackend = async(URL, method, headers = null, body = null) => {
+  const responseJson = await requestJSON(URL, method, headers, body);
+  return responseJson;
+}
+
 export const requestJSON = async (URL, method, headers = null, body = null) => {
+  //console.log('attempting ', URL, ' with method', method, ', headrs', headers, 'body', body)
     const response = await fetch(URL, {
         method: method,
         headers: headers,
@@ -19,24 +45,13 @@ export const requestJSON = async (URL, method, headers = null, body = null) => {
       responseJson = await response.json();
     }catch(error){
       console.log('response.json() error: ', error);
+      console.log('for ', URL, method, headers, body)
       return null;
     }
-    
-    if(responseJson.error){
-      console.log("ERROR while requesting " + URL + " with method " + method
-        + " and headers " + headers + " and body " + body)
-
-      if(responseJson.error.hasOwnProperty('status')){
-        console.log("Status:", responseJson.error.status, ', message:', responseJson.error.message);
-      }else{
-        console.log(responseJson.error, 'error description:', responseJson.error_description);
-      }
-
-      return responseJson;
-    }
-
     return responseJson;
 }
+
+
 
 export const requestXML = async (URL, method, headers = null, body = null) => {
 

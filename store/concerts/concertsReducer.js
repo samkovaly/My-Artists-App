@@ -1,5 +1,6 @@
 
 import { SET_USER_LOCATION, SET_ALL_CONCERTS, SET_FILTERS } from './concertsActions'
+import { SET_INTERESTED_CONCERTS, ADD_INTERESTED_CONCERT, REMOVE_INTERESTED_CONCERT } from './concertsActions'
 
 import { LOGOUT } from '../globalActions'
 
@@ -17,14 +18,21 @@ const initialState = {
       state: null,
       country: null,
       USA: null,
-      displayString: "no location",
+      displayString: null,
     }
-  }
+  },
+  interestedConcerts: null,
+}
+
+const sortByDate = (concerts) => {
+  concerts.sort((a, b) => (a.datetime_utc > b.datetime_utc) ? 1 : -1)
+  return concerts;
 }
 
 export default function(state = initialState, action) {
+  let sortedConcerts = null;
+
   switch (action.type) {
-    
     case SET_ALL_CONCERTS:
       return {
         ...state,
@@ -42,6 +50,37 @@ export default function(state = initialState, action) {
         filters: action.payload,
       }
   
+    case SET_INTERESTED_CONCERTS:
+      sortedConcerts = sortByDate(action.payload);
+      return {
+        ...state,
+        interestedConcerts: sortedConcerts,
+      }
+        
+    case ADD_INTERESTED_CONCERT:
+      let concerts = [...state.interestedConcerts, action.payload];
+      sortedConcerts = sortByDate(concerts);
+      return {
+        ...state,
+        interestedConcerts: sortedConcerts,
+      }
+
+    case REMOVE_INTERESTED_CONCERT:
+      // payload is different here, just needs to be the ID
+      let concertID = action.payload;
+      let interestedConcerts = state.interestedConcerts.filter((concert) => {
+        if(concert.id == concertID){
+          return false;
+        }else{
+          return true;
+        }
+      })
+
+      sortedConcerts = sortByDate(interestedConcerts);
+      return {
+        ...state,
+        interestedConcerts: interestedConcerts,
+      }
 
     case LOGOUT:
       return initialState;

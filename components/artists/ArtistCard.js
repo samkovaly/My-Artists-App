@@ -35,7 +35,7 @@ const BORDER_RADIUS = 12;
 
 const styles = StyleSheet.create({
     shadow: {
-        shadowColor: "#000",
+        shadowColor: "#000000",
         shadowOffset: {
             width: 0,
             height: 12,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         padding: 6,
     },
     textShadow: {
-        textShadowColor: '#000',
+        textShadowColor: '#000000',
         textShadowRadius: 3,
         textShadowOffset: { width: 2, height: 2 },
       },

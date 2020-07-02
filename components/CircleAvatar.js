@@ -6,7 +6,6 @@ import { getConcertImageSource } from '../utilities/imageSources'
 
 
 const CircleAvatar = ({ concert, radius }) => {
-
     return (
         <View style = {styles.container}>
             <Image

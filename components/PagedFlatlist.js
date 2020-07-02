@@ -6,7 +6,7 @@ import { Colors, Screens, Buttons, Font } from '../styles'
 
 
 
-const PagedFlatlist = ({elements, renderElementComponent, pageSize, style}) => {
+const PagedFlatlist = ({elements, renderElementComponent, pageSize, style, onEndReachedThreshold}) => {
 
     const [page, setPage] = useState(1);
 
@@ -23,7 +23,7 @@ const PagedFlatlist = ({elements, renderElementComponent, pageSize, style}) => {
             renderItem={({ item }) => renderElementComponent(item)}
             keyExtractor={item => item.id.toString()}
             onEndReached={loadNextPage}
-            onEndReachedThreshold={1}
+            onEndReachedThreshold={onEndReachedThreshold}
             onScrollBeginDrag={() => Keyboard.dismiss()}
             keyboardShouldPersistTaps = {'handled'}
         />

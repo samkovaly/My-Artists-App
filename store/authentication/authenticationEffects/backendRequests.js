@@ -1,5 +1,5 @@
 
-import { requestJSON, METHODS } from '../../../utilities/HTTPRequests'
+import { requestBackend, METHODS } from '../../../utilities/HTTPRequests'
 
 // localDevIP will be replaced with a real backend URL once the backend is diployed
 import { localDevIP, APIMasterKey } from '../../../localDevVariables';
@@ -21,12 +21,12 @@ const AUTH_MASTER_KEY_HEADER = {
     'Content-Type': 'application/json',
 }
 export const fetchSpotifyAppCredentials = async () => {
-    const credentials = await requestJSON(BACKEND_APP_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
+    const credentials = await requestBackend(BACKEND_APP_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
     //console.log(credentials)
     return credentials
 };
 export const fetchAPICredentials = async () => {
-    const credentials = await requestJSON(BACKEND_API_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
+    const credentials = await requestBackend(BACKEND_API_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
     //console.log(credentials)
     return credentials
 };
@@ -43,7 +43,7 @@ export const registerUserForAuthToken = async (username, refreshToken, accessTok
         'access_token': accessToken,
     }
     //console.log('register body:', body)
-    const registerResult = await requestJSON(BACKEND_REGISTER, METHODS.POST, headers, JSON.stringify(body))
+    const registerResult = await requestBackend(BACKEND_REGISTER, METHODS.POST, headers, JSON.stringify(body))
     //console.log('\n1 Register result:', registerResult, '\n')
     return registerResult
 }
@@ -58,7 +58,7 @@ export const LoginUserForAuthToken = async (username, refreshToken) => {
         'username': username,
         'refresh_token': refreshToken,
     }
-    const loginResult = await requestJSON(BAKEND_LOGIN, METHODS.POST, headers, JSON.stringify(body))
+    const loginResult = await requestBackend(BAKEND_LOGIN, METHODS.POST, headers, JSON.stringify(body))
     //console.log('\n1 Login result:', loginResult, '\n')
-    return loginResult.token
+    return loginResult
 }

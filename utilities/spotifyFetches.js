@@ -1,5 +1,5 @@
 
-import { requestJSON, METHODS } from './HTTPRequests';
+import { requestSpotify, METHODS } from './HTTPRequests';
 
 // https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/
 export const fetchArtist = async (accessToken, artistID) => {
@@ -10,7 +10,7 @@ export const fetchArtist = async (accessToken, artistID) => {
         'Content-Type': 'application/json',
       }
     
-    const artistJSON = await requestJSON(url, METHODS.GET, headers);
+    const artistJSON = await requestSpotify(url, METHODS.GET, headers);
     return artistJSON;
 } 
 
@@ -25,7 +25,7 @@ export const getRelatedArtists = async (accessToken, artistID) => {
       'Content-Type': 'application/json',
     }
   
-  const artistJSON = await requestJSON(url, METHODS.GET, headers);
+  const artistJSON = await requestSpotify(url, METHODS.GET, headers);
   return artistJSON.artists;
 } 
 
@@ -36,7 +36,7 @@ export const getArtistID = async (accessToken, name) => {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     }
-  const artistJSON = await requestJSON(url, METHODS.GET, headers);
+  const artistJSON = await requestSpotify(url, METHODS.GET, headers);
   // take first
   return artistJSON.artists.items[0].id;
 }
@@ -60,12 +60,23 @@ export const queryArtistsAtPage = async (query, page, perPage, accessToken) => {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     }
-  const artistJSON = await requestJSON(url, METHODS.GET, headers);
+  const artistJSON = await requestSpotify(url, METHODS.GET, headers);
 
   if(artistJSON.artists && artistJSON.artists.items && artistJSON.artists.items.length > 0){
     const artists = artistJSON.artists.items;
-    const filteredArtists = artists.filter((artist) => {return artist.popularity > 10});
-    return artists;
+
+    let filteredArtists = [];
+    let seen = {};
+    for(let i = 0; i < artists.length; i+=1){
+      let artist = artists[i]
+      if(artist.name in seen && artist.popularity < 20){
+        continue;
+      }
+      seen[artist.name] = true;
+      filteredArtists.push(artist);
+    }
+    //const filteredArtists = artists.filter((artist) => {return artist.popularity > 10});
+    return filteredArtists;
   }else{
     return [];
   }

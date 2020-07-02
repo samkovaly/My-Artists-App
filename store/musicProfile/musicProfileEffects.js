@@ -1,6 +1,6 @@
 
 
-import { requestJSON, METHODS } from '../../utilities/HTTPRequests'
+import { requestBackend, METHODS } from '../../utilities/HTTPRequests'
 import { BACKEND_USERS } from '../authentication/authenticationEffects/backendRequests'
 
 const BACKEND_MUSIC_PROFILE = `${BACKEND_USERS}music_profile/`;
@@ -20,7 +20,7 @@ export const loadNewMusicProfile = async(username, backendAuthToken, accessToken
     const body = {
         'access_token': accessToken,
     }
-    const refreshStatus = await requestJSON(BACKEND_MUSIC_PROFILE + username, METHODS.POST, headers, JSON.stringify(body))
+    const refreshStatus = await requestBackend(BACKEND_MUSIC_PROFILE + username, METHODS.POST, headers, JSON.stringify(body))
     return refreshStatus;
 }
 
@@ -30,7 +30,7 @@ export const fetchMusicProfile = async(username, backendAuthToken) => {
         'Authorization': `Token ${backendAuthToken}`,
         'Content-Type': 'application/json',
     };
-    const getResult = await requestJSON(BACKEND_MUSIC_PROFILE + username, METHODS.GET, headers)
+    const getResult = await requestBackend(BACKEND_MUSIC_PROFILE + username, METHODS.GET, headers)
     return getResult
 }
 

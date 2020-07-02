@@ -74,7 +74,7 @@ export default function ArtistDetail({ route }) {
             relatedArtists = spotifyArtistsGetArtists(relatedArtists, extractedArtistsSlugMap);
             setRelatedArtists(relatedArtists);
 
-            const months = 6;
+            const months = 24;
             setConcerts(await fetchAllConcertsForArtist(artist, months, seatgeekClientId, userLocation.latitude, userLocation.longitude, radius))
         }
 
@@ -85,40 +85,6 @@ export default function ArtistDetail({ route }) {
         }
 
     }, [userLocation])
-
-
-/*artists: {
-      "followed_artist": false,
-      "id": "0r371dCcixw9isainQEkD6",
-      "image": "https://i.scdn.co/image/ab67616d0000b2738d3ae370b3ee10754ee0a87e",
-      "name": "Verbal",
-      "tracks" : [id, id, ...],
-      "genres" : ['edm', 'trap', ...]
-      "top_artists_long_term": false,
-      "top_artists_medium_term": false,
-      "top_artists_short_term": false,
-      }
-
-fetched artist:  Object {
-  "external_urls": Object {
-    "spotify": "https://open.spotify.com/artist/1MLHhM4z0lGE7P3ziq177C",
-  },
-  "followers": Object {
-    "href": null,
-    "total": 11,
-  },
-  "genres": Array [],
-  "href": "https://api.spotify.com/v1/artists/1MLHhM4z0lGE7P3ziq177C",
-  "id": "1MLHhM4z0lGE7P3ziq177C",
-  "images": Array [],
-  "name": "9 Theory",
-  "popularity": 30,
-  "type": "artist",
-  "uri": "spotify:artist:1MLHhM4z0lGE7P3ziq177C",
-}
-*/
-
-
 
 
     if(!concerts || !relatedArtists){
@@ -142,7 +108,7 @@ fetched artist:  Object {
             {tracks? displayTracks(tracks): null}
             {displayRelatedArtists(relatedArtists)}
 
-            {artist.userExtracted? displayFoundIn(artist): null}
+            { /* artist.userExtracted? displayFoundIn(artist): null */ }
         </ScrollView>
     );
 }

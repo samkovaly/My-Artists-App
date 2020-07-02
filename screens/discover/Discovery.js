@@ -30,6 +30,7 @@ export default function Discovery({}) {
   const [previewConcerts, setPreviewConcerts] = useState([])
   const [previewArtists, setPreviewArtists] = useState([])
 
+  const previewFetch = 5;
   const previewLength = 3;
 
   const lastConcertsPromise = useRef(null);
@@ -39,11 +40,11 @@ export default function Discovery({}) {
     const fetchPreview = async() => {
       // record this promise, compare to latest promise later
       const accessToken = await updateAndGetAccessToken(dispatch);
-      const currentConcertsPromise = await queryConcertsAtPage(query, 1, previewLength, seatgeekClientId);
+      const currentConcertsPromise = await queryConcertsAtPage(query, 1, previewFetch, seatgeekClientId);
       lastConcertsPromise.current = currentConcertsPromise;
       const concerts = await currentConcertsPromise;
 
-      const currentArtistsPromise = await queryArtistsAtPage(query, 1, previewLength, accessToken);
+      const currentArtistsPromise = await queryArtistsAtPage(query, 1, previewFetch, accessToken);
       lastArtistsPromise.current = currentArtistsPromise;
       let artists = await currentArtistsPromise;
       

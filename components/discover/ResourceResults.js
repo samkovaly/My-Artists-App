@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
 
   listContainer: {
       marginHorizontal: 6,
+      paddingBottom: 60,
   }
 
 });
