@@ -42,19 +42,23 @@ const ConcertItem = ({ concert, elementHeight, titleFontSize, subtextFontSize, m
           <BaseText style={[styles.venue, {fontSize: subtextFontSize}]}>{concert.venue ? concert.venue.name: "N/A"}</BaseText>
           <BaseText style={[styles.city, {fontSize: subtextFontSize}]}>{concert.venue.city}, {concert.venue.state}</BaseText>
         </View>
-        <BaseText style={[styles.date, {fontSize: subtextFontSize}]}>{displayDate}</BaseText>
-      </View>
+          { concert.date_tbd ? 
+            <BaseText style={[styles.date, {fontSize: subtextFontSize}]}>Date TBD</BaseText>
+          :
+            <BaseText style={[styles.date, {fontSize: subtextFontSize}]}>{displayDate}</BaseText>
+          }
+        </View>
     </View>
     )
 
     if(pressForDetail){
       return (
         <TouchableWithoutFeedback onPress={() => navigation.navigate("ConcertDetail", {concert})}>
-            {innerContainer(concert.displayDate)}
+            {innerContainer(concert.displayDateShort)}
         </TouchableWithoutFeedback>
       )
     }else{
-      return innerContainer(concert.displayDate);
+      return innerContainer(concert.displayDateShort);
     }
 
 }
@@ -68,7 +72,7 @@ export default ConcertItem;
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: Colors.BACKGROUND_DARK_BLUE,
+      backgroundColor: Colors.CONCERT_ITEM_BACKGROUND,
       flexDirection: 'row',
       alignItems: 'center',
       borderRadius: 10,
@@ -84,6 +88,7 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'column',
       marginLeft: 14,
+      marginVertical: 3,
     },
 
     artist: {

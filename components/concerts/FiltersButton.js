@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
       fontWeight: '600',
     },
     caretdown: {
-      paddingLeft: 0,
+      marginLeft: -2,
       paddingTop: 5
     }
 });

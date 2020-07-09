@@ -16,8 +16,8 @@ const ConcertsTab = (props) => {
     return (
         <TabBar
         {...props}
-        indicatorStyle={{ backgroundColor: Colors.TAB_NAV_BLUE }}
-        style={{ backgroundColor: Colors.BACKGROUND_DARK_BLUE }}
+        indicatorStyle={{ backgroundColor: Colors.THEME_BLUE }}
+        style={{ backgroundColor: Colors.SCREEN_BACKGROUND }}
         pressOpacity = {0.60}
         renderLabel={({ route, focused, color }) => (
             <BaseText style={[styles.tabText, {color: color}]}>
@@ -32,6 +32,7 @@ const ConcertsTab = (props) => {
 const styles = StyleSheet.create({
   tabText: {
     fontSize: 16,
+    fontWeight: '400',
     margin: 0,
   }
 })

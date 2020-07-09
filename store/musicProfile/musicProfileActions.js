@@ -44,20 +44,25 @@ export const getMusicProfile = () => {
         
         const musicProfile = await fetchMusicProfile(auth.username, auth.backendAuthToken);
 
-        const musicProfileJSON = JSON.parse(musicProfile.music_profile_JSON)
-        let lastRefreshed = musicProfile.last_refreshed
-        lastRefreshed = getDisplayDate(lastRefreshed)
+        if(musicProfile.music_profile_JSON.length > 0){
 
-        const artists = JSON.parse(musicProfileJSON.artists)
-        const artistsMap = makeArtistsIntoSlugMap(artists)
+            const musicProfileJSON = JSON.parse(musicProfile.music_profile_JSON)
+            let lastRefreshed = musicProfile.last_refreshed
+            lastRefreshed = getDisplayDate(lastRefreshed, true);
 
-        const tracks = JSON.parse(musicProfileJSON.tracks)
-        const tracksMap = makeTracksIntoIDMap(tracks)
+            const artists = JSON.parse(musicProfileJSON.artists)
+            const artistsMap = makeArtistsIntoSlugMap(artists)
 
-        console.log('dispatching new music profile to redux state...')
-        await dispatch(setArtistsAction(artistsMap))
-        await dispatch(setTracksAction(tracksMap))
-        await dispatch(setLastRefreshed(lastRefreshed));
+            const tracks = JSON.parse(musicProfileJSON.tracks)
+            const tracksMap = makeTracksIntoIDMap(tracks)
+
+            console.log('dispatching new music profile to redux state...')
+            await dispatch(setArtistsAction(artistsMap))
+            await dispatch(setTracksAction(tracksMap))
+            await dispatch(setLastRefreshed(lastRefreshed));
+        }else{
+            console.log('music profile JSON returned in empty, did not set the redux state.')
+        }
     }
 }
 

@@ -12,7 +12,7 @@ const CreateCalendarEventButton = ({ concert }) => {
         <TouchableOpacity
             //onPress={}
         >
-            <Icon name = "calendar" color = {Colors.TAB_NAV_BLUE} size = {28} />
+            <Icon name = "calendar" color = {Colors.THEME_BLUE} size = {28} />
         </TouchableOpacity>
     )
 }

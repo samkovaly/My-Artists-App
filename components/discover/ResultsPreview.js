@@ -1,12 +1,11 @@
 import React from 'react';
-import { useMemo } from 'react'
-
-import { Colors, Screens, Buttons, Font } from '../../styles'
+import { Colors } from '../../styles'
 
 
 import { View, ScrollView, Keyboard, TouchableHighlight, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import BaseText from '../BaseText';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 
@@ -29,6 +28,7 @@ const ResultsPreview = ({ sections, query, style }) => {
                 <TouchableHighlight onPress={() => navigation.navigate(section.expandSearchNav, {initialQuery: query})}>
                     <View style = {styles.moreResultsView}>
                         <BaseText style = {styles.moreResults}>more results</BaseText>
+                        <Icon style = {styles.arrow} name="keyboard-arrow-right" size={25} color={Colors.SUB_TEXT_GREY} />
                     </View>
                 </TouchableHighlight>
             </View>
@@ -45,15 +45,14 @@ export default ResultsPreview;
 const styles = StyleSheet.create({
     header: {
         fontSize: 26,
-        alignSelf: 'center',
         marginTop: 10,
         marginBottom: 4,
+        marginLeft: 8,
     },
     moreResultsView: {
-        borderColor: 'white',
-        borderWidth: 0.5,
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row',
         marginTop: 6,
         marginBottom: 16,
         marginHorizontal: 8,
@@ -64,8 +63,13 @@ const styles = StyleSheet.create({
         //marginLeft: 12,
         //marginVertical: 4,
         //color: Colors.SUB_TEXT_GREY,
-        color: 'white',
+        color: Colors.SUB_TEXT_GREY,
         fontWeight: 'normal',
+    },
+    arrow: {
+        //position: 'absolute',
+        //right: 10,
+        marginTop: 2,
     },
     list: {
         marginHorizontal: 12,

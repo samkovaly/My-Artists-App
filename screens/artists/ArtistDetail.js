@@ -18,7 +18,7 @@ import { getUserLocation } from '../../store/concerts/concertsActions'
 
 
 import ConcertItemBig from '../../components/concerts/ConcertItemBig'
-import BasicTrack from '../../components/tracks/BasicTrack'
+import TrackItem from '../../components/tracks/TrackItem'
 //import RelatedArtist from '../../components/artists/RelatedArtist'
 
 import ExpandableList from '../../components/ExpandableList'
@@ -90,7 +90,7 @@ export default function ArtistDetail({ route }) {
     if(!concerts || !relatedArtists){
       return(
         <View style = {styles.loadingScreen}>
-          <ActivityIndicator color={Colors.TAB_NAV_BLUE} size = "large" />
+          <ActivityIndicator color={Colors.THEME_BLUE} size = "large" />
         </View>
       )
     }
@@ -145,7 +145,7 @@ const displayTracks = (tracks) => {
         <ExpandableList
             elements = {tracks}
             renderElementComponent={(track) =>
-              <BasicTrack key={track.id} track = {track} />
+              <TrackItem key={track.id} track = {track} />
             }
             initialPageSize = {4}
             style = {{}}

@@ -120,6 +120,6 @@ const styles = StyleSheet.create({
   subHeader: {
     fontSize: 26,
     fontWeight: '200',
-    color: Colors.BLUE_GREY_TEXT,
+    color: Colors.LIGHT_GREY,
   },
 });

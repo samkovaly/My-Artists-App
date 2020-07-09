@@ -97,7 +97,7 @@ export default ConcertFilters;
 const styles = StyleSheet.create({
     modalContainer: {
         ...Screens.screenContainer,
-        backgroundColor: Colors.BLUE_GREY,
+        //backgroundColor: Colors.GREY,
 
         flexDirection: 'column',
         alignItems: 'center',
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         //width: 300,
         //alignSelf: 'center',
         //padding: 0,
-        backgroundColor: Colors.SPOTIFY_GREEN,
+        backgroundColor: Colors.THEME_BLUE,
         marginBottom: 25,
     },
     buttonText: {

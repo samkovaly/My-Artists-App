@@ -35,11 +35,17 @@ export const requestBackend = async(URL, method, headers = null, body = null) =>
 
 export const requestJSON = async (URL, method, headers = null, body = null) => {
   //console.log('attempting ', URL, ' with method', method, ', headrs', headers, 'body', body)
-    const response = await fetch(URL, {
-        method: method,
-        headers: headers,
-        body: body,
-    })
+    let response = null;
+    try{
+      response = await fetch(URL, {
+          method: method,
+          headers: headers,
+          body: body,
+      })
+    }catch(error){
+      console.log("network error: ", error, " with URL:", URL, "method: ", method, "headers:", headers, "and body:", body)
+    }
+
     let responseJson = null;
     try{
       responseJson = await response.json();

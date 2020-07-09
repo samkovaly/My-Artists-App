@@ -24,7 +24,6 @@ const SettingsElement = ({ children, text, textStyle, containerStyle, onPress })
         return (
             <TouchableHighlight
                 onPress = {onPress}
-                underlayColor={Colors.SETTINGS_BUTTON_HIGHLIGHT}
                 activeOpacity={1}
                 style = {[styles.outerContainer, containerStyle]}
             >
@@ -54,7 +53,7 @@ const height = 50;
   
 const styles = StyleSheet.create({
     outerContainer: {
-        //backgroundColor: Colors.FOREGROUND_BLUE,
+        //backgroundColor: Colors.SCREEN_FOREGROUND,
         //borderTopWidth: borderVerticalWidth,
         //borderBottomWidth: borderVerticalWidth,
         //borderColor: 'grey',
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
         height: height,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Colors.FOREGROUND_BLUE
+        backgroundColor: Colors.SCREEN_FOREGROUND
     },
     text: {
       fontSize: 17,

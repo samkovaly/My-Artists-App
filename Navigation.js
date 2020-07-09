@@ -53,9 +53,10 @@ import Feather from 'react-native-vector-icons/Feather'
 
   const stackScreenOptions = {
     headerStyle: {
-      backgroundColor: Colors.FOREGROUND_BLUE,
+      backgroundColor: Colors.TOP_NAV,
       shadowOffset: { height: 0, width: 0 },
     },
+    headerBackTitle: null,
     headerTintColor: 'white',
     headerTitleStyle: {
       fontWeight: 'bold',
@@ -75,7 +76,8 @@ import Feather from 'react-native-vector-icons/Feather'
           name = name.slice(0,trimLength) + "...";
         }
         return {
-          title: name
+          title: name,
+          headerBackTitleVisible: false,
         }
       }}
     />
@@ -93,7 +95,8 @@ import Feather from 'react-native-vector-icons/Feather'
           name = name.slice(0,trimLength) + "...";
         }
         return {
-          title: name
+          title: name,
+          headerBackTitleVisible: false,
         }
       }}
     />
@@ -111,6 +114,7 @@ import Feather from 'react-native-vector-icons/Feather'
           options={{
             title: 'My Artists',
             headerShown: true,
+            headerBackTitleVisible: false,
           }}
         />
         <Stack.Screen
@@ -136,7 +140,7 @@ import Feather from 'react-native-vector-icons/Feather'
             component={Concerts}
             options={{
               //title: 'Concerts',
-              headerShown: true,
+              //headerShown: true,
             }}
           />
           { concertDetailScreen() }
@@ -163,12 +167,18 @@ import Feather from 'react-native-vector-icons/Feather'
       <Stack.Screen
         name="ArtistSearch"
         component={ArtistSearch}
-        options={{ title: 'Discover Artists' }}
+        options={{
+          title: 'Discover Artists',
+          headerBackTitleVisible: false,
+        }}
       />
       <Stack.Screen
         name="ConcertSearch"
         component={ConcertSearch}
-        options={{ title: 'Discover Concerts' }}
+        options={{
+          title: 'Discover Concerts',
+          headerBackTitleVisible: false,
+        }}
       />
       { concertDetailScreen() }
       { ArtistDetailScreen() }
@@ -193,18 +203,25 @@ import Feather from 'react-native-vector-icons/Feather'
       <Stack.Screen
         name="NotificationSettings"
         component={NotificationSettings}
-        options={{title: 'Notifications'}}
+        options={{
+          title: 'Notifications',
+          headerBackTitleVisible: false,
+        }}
       />
       <Stack.Screen
         name="TermsOfUse"
         component={TermsOfUse}
-        options={{title: 'Terms of use'}}
+        options={{
+          title: 'Terms of use',
+          headerBackTitleVisible: false,
+        }}
       />
       <Stack.Screen
         name="AnalyzeSpotify"
         component={AnalyzeSpotify}
         options={{
           title: 'Spotify',
+          headerBackTitleVisible: false,
         }}
       />
     </Stack.Navigator>
@@ -238,14 +255,15 @@ import Feather from 'react-native-vector-icons/Feather'
               },
             })} 
             tabBarOptions = {{
-              activeTintColor: Colors.TAB_NAV_BLUE,
-              inactiveTintColor: Colors.TAB_NAV_GREY,
+              activeTintColor: Colors.THEME_BLUE,
+              inactiveTintColor: Colors.BOTTOM_NAV_INACTIVE,
               labelStyle: {
                 fontSize: 12,
               },
               style: {
-                backgroundColor: Colors.FOREGROUND_BLUE,
-                borderTopWidth: 0,
+                backgroundColor: Colors.BOTTOM_NAV,
+                borderTopWidth: 0.5, //0,
+                borderTopColor: '#000000',
               }
             }}
           >
@@ -278,7 +296,7 @@ import Feather from 'react-native-vector-icons/Feather'
                 // onPress defaults to goBack()
                 <TouchableOpacity onPress={onPress} >
                   <Text style = {{
-                      color: Colors.TAB_NAV_BLUE,
+                      color: Colors.THEME_BLUE,
                       fontSize: 17,
                       fontWeight: '700',
                       marginLeft: 12,

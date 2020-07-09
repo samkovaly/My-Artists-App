@@ -29,8 +29,11 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
         ref = {googlePlacesRef}
 
         onPress={(data, details = null) => {
+            googlePlacesRef.current.clearDatur();
+
             if(data.isUserLocation){
-                return data.location;
+                setLocation(data.location);
+                return;
             }
 
             const city = data.terms[0].value;
@@ -55,7 +58,6 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
                 displayString,
             });
 
-            googlePlacesRef.current.clearDatur();
 
         }}
         query={{
@@ -83,7 +85,7 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
         }
         renderRightButton = { () =>
             <TouchableWithoutFeedback style = {styles.closeContainer} onPress = {() => googlePlacesRef.current.clearDatur()}>
-                <Icon style = {styles.close} name = 'close-circle' size = {22} color = {Colors.TAB_NAV_GREY}/>
+                <Icon style = {styles.close} name = 'close-circle' size = {22} color = {Colors.LIGHT_GREY}/>
             </TouchableWithoutFeedback>
         }
 
@@ -121,12 +123,12 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
                 paddingTop: 14,
             },
             description: {
-                //backgroundColor: Colors.BLUE_GREY,
+                //backgroundColor: Colors.GREY,
                 color: 'white',
                 fontSize: 16,
             },
             predefinedPlacesDescription: {
-                color: Colors.TAB_NAV_BLUE,
+                color: Colors.THEME_BLUE,
                 fontWeight: '500',
             },
         }}

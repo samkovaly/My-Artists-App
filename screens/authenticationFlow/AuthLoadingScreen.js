@@ -117,7 +117,7 @@ const loadingScreen = () => {
         <View style = {styles.loadingScreen}>
             <ActivityIndicator
                 size = 'large'
-                color = {Colors.TAB_NAV_BLUE}
+                color = {Colors.THEME_BLUE}
             />
         </View>
         //<SplashArt/>

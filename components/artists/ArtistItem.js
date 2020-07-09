@@ -51,7 +51,7 @@ const imageHeightRatio = 0.85;
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: Colors.BACKGROUND_DARK_BLUE,
+      backgroundColor: Colors.ARTIST_ITEM_BACKGROUND,
       height: elementHeight,
       flexDirection: 'row',
       alignItems: 'center',

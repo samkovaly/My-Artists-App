@@ -11,6 +11,7 @@ import ErrorCard from '../../components/ErrorCard';
   
 import SettingsOpenScreenButton from '../../components/settings/SettingsOpenScreenButton';
 import SettingsActionButton from '../../components/settings/SettingsActionButton';
+import { setRefreshSpotifyError } from '../../store/musicProfile/musicProfileActions'
 
 import { twoButtonConfirmAlert } from '../../utilities/alerts'
 import { useNavigation } from '@react-navigation/native';
@@ -64,16 +65,19 @@ export default function Settings(props) {
             <BaseText style = {styles.topText} >Spotify account name: {username}</BaseText>
             <BaseText style = {styles.topText} >Last refreshed: {lastRefreshed}</BaseText>
 
+            { /*
             <SettingsOpenScreenButton
               text = "Notifications"
               screen = "NotificationSettings"
               style = {styles.elementGroupLead}
             />
-
+            */ }
+            
             <SettingsOpenScreenButton
               text = "Terms of Use"
               screen = "TermsOfUse"
-              style = {styles.elementGrouped}
+              //style = {styles.elementGrouped}
+              style = {styles.elementGroupLead}
             />
 
             <SettingsActionButton

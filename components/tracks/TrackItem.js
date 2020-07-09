@@ -21,9 +21,7 @@ import { getTrackImageSource } from '../../utilities/imageSources'
 }
   */
 
-const BasicTrack = ({ track }) => {
-
-
+const TrackItem = ({ track }) => {
     let trackName = track.name;
     if(trackName.length > 35){
         trackName = trackName.slice(0, 35) + '...';
@@ -45,7 +43,7 @@ const BasicTrack = ({ track }) => {
       )
 }
 
-export default BasicTrack;
+export default TrackItem;
 
 
 
@@ -67,7 +65,7 @@ const imageHorizontalMargin = (elementHeight - (elementHeight * imageHeightRatio
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-      backgroundColor: Colors.FOREGROUND_BLUE,
+      backgroundColor: Colors.TRACK_ITEM_BACKGROUND,
       marginVertical: 2,
       marginHorizontal: 6,
       height: elementHeight,

@@ -51,7 +51,7 @@ const imageHorizontalMargin = (elementHeight - (elementHeight * imageHeightRatio
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: Colors.ARTIST_CARD_BACKGROUND,
+      backgroundColor: Colors.CONCERT_SECTION_BACKGROUND,
       marginVertical: 2,
       marginHorizontal: 6,
       height: elementHeight,

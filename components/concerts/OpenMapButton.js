@@ -11,7 +11,7 @@ const OpenMapButton = ({ name, lat, lon}) => {
     return (
         <TouchableOpacity
             onPress={() => openMap(name, lat, lon)}>
-            <Icon name = "map-marker" color = {Colors.TAB_NAV_BLUE} size = {28} />
+            <Icon name = "map-marker" color = {Colors.THEME_BLUE} size = {28} />
         </TouchableOpacity>
     )
 }

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     //height: HEIGHT,
     marginRight: 24,
     flexDirection: 'column',
-    //backgroundColor: Colors.GENRE_BACKGROUND_COLOR,
+    //backgroundColor: Colors.THEME_BLUE,
     //alignItems: 'center',
     //justifyContent: 'center',
     //borderColor: 'white',

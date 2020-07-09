@@ -30,7 +30,7 @@ const SearchBar = ({ initialText, searchCallback, placeholderText, containerStyl
         <TextInput
             style = {styles.typingText}
             placeholder = {placeholderText}
-            placeholderTextColor={Colors.TAB_NAV_GREY}
+            placeholderTextColor={Colors.LIGHT_GREY}
             onChangeText = {text => onChangeText(text)}
             autoCapitalize = {autoCapitalize}
             autoCorrect = {autoCorrect}
@@ -40,7 +40,7 @@ const SearchBar = ({ initialText, searchCallback, placeholderText, containerStyl
             returnKeyType = {'search'}
         />
         <TouchableWithoutFeedback style = {styles.closeContainer} onPress = {() => onChangeText('')}>
-            <Icon style = {styles.close} name = 'close-circle' size = {22} color = {Colors.TAB_NAV_GREY}/>
+            <Icon style = {styles.close} name = 'close-circle' size = {22} color = {Colors.LIGHT_GREY}/>
           </TouchableWithoutFeedback>
         
       </View>

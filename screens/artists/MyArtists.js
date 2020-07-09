@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   allArtistsButton: {
-    backgroundColor: Colors.CONCERT_CARD_BACKGROUND,
+    backgroundColor: Colors.THEME_BLUE,
     //width: '90%',
     alignSelf: 'center',
     //padding: 8,

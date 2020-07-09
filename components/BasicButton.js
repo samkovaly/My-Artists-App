@@ -23,7 +23,7 @@ export default BasicButton;
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: Colors.FOREGROUND_BLUE,
+        backgroundColor: Colors.SCREEN_FOREGROUND,
         padding: 15,
         borderRadius: 12,
         width: 300,

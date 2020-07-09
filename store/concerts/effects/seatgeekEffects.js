@@ -242,7 +242,7 @@ const mapEvent = (event) => {
     if(event){
         const venue = mapVenue(event.venue);
         const performers = mapPerformers(event.performers);
-
+        
         return {
             name: event.title,
             status: event.status,
@@ -250,8 +250,9 @@ const mapEvent = (event) => {
             description: event.description,
             datetime_local: event.datetime_local,
             datetime_utc: event.datetime_utc,
-            displayDate: getDisplayDate(event.datetime_utc),
-            displayTime: getDisplayTime(event.datetime_utc),
+            displayDateShort: getDisplayDate(event.datetime_local, false),
+            displayDateFull: getDisplayDate(event.datetime_local, true),
+            displayTime: getDisplayTime(event.datetime_local),
             date_tbd: event.date_tbd,
             url: event.url,
             venue: venue,

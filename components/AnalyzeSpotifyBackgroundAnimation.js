@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: Colors.SETTINGS_BUTTON_HIGHLIGHT,
+    backgroundColor: Colors.GREY,
     justifyContent: 'center',
     alignItems: 'center',
   },

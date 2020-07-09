@@ -115,11 +115,15 @@ export default function ConcertDetail({ route }) {
               </View>
 
               <View style = {styles.dateContainer}>
-                <View style = {styles.dateTextContainer}>
-                  <BaseText style = {styles.dateText}>{concert.displayDate}</BaseText>
-                  <BaseText style = {styles.timeText}>{concert.displayTime}</BaseText>
-                </View>
-                <CreateCalendarEventButton />
+                  { concert.date_tbd ? 
+                    <BaseText style = {styles.dateText}>Date TBD</BaseText>
+                  :
+                  <View style = {styles.dateTextContainer}>
+                    <BaseText style = {styles.dateText}>{concert.displayDateFull}</BaseText>
+                    <BaseText style = {styles.timeText}>{concert.displayTime}</BaseText>
+                  </View>
+                  }
+                {/* <CreateCalendarEventButton /> */ }
               </View>
 
             </View>
@@ -154,11 +158,11 @@ const allNull = (array) => {
   return true;
 }
 
-const screenBackground = Colors.CONCERT_SCREEN_BACKGROUND;
+const screenBackground = Colors.SCREEN_BACKGROUND;
 const sectionBackground = Colors.CONCERT_SECTION_BACKGROUND;
 const sectionContainer = {
   backgroundColor: sectionBackground,
-  marginVertical: 10,
+  marginVertical: 6,
   padding: 8,
 };
 
@@ -221,7 +225,8 @@ const styles = StyleSheet.create({
 
   dateContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    //justifyContent: 'space-between',
   },
   dateTextContainer: {
     flexDirection: 'column',
@@ -241,6 +246,7 @@ const styles = StyleSheet.create({
     ...sectionContainer,
     //margin: 12,
     //padding: 4,
+    marginBottom: 0,
   },
   artistsHeader: {
     fontSize: 22,
