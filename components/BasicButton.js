@@ -10,7 +10,8 @@ const BasicButton= ({ text, onPress, containerStyle, textStyle }) => {
     return (
         <TouchableHighlight
             style = {[styles.button, containerStyle]}
-            onPress={() => {onPress()}}>
+            onPress={() => {onPress()}}
+            underlayColor={Colors.BUTTON_UNDERLAY}>
             <BaseText style = {[styles.text, textStyle]}>{text}</BaseText>
         </TouchableHighlight>
     )
@@ -23,14 +24,14 @@ export default BasicButton;
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: Colors.SCREEN_FOREGROUND,
-        padding: 15,
-        borderRadius: 12,
-        width: 300,
+        backgroundColor: Colors.THEME_BLUE,
         alignItems: 'center',
         justifyContent: 'center',
+        width: 300,
+        borderRadius: 5,
+        padding: 10,
     },
     text: {
-      fontSize: 20,
+        fontSize: 18,
     }
   });

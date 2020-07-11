@@ -322,7 +322,11 @@ import Feather from 'react-native-vector-icons/Feather'
 export default function Navigation(props) {
   const loggedIn = useSelector(state => state.authentication.loggedIn);
   return (
-    <NavigationContainer>
+    <NavigationContainer theme = {{
+        colors: {
+          background: Colors.SCREEN_BACKGROUND,
+        }
+      }}>
       { loggedIn ? (
         <MainApp/>
       ) : (

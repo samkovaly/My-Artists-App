@@ -50,6 +50,7 @@ export default function AnalyzeSpotify({}) {
 
 const styles = StyleSheet.create({
   container: {
+    ...Screens.screenContainer,
     flex: 1,
   },
 })

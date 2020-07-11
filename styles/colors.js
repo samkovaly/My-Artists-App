@@ -18,6 +18,7 @@ export const GREY = '#666666';
 export const LIGHT_GREY = '#CCCCCC';
 export const BASE_TEXT_COLOR = '#FFFFFF';
 
+export const BUTTON_UNDERLAY = '#187fc4'
 
 export const BOTTOM_NAV_INACTIVE = '#b8b8b8';
 

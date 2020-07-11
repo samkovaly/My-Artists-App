@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         ...absoluteTop,
         marginHorizontal: 14,
-        marginTop: 38,
+        marginTop: 14,
         padding: 18,
         backgroundColor: Colors.ERROR_MODAL_RED,
 

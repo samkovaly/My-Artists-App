@@ -42,15 +42,13 @@ export default function AnalyzeSpotifyBackgroundAnimation({ runAnimation, screen
 
     return (
       <View style = {styles.container}>
-        <BaseText style={styles.header} >Analyzing Your Spotify Data...</BaseText>
-        <Image source = {require("../graphics/spotify-logo-name.png")} resizeMode="contain" style = {styles.logo} />
+        <BaseText style={styles.header} >Analyzing your Spotify data...</BaseText>
+          { /*<Image source = {require("../graphics/spotify-logo-name.png")} resizeMode="contain" style = {styles.logo} /> */ }
           <Animated.View style = {{
                 ...styles.animatedView,
                 top: positionY,
           }}>
-              <View style = {styles.innerAnimatedView}>
-
-              </View>
+              <View style = {styles.innerAnimatedView}/>
           </Animated.View>
       </View>
     );
@@ -59,17 +57,18 @@ export default function AnalyzeSpotifyBackgroundAnimation({ runAnimation, screen
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...Screens.screenContainer,
     flexDirection: 'column',
-    backgroundColor: Colors.GREY,
     justifyContent: 'center',
     alignItems: 'center',
   },
   header: {
     fontSize: 22,
     zIndex: 1,
+    color: Colors.SPOTIFY_GREEN,
   },
   animatedView: {
+    backgroundColor: Colors.SPOTIFY_GREEN,
     position: 'absolute',
     left: 0,
     right: 0,
@@ -77,7 +76,6 @@ const styles = StyleSheet.create({
     zIndex: 0,
 
     height: 20,
-    backgroundColor: Colors.SPOTIFY_GREEN,
     opacity: 0.65,
     shadowColor: 'white',
     shadowOffset: {

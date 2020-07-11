@@ -4,17 +4,14 @@ import { StyleSheet, TouchableOpacity} from 'react-native';
 import { Colors, Screens } from '../../styles'
 
 import { Linking } from 'expo';
-
-import BaseText from '../BaseText'
+import BasicButton from '../BasicButton'
 
 
 const TicketButton= ({ url }) => {
     return (
-        <TouchableOpacity
-            style = {styles.button}
-            onPress={() => linkToSeatGeek(url)}>
-            <BaseText style = {styles.text}>Get Tickets</BaseText>
-        </TouchableOpacity>
+        <BasicButton text = "Get tickets" onPress = {() => linkToSeatGeek(url)}
+            containerStyle = {styles.button}
+        />
     )
 }
 
@@ -30,14 +27,6 @@ const linkToSeatGeek = (url) => {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: Colors.THEME_BLUE,
-            padding: 10,
-            borderRadius: 2,
-            //width: 165,
-            width: "80%",
-            alignItems: 'center',
-        },
-        text: {
-          fontSize: 18,
-        }
+        width: "80%",
+    },  
   });

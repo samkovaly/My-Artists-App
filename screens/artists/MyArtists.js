@@ -50,9 +50,6 @@ export default function MyArtists(props) {
 
         <BasicButton text = "See all artists" onPress = {gotoAllArtists}
           containerStyle = { styles.allArtistsButton }
-          textStyle = {{
-            fontSize: 18,
-          }}
         />
 
         <ArtistHorizontalCards
@@ -90,12 +87,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   allArtistsButton: {
-    backgroundColor: Colors.THEME_BLUE,
-    //width: '90%',
-    alignSelf: 'center',
-    //padding: 8,
     marginTop: 16,
     marginBottom: 16,
-    //borderRadius: 3,
+    alignSelf: 'center',
   }
 });

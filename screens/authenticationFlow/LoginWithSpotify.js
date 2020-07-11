@@ -86,10 +86,9 @@ export default function LoginWithSpotify(props) {
             containerStyle = {{
                   backgroundColor: Colors.SPOTIFY_GREEN,
                   marginBottom: 40,
+                  borderRadius: 12,
+                  padding: 15,
                 }}
-            textStyle = {{
-                fontSize: 18,
-              }}
           />
 
       </View>

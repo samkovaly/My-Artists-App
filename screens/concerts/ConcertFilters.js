@@ -82,7 +82,6 @@ const ConcertFilters = ({ route }) => {
 
             <BasicButton text = "Apply" onPress = {applyFilters}
                 containerStyle = {styles.buttonContainer}
-                textStyle = {styles.buttonText}
              />
         </View>
     )
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
         height: 260,
     },
     LocationSearch: {
-        marginTop: 8,
+        marginTop: 12,
     },
 
     radiusContainer: {
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
     radiusSlider: {
         width: '100%',
         height: 30,
-        marginTop: 4,
+        marginTop: 5,
         marginBottom: 10,
     },
 
@@ -143,19 +142,11 @@ const styles = StyleSheet.create({
     monthsSlider: {
         width: '100%',
         height: 30,
-        marginTop: 4,
+        marginTop: 5,
         marginBottom: 10,
     },
 
     buttonContainer: {
-        //height: 50,
-        //width: 300,
-        //alignSelf: 'center',
-        //padding: 0,
-        backgroundColor: Colors.THEME_BLUE,
         marginBottom: 25,
-    },
-    buttonText: {
-        fontSize: 18,
     },
 })
