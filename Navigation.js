@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useEffect } from 'react';
+import { View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
 
@@ -311,7 +312,8 @@ import Feather from 'react-native-vector-icons/Feather'
     
     const AuthFlow = () => {
       return (
-        <Stack.Navigator headerMode = "none">
+        <Stack.Navigator
+            headerMode = "none">
             <Stack.Screen name="AuthLoadingScreen" component={AuthLoadingScreen}/>
             <Stack.Screen name="LoginWithSpotify" component={LoginWithSpotify}/>
         </Stack.Navigator>
@@ -322,16 +324,18 @@ import Feather from 'react-native-vector-icons/Feather'
 export default function Navigation(props) {
   const loggedIn = useSelector(state => state.authentication.loggedIn);
   return (
-    <NavigationContainer theme = {{
-        colors: {
-          background: Colors.SCREEN_BACKGROUND,
-        }
-      }}>
-      { loggedIn ? (
-        <MainApp/>
-      ) : (
-        <AuthFlow/>
-      )}
-    </NavigationContainer>
+    <View style={{ flex: 1, backgroundColor: Colors.SCREEN_BACKGROUND }}>
+      <NavigationContainer theme = {{
+          colors: {
+            background: Colors.SCREEN_BACKGROUND,
+          }
+        }}>
+        { loggedIn ? (
+          <MainApp/>
+        ) : (
+          <AuthFlow/>
+        )}
+      </NavigationContainer>
+    </View>
   )
 }
