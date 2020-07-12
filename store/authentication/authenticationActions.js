@@ -13,15 +13,13 @@ export const SET_BACKEND_AUTH_TOKEN = 'SET_BACKEND_AUTH_TOKEN';
 export const LOGIN = 'LOGIN';
 
 
-import { LOGOUT } from '../globalActions'
-
 import { makeAction } from '../../utilities/actions';
-import { fetchNewUserTokens, fetchUsername, fetchAccessToken } from './authenticationEffects/spotifyRequests';
-import { fetchSpotifyAppCredentials, fetchAPICredentials, fetchSpotifyMusicProfile } from './authenticationEffects/backendRequests';
-import { registerUserForAuthToken, LoginUserForAuthToken } from './authenticationEffects/backendRequests';
-import { saveRefreshTokenStorage, saveUsernameStorage, saveBackendAuthTokenStorage, removeAllStorage, saveUserSavedOnStorage } from "./authenticationStorage";
+import { LOGOUT } from '../globalActions';
+import { fetchAPICredentials, fetchSpotifyAppCredentials, LoginUserForAuthToken, registerUserForAuthToken } from './authenticationEffects/backendRequests';
+import { fetchAccessToken, fetchNewUserTokens, fetchUsername } from './authenticationEffects/spotifyRequests';
+import { getBackendAuthTokenStorage, getRefreshTokenStorage, getUsernameStorage, removeAllStorage, saveBackendAuthTokenStorage, saveRefreshTokenStorage, saveUsernameStorage, saveUserSavedOnStorage } from "./authenticationStorage";
 
-import { getUsernameStorage, getRefreshTokenStorage, getBackendAuthTokenStorage } from "./authenticationStorage";
+
 
 
 
@@ -117,7 +115,6 @@ export const getUsername = () => {
 export const refreshAccessToken = () => {
     return async (dispatch, getState) => {
         const auth = getState().authentication
-        console.log('refreshAccessToken')
         if(needNewAccessToken(auth.accessToken.expireTime)){
             const newUserTokens = await fetchAccessToken(auth.appCredentials, auth.refreshToken)
             await dispatch(setAccessTokenAction(newUserTokens.accessToken, newUserTokens.expireTime))

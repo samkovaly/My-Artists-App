@@ -53,6 +53,5 @@ export const getDisplayTime = (isoString) => {
   }
 
   const displayTime = hour + ':' + minute + period;
-  console.log(displayTime, '\n')
   return displayTime;
 }

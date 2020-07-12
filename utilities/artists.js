@@ -1,4 +1,4 @@
-import { queryArtistsAtPage } from "./spotifyFetches"
+import { queryArtistsAtPage } from "./spotifyFetches";
 
 
 
@@ -67,18 +67,13 @@ export const spotifyArtistsToArtists = (spotifyArtists, userExtracted) => {
 const spotifyArtistGetArtist = (spotifyArtist, extractedArtistsSlugMap) => {
     let slug = getSlug(spotifyArtist);
 
-    //console.log('spotifyArtistGetArtist')
-    //console.log('spotifyArtist', spotifyArtist)
-    //console.log('slug', slug)
 
     if(extractedArtistsSlugMap.has(slug)){
         // use extractedArtist object
-        //console.log('returning1 ', extractedArtistsSlugMap.get(slug))
         return extractedArtistsSlugMap.get(slug);
     }else{
         // create new object with required properties. extracted=false
         const what = spotifyArtistToArtist(spotifyArtist, false);
-        //console.log('returning2 ', what)
         return what;
     }
 }

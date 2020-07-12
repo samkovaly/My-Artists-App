@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, Linking} from 'react-native';
-
-import { useSelector, useDispatch } from 'react-redux';
-
-import { Colors, Screens} from '../../styles'
-
-import { logout } from '../../store/authentication/authenticationActions';
-
-import ErrorCard from '../../components/ErrorCard';
-  
-import SettingsOpenScreenButton from '../../components/settings/SettingsOpenScreenButton';
-import SettingsActionButton from '../../components/settings/SettingsActionButton';
-import { setRefreshSpotifyError } from '../../store/musicProfile/musicProfileActions'
-
-import { twoButtonConfirmAlert } from '../../utilities/alerts'
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { Linking, ScrollView, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import BaseText from '../../components/BaseText';
+import ErrorCard from '../../components/ErrorCard';
+import SettingsActionButton from '../../components/settings/SettingsActionButton';
+import SettingsOpenScreenButton from '../../components/settings/SettingsOpenScreenButton';
+import { logout } from '../../store/authentication/authenticationActions';
+import { setRefreshSpotifyError } from '../../store/musicProfile/musicProfileActions';
+import { Colors, Screens } from '../../styles';
+import { twoButtonConfirmAlert } from '../../utilities/alerts';
+
+
+
+
+  
+
 
 
 const SUPPORT_EMAIL = 'xilernet@gmail.com';
@@ -27,7 +27,6 @@ export default function Settings(props) {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const lastRefreshed = useSelector(state => state.musicProfile.lastRefreshed);
-    console.log(lastRefreshed);
 
     const logoutClicked = async() =>{
       twoButtonConfirmAlert("Logout", "Are you sure?", logoutConfirmed, null);

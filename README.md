@@ -1,27 +1,20 @@
 # My Artists App
-STILL IN DEVELOPMENT | This Expo.io app automatically connects to user’s Spotify accounts and utilizes my custom backend API (in another repository) to retrieves all the user's favorite artists. It then displays local concerts/clubs featuring these artists.
+This Expo.io app automatically connects to user’s Spotify accounts and utilizes my custom backend API (in another repository) to retrieves all the user's favorite artists. It then displays local concerts/clubs featuring these artists.
+Technologies include: React Native, Expo and Redux
+
+
+## Backend
+Needs the backend running. Currently one is running at 'my-artists-app.herokuapp.com'
+Backend source code is here: https://github.com/samkovaly/SpotifyAPIMusicProfile
+Need a consistent master key to connect the app to it's backend.
 
 ## Setup
-Backend for this app is here: https://github.com/samkovaly/SpotifyAPIMusicProfile
-will fill this out later but Technologies include: React Native, Expo and Redux
-
-
-
-1. Pull from git hib
-2. Get NPM & Node.js (https://www.npmjs.com/get-npm) (12.16.1)
-3. add npm to path
-4. npm install -g expo-cli
-5. "expo login" to account
-5. install yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
-6. run "yarn install" 
-7. OR manual installs:
-    a. "expo install redux"
-    b. "expo install react-redux"
-    c. "expo install redux-thunk"
-    d. "expo install react-navigation"
-    e. "expo install react-navigation-stack"
-    f. "expo install react-navigation-tabs"
-    g. "expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view"
-    h. "expo install react-native-elements"
-    i. "expo install Base64"
-    j. "expo install expo-secure-store"
+1. Pull from git hub
+2. Get NPM & Node.js (https://www.npmjs.com/get-npm) (tested on 12.16.1)
+3. npm install -g expo-cli
+4. "expo login" if you have an expo account
+5. Get yarn if you don't have it (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
+6. run "yarn install"
+7. make file 'APIConfig.js' in the main directory and export API_IP and API_MASTER_KEY that correlate to the backend.
+8. expo run
+9. run via expo app on your device.

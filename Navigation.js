@@ -1,50 +1,47 @@
 
-import React from 'react';
-import { useEffect } from 'react';
-import { View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-
-
-import { DefaultTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import { NavigationContainer } from '@react-navigation/native'
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector } from 'react-redux';
+import AllArtists from './screens/artists/AllArtists';
+import ArtistDetail from './screens/artists/ArtistDetail';
+// Artists
+import MyArtists from './screens/artists/MyArtists';
+import AuthLoadingScreen from './screens/authenticationFlow/AuthLoadingScreen';
 // My screens
 // AUTH
 import LoginWithSpotify from './screens/authenticationFlow/LoginWithSpotify';
-import AuthLoadingScreen from './screens/authenticationFlow/AuthLoadingScreen';
-
-// Concerts
-import Concerts from './screens/concerts/Concerts';
 import ConcertDetail from './screens/concerts/ConcertDetail';
 import ConcertFilters from './screens/concerts/ConcertFilters';
-
-// Artists
-import MyArtists from './screens/artists/MyArtists';
-import AllArtists from './screens/artists/AllArtists';
-import ArtistDetail from './screens/artists/ArtistDetail';
-
-// Discovery
-import Discovery from './screens/discover/Discovery';
+// Concerts
+import Concerts from './screens/concerts/Concerts';
 import ArtistSearch from './screens/discover/ArtistSearch';
 import ConcertSearch from './screens/discover/ConcertSearch';
-
-import Settings from './screens/settings/Settings';
+// Discovery
+import Discovery from './screens/discover/Discovery';
+import AnalyzeSpotify from './screens/settings/AnalyzeSpotify';
 import NotificationSettings from './screens/settings/NotificationSettings';
+import Settings from './screens/settings/Settings';
 import TermsOfUse from './screens/settings/TermsOfUse';
-import AnalyzeSpotify from './screens/settings/AnalyzeSpotify'
+import { Colors } from './styles';
 
 
-import { Colors } from './styles'
-
-import { TouchableOpacity, Text } from 'react-native'
 
 
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import Feather from 'react-native-vector-icons/Feather'
+
+
+
+
+
+
+
+
+
 
     
 
@@ -57,7 +54,7 @@ import Feather from 'react-native-vector-icons/Feather'
       backgroundColor: Colors.TOP_NAV,
       shadowOffset: { height: 0, width: 0 },
     },
-    headerBackTitle: null,
+    headerBackTitleVisible: false,
     headerTintColor: 'white',
     headerTitleStyle: {
       fontWeight: 'bold',
@@ -78,7 +75,6 @@ import Feather from 'react-native-vector-icons/Feather'
         }
         return {
           title: name,
-          headerBackTitleVisible: false,
         }
       }}
     />
@@ -97,7 +93,6 @@ import Feather from 'react-native-vector-icons/Feather'
         }
         return {
           title: name,
-          headerBackTitleVisible: false,
         }
       }}
     />
@@ -115,14 +110,13 @@ import Feather from 'react-native-vector-icons/Feather'
           options={{
             title: 'My Artists',
             headerShown: true,
-            headerBackTitleVisible: false,
           }}
         />
         <Stack.Screen
           name="AllArtists"
           component={AllArtists}
           options={{
-            title: 'All Artists'
+            title: 'All My Artists'
           }}
         />
         { concertDetailScreen() }
@@ -170,7 +164,6 @@ import Feather from 'react-native-vector-icons/Feather'
         component={ArtistSearch}
         options={{
           title: 'Discover Artists',
-          headerBackTitleVisible: false,
         }}
       />
       <Stack.Screen
@@ -178,7 +171,6 @@ import Feather from 'react-native-vector-icons/Feather'
         component={ConcertSearch}
         options={{
           title: 'Discover Concerts',
-          headerBackTitleVisible: false,
         }}
       />
       { concertDetailScreen() }
@@ -206,7 +198,6 @@ import Feather from 'react-native-vector-icons/Feather'
         component={NotificationSettings}
         options={{
           title: 'Notifications',
-          headerBackTitleVisible: false,
         }}
       />
       <Stack.Screen
@@ -214,7 +205,6 @@ import Feather from 'react-native-vector-icons/Feather'
         component={TermsOfUse}
         options={{
           title: 'Terms of use',
-          headerBackTitleVisible: false,
         }}
       />
       <Stack.Screen
@@ -222,7 +212,6 @@ import Feather from 'react-native-vector-icons/Feather'
         component={AnalyzeSpotify}
         options={{
           title: 'Spotify',
-          headerBackTitleVisible: false,
         }}
       />
     </Stack.Navigator>

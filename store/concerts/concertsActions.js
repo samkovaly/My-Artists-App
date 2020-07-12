@@ -7,13 +7,11 @@ export const ADD_INTERESTED_CONCERT = 'ADD_INTERESTED_CONCERT'
 export const REMOVE_INTERESTED_CONCERT = 'REMOVE_INTERESTED_CONCERT'
 
 
-import { LOGOUT } from '../globalActions'
 import { makeAction } from '../../utilities/actions';
+import { deleteInterestedConcert, fetchInterestedConcerts, fetchLocationOrAskPermission, postInterestedConcert } from './effects/concertsEffects';
+import { fetchConcertByID, fetchConcertsByID } from './effects/seatgeekEffects';
 
-import { fetchLocationOrAskPermission } from './effects/concertsEffects'
-import { fetchInterestedConcerts, postInterestedConcert, deleteInterestedConcert } from './effects/concertsEffects'
 
-import { fetchConcertsByID, fetchConcertByID } from './effects/seatgeekEffects'
 
 
 export const getUserLocation = () => {
@@ -55,17 +53,7 @@ export const addInterestedConcert = (concertID) => {
             await dispatch(makeAction(ADD_INTERESTED_CONCERT, concert));
         }
     }
-    /*
-    return async (dispatch, getState) => {
-        const auth = getState().authentication;
-        const result = await postInterestedConcert(auth.username, auth.backendAuthToken, concertID);
-        console.log('add result:', result);
-        if(result){
-            const concert = await fetchConcertByID(concertID);
-            await dispatch(makeAction(ADD_INTERESTED_CONCERT, concert));
-        }
-    }
-    */
+    
 }
 
 export const removeInterestedConcert = (concertID) => {

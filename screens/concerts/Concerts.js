@@ -1,22 +1,20 @@
-import React from 'react';
-import { useEffect, useState, useMemo, useRef } from 'react';
-import { StyleSheet, View, Dimensions, ActivityIndicator  } from 'react-native';
-
-import { Colors, Screens } from '../../styles'
-
-import { useSelector, useDispatch } from 'react-redux';
-
-import { TabView } from 'react-native-tab-view';
-
-import { getUserLocation } from "../../store/concerts/concertsActions"
-import { fetchAllConcertsAtLocation } from '../../store/concerts/effects/seatgeekEffects'
-
-import ConcertsTabs from '../../components/concerts/ConcertsTabs'
-import ConcertList from '../../components/concerts/ConcertList'
-import FiltersButton from '../../components/concerts/FiltersButton'
-import { setFiltersAction} from '../../store/concerts/concertsActions'
-
 import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
+import { TabView } from 'react-native-tab-view';
+import { useDispatch, useSelector } from 'react-redux';
+import ConcertList from '../../components/concerts/ConcertList';
+import ConcertsTabs from '../../components/concerts/ConcertsTabs';
+import FiltersButton from '../../components/concerts/FiltersButton';
+import { getUserLocation, setFiltersAction } from "../../store/concerts/concertsActions";
+import { fetchAllConcertsAtLocation } from '../../store/concerts/effects/seatgeekEffects';
+import { Colors, Screens } from '../../styles';
+
+
+
+
+
+
 
 
 
@@ -59,11 +57,6 @@ export default function Concerts( {  } ) {
 
 
   const interestedConcerts = useSelector(state => state.concerts.interestedConcerts);
-
-  const test = useMemo(() => {
-    console.log('here boy lollll')
-    return 8;
-  }, [filters])
 
   navigation.setOptions({
     headerTitle: props => <FiltersButton filters = {filters} editFilters = {editFilters} />

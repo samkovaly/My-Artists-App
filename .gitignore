@@ -10,7 +10,7 @@ npm-debug.*
 web-build/
 web-report/
 
-localDevVariables.js
+APIConfig.js
 
 .vscode
 

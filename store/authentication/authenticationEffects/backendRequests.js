@@ -1,10 +1,9 @@
 
-import { requestBackend, METHODS } from '../../../utilities/HTTPRequests'
+import { API_IP, API_MASTER_KEY } from '../../../APIConfig';
+import { METHODS, requestBackend } from '../../../utilities/HTTPRequests';
 
-// localDevIP will be replaced with a real backend URL once the backend is diployed
-import { localDevIP, APIMasterKey } from '../../../localDevVariables';
 
-const BACKEND_URL = `http://${localDevIP}/`
+const BACKEND_URL = `http://${API_IP}/`
 const BACKEND_API_URL = `${BACKEND_URL}api/`;
 
 const BACKEND_APP_CREDENTIALS_ENDPOINT =    `${BACKEND_API_URL}spotify-app-credentials/`;
@@ -17,7 +16,7 @@ const BAKEND_LOGIN =                    `${BACKEND_API_URL}login/`
 
 
 const AUTH_MASTER_KEY_HEADER = {
-    'Authorization': `Token ${APIMasterKey}`,
+    'Authorization': `Token ${API_MASTER_KEY}`,
     'Content-Type': 'application/json',
 }
 export const fetchSpotifyAppCredentials = async () => {
