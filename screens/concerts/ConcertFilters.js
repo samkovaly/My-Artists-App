@@ -37,8 +37,8 @@ const ConcertFilters = ({ route }) => {
     const applyFilters = () => {
         const filters = {
             location: location,
-            radius: radius, //Math.round(radius),
-            months: months,
+            radius: Math.round(radius),
+            months: Math.round(months),
         }
         dispatch(setFiltersAction(filters));
         navigation.goBack();
@@ -61,7 +61,7 @@ const ConcertFilters = ({ route }) => {
                     <Slider
                         style={styles.radiusSlider}
                         minimumValue={1}
-                        maximumValue={25}
+                        maximumValue={20}
                         value = {radius}
                         step = {0}
                         onValueChange = {(v) => setRadius(v)}
@@ -76,7 +76,7 @@ const ConcertFilters = ({ route }) => {
                     <Slider
                         style={styles.monthsSlider}
                         minimumValue={1}
-                        maximumValue={12}
+                        maximumValue={8}
                         value = {months}
                         step = {0}
                         onValueChange = {(v) => setMonths(v)}
