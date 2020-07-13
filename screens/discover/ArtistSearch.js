@@ -37,6 +37,7 @@ export default function ArtistSearch({ route }) {
       initialQuery = {initialQuery}
       renderElementComponent = {(item) => <ArtistItem artist = {item} pressForDetail = {true} />}
       pageSize = {PAGE_SIZE}
+      placeholderText = "Find artists"
     />
   );
 }

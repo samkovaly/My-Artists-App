@@ -29,15 +29,17 @@ export default ArtistSection;
 const styles = StyleSheet.create({
     container: {
         marginTop: 14,
+        backgroundColor: Colors.BLACK,
     },
     centerText: {
         alignItems: 'center',
     },
     contentText: {
-        fontSize: 22,
+        fontSize: 24,
         marginBottom: 6,
     },
     noContentText: {
+      marginBottom: 4,
         fontSize: 18,
     },
 })

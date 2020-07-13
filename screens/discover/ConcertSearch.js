@@ -26,6 +26,7 @@ export default function ConcertSearch({ route }) {
       initialQuery = {initialQuery}
       renderElementComponent = {(item) => <ConcertItemSmall concert = {item} pressForDetail = {true} />}
       pageSize = {PAGE_SIZE}
+      placeholderText = "Find concerts"
     />
   );
 }

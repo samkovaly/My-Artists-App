@@ -35,7 +35,7 @@ export default function AllArtists(props) {
         <View style = {styles.searchBar}>
           <SearchBar
             searchCallback = {setArtistsQuery}
-            placeholderText = "Filter Artists"
+            placeholderText = "Filter artists"
             autoCapitalize = 'none'
             autoCorrect = {false}
             autoFocus = {false}

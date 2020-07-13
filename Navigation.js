@@ -1,43 +1,45 @@
 
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+
+import { useSelector } from 'react-redux';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useSelector } from 'react-redux';
-import AllArtists from './screens/artists/AllArtists';
-import ArtistDetail from './screens/artists/ArtistDetail';
+
+// AUTH
+import AuthLoadingScreen from './screens/authenticationFlow/AuthLoadingScreen';
+import LoginWithSpotify from './screens/authenticationFlow/LoginWithSpotify';
+
 // Artists
 import MyArtists from './screens/artists/MyArtists';
-import AuthLoadingScreen from './screens/authenticationFlow/AuthLoadingScreen';
-// My screens
-// AUTH
-import LoginWithSpotify from './screens/authenticationFlow/LoginWithSpotify';
+import AllArtists from './screens/artists/AllArtists';
+import ArtistDetail from './screens/artists/ArtistDetail';
+
+// Concerts
 import ConcertDetail from './screens/concerts/ConcertDetail';
 import ConcertFilters from './screens/concerts/ConcertFilters';
-// Concerts
 import Concerts from './screens/concerts/Concerts';
-import ArtistSearch from './screens/discover/ArtistSearch';
-import ConcertSearch from './screens/discover/ConcertSearch';
+
 // Discovery
 import Discovery from './screens/discover/Discovery';
+import ArtistSearch from './screens/discover/ArtistSearch';
+import ConcertSearch from './screens/discover/ConcertSearch';
+
+// settings
+import Settings from './screens/settings/Settings';
 import AnalyzeSpotify from './screens/settings/AnalyzeSpotify';
 import NotificationSettings from './screens/settings/NotificationSettings';
-import Settings from './screens/settings/Settings';
 import TermsOfUse from './screens/settings/TermsOfUse';
+
 import { Colors } from './styles';
-
-
-
-
-
-
-
-
-
 
 
 
@@ -62,21 +64,23 @@ import { Colors } from './styles';
   }
 
   const concertDetailScreen = () => {
-    const trimLength = 24;
+    //const trimLength = 24;
     return (
       <Stack.Screen
       name="ConcertDetail"
       component={ConcertDetail}
-      //options={({ route }) => ({ title: route.params.concert.performers[0].name })}
-      options={({ route }) => {
-        let name =  route.params.concert.name;
-        if(name.length > trimLength){
-          name = name.slice(0,trimLength) + "...";
-        }
-        return {
-          title: name,
-        }
-      }}
+      options={({ route }) => ({
+        title: route.params.concert.performers[0].name
+      })}
+      //options={({ route }) => {
+        //let name =  route.params.concert.name;
+        //if(name.length > trimLength){
+        //  name = name.slice(0,trimLength) + "...";
+        //}
+        //return {
+         // title: "", //name,
+        //}
+      //}}
     />
     )
   }
@@ -314,17 +318,19 @@ export default function Navigation(props) {
   const loggedIn = useSelector(state => state.authentication.loggedIn);
   return (
     <View style={{ flex: 1, backgroundColor: Colors.SCREEN_BACKGROUND }}>
-      <NavigationContainer theme = {{
-          colors: {
-            background: Colors.SCREEN_BACKGROUND,
-          }
-        }}>
-        { loggedIn ? (
-          <MainApp/>
-        ) : (
-          <AuthFlow/>
-        )}
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer theme = {{
+            colors: {
+              background: Colors.SCREEN_BACKGROUND,
+            }
+          }}>
+          { loggedIn ? (
+            <MainApp/>
+          ) : (
+            <AuthFlow/>
+          )}
+        </NavigationContainer>
+      </SafeAreaProvider>
     </View>
   )
 }

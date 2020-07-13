@@ -83,7 +83,7 @@ export default function Discovery({}) {
     <View style={styles.container}>
       <SearchBar
         searchCallback = {setQuery}
-        placeholderText = "Find Anything"
+        placeholderText = "Find anything"
         containerStyle = {styles.searchBarContainer}
         autoCapitalize = 'none'
         autoCorrect = {false}

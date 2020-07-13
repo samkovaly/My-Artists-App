@@ -24,12 +24,12 @@ export default BasicButton;
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: Colors.THEME_BLUE,
+        backgroundColor: Colors.THEME_BUTTON_BLUE,
         alignItems: 'center',
         justifyContent: 'center',
         width: 300,
         borderRadius: 5,
-        padding: 10,
+        padding: 12,
     },
     text: {
         fontSize: 18,

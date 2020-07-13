@@ -10,9 +10,6 @@ import { Colors } from '../../styles'
 
 const ConcertsTab = (props) => {
 
-
-
-
     return (
         <TabBar
         {...props}

@@ -28,5 +28,6 @@ const linkToSeatGeek = (url) => {
 const styles = StyleSheet.create({
     button: {
         width: "80%",
+        padding: 10,
     },  
   });

@@ -48,13 +48,14 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 4,
         marginLeft: 8,
+        alignSelf: 'center',
     },
     moreResultsView: {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        marginTop: 6,
-        marginBottom: 16,
+        marginTop: 2,
+        marginBottom: 12,
         marginHorizontal: 8,
         padding: 2,
     },
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
         //color: Colors.SUB_TEXT_GREY,
         color: Colors.SUB_TEXT_GREY,
         fontWeight: 'normal',
+        paddingLeft: 20,
     },
     arrow: {
         //position: 'absolute',
@@ -72,6 +74,6 @@ const styles = StyleSheet.create({
         marginTop: 2,
     },
     list: {
-        marginHorizontal: 12,
+        marginHorizontal: 6,
     }
   });

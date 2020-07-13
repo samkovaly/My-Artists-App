@@ -53,17 +53,13 @@ const height = 50;
   
 const styles = StyleSheet.create({
     outerContainer: {
-        //backgroundColor: Colors.SCREEN_FOREGROUND,
-        //borderTopWidth: borderVerticalWidth,
-        //borderBottomWidth: borderVerticalWidth,
-        //borderColor: 'grey',
     },
     innerContainer: {
         flex: 1,
         height: height,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Colors.SCREEN_FOREGROUND
+        backgroundColor: Colors.SETTINGS_BUTTON,
     },
     text: {
       fontSize: 17,

@@ -12,7 +12,7 @@ import SearchBar from '../../components/SearchBar';
 import PagedFetchFlatlist from '../../components/PagedFetchFlatlist';
 
 
-export default function ArtistSearch({ queryFunc, initialQuery, renderElementComponent, pageSize }) {
+export default function ResourceResults({ queryFunc, initialQuery, renderElementComponent, pageSize, placeholderText }) {
 
   const [query, setQuery] = useState(initialQuery);
   const [data, setData] = useState([]);
@@ -30,7 +30,7 @@ export default function ArtistSearch({ queryFunc, initialQuery, renderElementCom
           <SearchBar
             initialText = {initialQuery}
             searchCallback = {setQuery}
-            placeholderText = ""
+            placeholderText = {placeholderText}
             autoCapitalize = 'none'
             autoCorrect = {false}
             autoFocus = {false}

@@ -96,7 +96,7 @@ export default function Settings(props) {
 
             <SettingsActionButton
               text = "Logout"
-              textColor = {Colors.LOGOUT_RED}
+              textColor = {Colors.RED}
               onPress = {() => logoutClicked()}
               style = {styles.elementGrouped}
             />

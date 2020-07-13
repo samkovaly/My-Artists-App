@@ -146,7 +146,6 @@ export default function Concerts( {  } ) {
 
   return (
       <View style = {styles.container}>
-        
         <TabView
           renderTabBar={props => <ConcertsTabs {...props} />}
           navigationState={{

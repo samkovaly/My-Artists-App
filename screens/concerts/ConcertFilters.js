@@ -9,13 +9,18 @@ import { useDispatch } from 'react-redux';
 
 import { Colors, Screens } from '../../styles'
 
-import {Slider} from 'react-native'
 
 import BasicButton from '../../components/BasicButton';
 import LocationSearch from '../../components/LocationSearch';
 
 import { useNavigation } from '@react-navigation/native';
 import { setFiltersAction} from '../../store/concerts/concertsActions'
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+// https://github.com/miblanchard/react-native-slider
+import { Slider } from "@miblanchard/react-native-slider";
+
 
 const ConcertFilters = ({ route }) => {
 
@@ -32,7 +37,7 @@ const ConcertFilters = ({ route }) => {
     const applyFilters = () => {
         const filters = {
             location: location,
-            radius: Math.round(radius),
+            radius: radius, //Math.round(radius),
             months: months,
         }
         dispatch(setFiltersAction(filters));
@@ -40,7 +45,7 @@ const ConcertFilters = ({ route }) => {
     }
 
     return (
-        <View style = { styles.modalContainer }>
+        <SafeAreaView style = { styles.modalContainer }>
             <View style = {styles.filtersContainer}>
 
                 <View style = {styles.locationContainer}>
@@ -55,13 +60,14 @@ const ConcertFilters = ({ route }) => {
                     <BaseText style={styles.filterText }>Radius: {Math.round(radius)} mi</BaseText>
                     <Slider
                         style={styles.radiusSlider}
-                        minimumValue={2}
-                        maximumValue={20}
+                        minimumValue={1}
+                        maximumValue={25}
                         value = {radius}
-                        step = {0} // need to keep at 0, or EJECT EXPO LOL
+                        step = {0}
                         onValueChange = {(v) => setRadius(v)}
-                        minimumTrackTintColor="#FFFFFF"
-                        maximumTrackTintColor="#000000"
+                        minimumTrackTintColor = {Colors.THEME_BLUE} //"#FFFFFF"
+                        maximumTrackTintColor = {Colors.GREY}
+                        thumbTintColor = {"white"} //"#FFFFFF"
                     />
                 </View>
 
@@ -72,10 +78,11 @@ const ConcertFilters = ({ route }) => {
                         minimumValue={1}
                         maximumValue={12}
                         value = {months}
-                        step = {0} // need to keep at 0, or EJECT EXPO LOL
+                        step = {0}
                         onValueChange = {(v) => setMonths(v)}
-                        minimumTrackTintColor="#FFFFFF"
-                        maximumTrackTintColor="#000000"
+                        minimumTrackTintColor = {Colors.THEME_BLUE} //"#FFFFFF"
+                        maximumTrackTintColor = {Colors.GREY}
+                        thumbTintColor = {"white"} //"#FFFFFF"
                     />
                 </View>
             </View>
@@ -83,7 +90,7 @@ const ConcertFilters = ({ route }) => {
             <BasicButton text = "Apply" onPress = {applyFilters}
                 containerStyle = {styles.buttonContainer}
              />
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -96,7 +103,6 @@ export default ConcertFilters;
 const styles = StyleSheet.create({
     modalContainer: {
         ...Screens.screenContainer,
-        //backgroundColor: Colors.GREY,
 
         flexDirection: 'column',
         alignItems: 'center',
@@ -119,6 +125,7 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 7,
         height: 260,
+        marginBottom: 6,
     },
     LocationSearch: {
         marginTop: 12,

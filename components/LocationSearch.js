@@ -113,9 +113,6 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
                 fontSize: 16,
                 flex: 10,
             },
-            //seperator: {
-            //
-            //},
             listView: {
                 marginLeft: 12,
             },
@@ -123,7 +120,6 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
                 paddingTop: 14,
             },
             description: {
-                //backgroundColor: Colors.GREY,
                 color: 'white',
                 fontSize: 16,
             },

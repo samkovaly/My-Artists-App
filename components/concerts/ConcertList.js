@@ -19,7 +19,7 @@ function ConcertList({concerts, loading, displayConcertName, style, noConcertsHe
     }
 
     return (
-        <View style={style}>
+        <View style={[styles.concertListContainer, style]}>
             <PagedFlatlist
                 elements={concerts}
                 renderElementComponent = {(item) => {
@@ -53,7 +53,8 @@ const noConcerts = (noConcertsHeader, noConcertsText) => {
 
 const styles = StyleSheet.create({
     concertListContainer: {
-
+        flex: 1,
+        marginLeft: 4,
     },
     loadingContainer: {
       ...Screens.screenContainer,

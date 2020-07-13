@@ -102,8 +102,8 @@ export default function ArtistDetail({ route }) {
 
             <View style = {{marginTop: 20}}/>
 
-            {displayConcerts(concerts.localConcerts, "Upcoming Concerts Near You", "No upcoming concerts near you")}
-            {displayConcerts(concerts.nonLocalConcerts, "Other Concerts", "No other conerts")}
+            {displayConcerts(concerts.localConcerts, "Upcoming concerts near you", "No upcoming concerts near you")}
+            {displayConcerts(concerts.nonLocalConcerts, "Other concerts", "No other concerts")}
             
             {tracks? displayTracks(tracks): null}
             {displayRelatedArtists(relatedArtists)}
@@ -127,7 +127,7 @@ const displayConcerts = (concerts, concertsUpcomingText, noConcertsUpcomingText)
                 <ConcertItemBig key={concert.id} concert = {concert} displayConcertName = {true} pressForDetail = {true} />
               }
               initialPageSize = {4}
-              style = {{}}
+              style = {{marginLeft: 4}}
           />
           )
         }
@@ -160,7 +160,7 @@ const displayRelatedArtists = (relatedArtists) => {
     <View style = {styles.relatedArtists}>
       <ArtistSection
         contentPresent={ relatedArtists.length > 0 }
-        contentText = "Similar Artists"
+        contentText = "Similar artists"
         renderItem = {() => (
           <ExpandableList
               elements = {relatedArtists}

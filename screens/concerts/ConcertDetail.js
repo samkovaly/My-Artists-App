@@ -82,8 +82,8 @@ export default function ConcertDetail({ route }) {
     return (
         <ScrollView style={styles.container}>
 
-            <ConcertAvatar concert = {concert} />
-            <View style = {styles.headerSection}>
+            <ConcertAvatar concert = {concert}/>
+            <View style = {[styles.headerSection, styles.avatarSection]}>
                 {/*
                 <CircleAvatar concert={concert} radius={75} />
                 */}
@@ -180,9 +180,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  concertName: {
-    fontSize: 30,
+  avatarSection: {
+    backgroundColor: screenBackground,
   },
+  
+  concertName: {
+    fontSize: 26,
+  },
+  
 
   buttonsSection: {
     ...sectionContainer,

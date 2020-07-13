@@ -20,7 +20,7 @@ const SettingsOpenScreenButton= ({ text, screen, screenArgs, style }) => {
             containerStyle = {style}
             onPress = {() => {navigation.navigate(screen, screenArgs)}}
         >
-            <Icon style = {styles.arrow} name="keyboard-arrow-right" size={30} color={Colors.GREY}/>
+            <Icon style = {styles.arrow} name="keyboard-arrow-right" size={30} color={Colors.LIGHT_GREY}/>
         </SettingsElement>
     );
     
