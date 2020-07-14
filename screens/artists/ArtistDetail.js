@@ -10,7 +10,7 @@ import { useSelector, useDispatch} from 'react-redux';
 
 import { getTracks } from '../../store/musicProfile/musicProfileActions';
 import { getArtist, getRelatedArtists } from '../../utilities/spotifyFetches';
-import { fetchAllConcertsForArtist } from '../../store/concerts/effects/seatgeekEffects'
+import { fetchAllConcertsForArtist, fetchNonLocalConcertsForArtist } from '../../store/concerts/effects/seatgeekEffects'
 
 import { getUserLocation } from '../../store/concerts/concertsActions'
 
@@ -65,7 +65,7 @@ export default function ArtistDetail({ route }) {
     }
 
     useEffect(() => {
-        const getAsyncArtistData = async() => {
+        const getAsyncArtistData = async(localConcerts) => {
 
             const accessToken = await updateAndGetAccessToken(dispatch);
             //setFetchedArtist(await getArtist(accessToken, artist.id));
@@ -74,14 +74,22 @@ export default function ArtistDetail({ route }) {
             relatedArtists = spotifyArtistsGetArtists(relatedArtists, extractedArtistsSlugMap);
             setRelatedArtists(relatedArtists);
 
-            const months = 24;
-            setConcerts(await fetchAllConcertsForArtist(artist, months, seatgeekClientId, userLocation.latitude, userLocation.longitude, radius))
+            const months = 12;
+            if(localConcerts){
+              setConcerts(await fetchNonLocalConcertsForArtist(artist, months, seatgeekClientId));
+            }else{
+              setConcerts(await fetchAllConcertsForArtist(artist, months, seatgeekClientId, userLocation.latitude, userLocation.longitude, radius));
+            }
+
         }
 
-        if (userLocation){
-          getAsyncArtistData();
-        }else{
+        if(userLocation == null){
+          // ask user for their location if we somehow haven't yet
           dispatch(getUserLocation());
+        }else if(userLocation == "denied"){
+          getAsyncArtistData(false);
+        }else{
+          getAsyncArtistData(true);
         }
 
     }, [userLocation])
@@ -102,8 +110,8 @@ export default function ArtistDetail({ route }) {
 
             <View style = {{marginTop: 20}}/>
 
-            {displayConcerts(concerts.localConcerts, "Upcoming concerts near you", "No upcoming concerts near you")}
-            {displayConcerts(concerts.nonLocalConcerts, "Other concerts", "No other concerts")}
+            {displayConcerts(concerts.localConcerts, userLocation, "Upcoming concerts near you", "No upcoming concerts near you", "Enable location to see upcoming concerts near you")}
+            {displayConcerts(concerts.nonLocalConcerts, userLocation, "Other concerts", "No other concerts")}
             
             {tracks? displayTracks(tracks): null}
             {displayRelatedArtists(relatedArtists)}
@@ -114,12 +122,12 @@ export default function ArtistDetail({ route }) {
 }
 
 
-const displayConcerts = (concerts, concertsUpcomingText, noConcertsUpcomingText) => {
+const displayConcerts = (concerts, userLocation, concertsUpcomingText, noConcertsUpcomingText, locationDeniedText = null) => {
+
   return (
     <ArtistSection
         contentPresent={ concerts.length > 0 }
-        contentText = {concertsUpcomingText}
-
+        contentText = { concertsUpcomingText }
         renderItem = {() => (
           <ExpandableList
               elements = {concerts}
@@ -131,7 +139,12 @@ const displayConcerts = (concerts, concertsUpcomingText, noConcertsUpcomingText)
           />
           )
         }
-        noContentText = {noConcertsUpcomingText}
+        noContentText = {
+          // if user has denied location access
+          userLocation == "denied" && locationDeniedText != null ?
+          locationDeniedText : noConcertsUpcomingText
+        }
+        locationDeniedText = {locationDeniedText}
       />
   )
 }

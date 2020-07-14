@@ -15,6 +15,9 @@ export const METHODS = {
 */
 
 export const requestSpotify = async(URL, method, headers = null, body = null) => {
+  console.log('requestSpotify')
+  //console.log('attempting ', URL, ' with method', method, ', headrs', headers, 'body', body)
+  
   const responseJson = await requestJSON(URL, method, headers, body);
   if(responseJson.error){
     console.log("ERROR while requesting spotify: " + URL + " with method " + method
@@ -34,7 +37,6 @@ export const requestBackend = async(URL, method, headers = null, body = null) =>
 }
 
 export const requestJSON = async (URL, method, headers = null, body = null) => {
-  //console.log('attempting ', URL, ' with method', method, ', headrs', headers, 'body', body)
     let response = null;
     try{
       response = await fetch(URL, {

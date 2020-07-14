@@ -18,11 +18,26 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
 
 
     const userLocation = useSelector(state => state.concerts.userLocation);
-    const userPlace = {
-        description: userLocation ? userLocation.displayString : 'no location',
-        isUserLocation: true,
-        location: userLocation,
+    let description = null;
+    let locationDenied = false;
+    if(userLocation && userLocation != "denied"){
+        description = userLocation.displayString
+        location = userLocation;
+    }else{
+        locationDenied = true;
+        description = 'no location';
+        location = null;
     }
+
+    let userPlaces = [];
+    if(!locationDenied){
+        userPlaces = [{
+            description: description,
+            isUserLocation: true,
+            location: location,
+        }]
+    }
+    
 
     return (
         <GooglePlacesAutocomplete
@@ -67,8 +82,8 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
         }}
 
         placeholder='Search'
-        predefinedPlaces = {[userPlace]}
-        predefinedPlacesAlwasyVisible = {true}
+        predefinedPlaces = {userPlaces}
+        predefinedPlacesAlwasyVisible = {!locationDenied}
         autoFocus = {false}
         keyboardAppearance = {'dark'}
         fetchDetails = {true}

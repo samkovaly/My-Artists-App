@@ -8,10 +8,15 @@ import PagedFlatlist from '../PagedFlatlist'
 import { Colors, Screens, Buttons, Font } from '../../styles'
 import BaseText from '../BaseText';
 
-function ConcertList({concerts, loading, displayConcertName, style, noConcertsHeader, noConcertsText }) {
+function ConcertList({concerts, loading, displayConcertName, style, noConcertsHeader, noConcertsText,
+    locationDenied, locationDeniedHeader, locationDeniedText }) {
 
     if(loading) {
         return loadingScreen();
+    }
+
+    if(locationDenied){
+        return noConcerts(locationDeniedHeader, locationDeniedText);
     }
 
     if(!concerts || concerts.length == 0){

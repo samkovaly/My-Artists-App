@@ -48,12 +48,14 @@ export default function Concerts( {  } ) {
 
   const userLocation = useSelector(state => state.concerts.userLocation);
 
+  //console.log('userLocation', userLocation)
+
   const filters = useSelector(state => state.concerts.filters);
  
   const allConcerts = useRef([]);
 
   const artistConcerts = useMemo(() => filterConcertsForArtists(allConcerts.current, artistsMap), [allConcerts.current, artistsMap]);
-  const [loadingConcerts, setLoadingConcerts] = useState(true);
+  const [loadingConcerts, setLoadingConcerts] = useState(false);
 
 
   const interestedConcerts = useSelector(state => state.concerts.interestedConcerts);
@@ -70,7 +72,7 @@ export default function Concerts( {  } ) {
       allConcerts.current = concerts;
       setLoadingConcerts(false);
     }
-    if(userLocation && filters.location.latitude != null){
+    if(filters.location.latitude != null){
       getAllConcerts();
     }
   }, [filters])
@@ -78,16 +80,11 @@ export default function Concerts( {  } ) {
 
 
   useEffect(() => {
-    if(userLocation){
+    if(userLocation != null & userLocation != "denied"){
       dispatch(setFiltersAction({
         ...filters,
         location: userLocation,
       }));
-      /*
-      setFilters({
-        ...filters,
-        location: userLocation,
-      }) */
     }
   }, [userLocation])
 
@@ -95,12 +92,7 @@ export default function Concerts( {  } ) {
   const editFilters = () => {
     navigation.navigate('ConcertFilters', {
       filters: filters,
-      //apply: (filters) => {
-        //setShowFilters(false)
-      //  setFilters(filters);
-      //}
     })
-    //setShowFilters(true);
   }
 
 
@@ -114,7 +106,8 @@ export default function Concerts( {  } ) {
 
 
 
-  if (!userLocation){
+  // ask for if we don't have yet
+  if (userLocation == null){
     dispatch(getUserLocation());
   }
 
@@ -122,20 +115,27 @@ export default function Concerts( {  } ) {
 
   
   const renderScene = ({ route }) => {
+    const locationDenied = (userLocation == "denied" && filters.location.latitude == null);
+    const locationDeniedHeader = "Need a location."
+    const locationDeniedText = "Give location permission or manually search for one with the filters button above.";
     switch (route.key) {
       case 'artistConcerts':
-        return <ConcertList concerts = {artistConcerts} loading = {loadingConcerts}
+        return <ConcertList concerts = {artistConcerts} loading = {loadingConcerts} locationDenied = {locationDenied}
                   noConcertsHeader = "Sorry, no concerts found."
                   noConcertsText = "Try expanding your filters to include more results."
+                  locationDeniedHeader = {locationDeniedHeader}
+                  locationDeniedText = {locationDeniedText}
               />;
       case 'allConcerts':
-        return <ConcertList concerts = {allConcerts.current} loading = {loadingConcerts}
+        return <ConcertList concerts = {allConcerts.current} loading = {loadingConcerts} locationDenied = {locationDenied}
                   noConcertsHeader = "Sorry, no concerts found."
                   noConcertsText = "Try expanding your filters to include more results or listen to more artists on Spotify"
+                  locationDeniedHeader = {locationDeniedHeader}
+                  locationDeniedText = {locationDeniedText}
               />;
-        case 'interestedConcerts':
-          return <ConcertList concerts = {interestedConcerts} loading = {interestedConcerts == null}
-                  noConcertsHeader = "No conerts you are watching."
+      case 'interestedConcerts':
+        return <ConcertList concerts = {interestedConcerts} loading = {interestedConcerts == null} locationDenied = {false}
+                  noConcertsHeader = "No concerts you are watching."
                   noConcertsText = "Any concerts you have an interest for will show up here."
               />;
       default:

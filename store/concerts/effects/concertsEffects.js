@@ -14,8 +14,10 @@ const BACKEND_INTERESTED_CONCERTS = `${BACKEND_USERS}interested_concerts/`;
 export const fetchLocationOrAskPermission = async() => {
     // permissions returns only for location permissions on iOS and under certain conditions, see Permissions.LOCATION
     const userAllows = await userAllowsLocation();
+    console.log('userAllows:', userAllows)
     if (userAllows) {
       const location = await getCurrentPositionAsync({ accuracy: Accuracy.Low });
+      console.log('user location: ', location)
       const address = await reverseGeocodeAsync(location.coords);
 
       const city = address[0].city;
@@ -42,7 +44,7 @@ export const fetchLocationOrAskPermission = async() => {
       }
 
     } else {
-      return null;
+      return "denied";
     }
 }
 

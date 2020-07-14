@@ -5,7 +5,7 @@ import { Colors, Screens } from '../../styles'
 import BaseText from '../BaseText'
 
 
-const ArtistSection = ({contentPresent, renderItem, contentText, noContentText, container}) => {
+const ArtistSection = ({contentPresent, renderItem, contentText, noContentText, locationDeniedText, container}) => {
     return (
         <View style = {styles.container}>
         {contentPresent ?

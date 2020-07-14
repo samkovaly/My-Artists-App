@@ -130,6 +130,17 @@ const fetchEventsAtID = async(url, id) => {
     return events[0];
 }
 
+
+
+export const fetchNonLocalConcertsForArtist = async(artist, monthsAhead, clientId) => {
+    let nonLocationURL = buildConcertsLocationURL(clientId, monthsAhead);
+    const nonLocalConcerts = await fetchConcertsArtistSlug(nonLocationURL, artist.slug);
+    return {
+        localConcerts: [],
+        nonLocalConcerts: nonLocalConcerts,
+    }
+}
+
 /*
     Fetches local concerts (within radius) and non-local concerts (all) at this location
     and for only one artist. This is used by the artist's dtail screen and not the concerts screen.
@@ -157,7 +168,7 @@ export const fetchAllConcertsForArtist = async(artist, monthsAhead, clientId, la
     };
 
     const localConcerts = concerts[0]
-
+    // dont want duplicates
     const nonLocalConcerts = concerts[1].filter(nonLocalConcert => {
         for(localConcert of localConcerts){
             if(nonLocalConcert.id == localConcert.id){
