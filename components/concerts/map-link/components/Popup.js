@@ -14,7 +14,6 @@ import {
   ActivityIndicator
 } from 'react-native'
 import PropTypes from 'prop-types'
-import Modal from 'react-native-modal'
 
 import { getAvailableApps, checkNotSupportedApps } from '../utils'
 import { showLocation } from '../index'
