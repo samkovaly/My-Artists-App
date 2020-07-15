@@ -7,6 +7,7 @@ import ArtistCard from './ArtistCard';
 export default function ArtistHorizontalCards({ title, artists }) {
 
     return(
+        artists.length > 0 ?
         <View style = {styles.container}>
             <BaseText style = {styles.title}>{title}</BaseText>
             <FlatList
@@ -17,7 +18,7 @@ export default function ArtistHorizontalCards({ title, artists }) {
                 horizontal={true}
             />
         </View>
-
+        : null
     )
 }
 
