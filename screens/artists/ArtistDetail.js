@@ -12,7 +12,6 @@ import { getTracks } from '../../store/musicProfile/musicProfileActions';
 import { getArtist, getRelatedArtists } from '../../utilities/spotifyFetches';
 import { fetchAllConcertsForArtist, fetchNonLocalConcertsForArtist } from '../../store/concerts/effects/seatgeekEffects'
 
-import { getUserLocation } from '../../store/concerts/concertsActions'
 
 
 
@@ -76,23 +75,19 @@ export default function ArtistDetail({ route }) {
 
             const months = 12;
             if(localConcerts){
-              setConcerts(await fetchNonLocalConcertsForArtist(artist, months, seatgeekClientId));
-            }else{
               setConcerts(await fetchAllConcertsForArtist(artist, months, seatgeekClientId, userLocation.latitude, userLocation.longitude, radius));
+            }else{
+              setConcerts(await fetchNonLocalConcertsForArtist(artist, months, seatgeekClientId));
             }
 
         }
 
-        if(userLocation == null){
-          // ask user for their location if we somehow haven't yet
-          dispatch(getUserLocation());
-        }else if(userLocation == "denied"){
+        if(userLocation == "denied"){
           getAsyncArtistData(false);
         }else{
           getAsyncArtistData(true);
         }
-
-    }, [userLocation])
+    }, [])
 
 
     if(!concerts || !relatedArtists){
@@ -110,9 +105,16 @@ export default function ArtistDetail({ route }) {
 
             <View style = {{marginTop: 20}}/>
 
-            {displayConcerts(concerts.localConcerts, userLocation, "Upcoming concerts near you", "No upcoming concerts near you", "Enable location to see upcoming concerts near you")}
-            {displayConcerts(concerts.nonLocalConcerts, userLocation, "Other concerts", "No other concerts")}
-            
+            {concerts.localConcerts.length == 0 && concerts.nonLocalConcerts.length == 0 ?
+              <View style = {styles.centerText}>
+                <BaseText style = {styles.noContentText}>No upcoming concerts</BaseText>
+              </View> :
+              <View>
+                {displayConcerts(concerts.localConcerts, userLocation, "Upcoming concerts near you", "No upcoming concerts near you", "Enable location to see upcoming concerts near you")}
+                {displayConcerts(concerts.nonLocalConcerts, userLocation, "Other concerts", "No other concerts")}
+              </View>
+            }
+
             {tracks? displayTracks(tracks): null}
             {displayRelatedArtists(relatedArtists)}
 
@@ -231,5 +233,15 @@ const styles = StyleSheet.create({
 
   relatedArtists: {
     marginHorizontal: 8,
-  }
+  },
+  contentText: {
+    fontSize: 24,
+    marginBottom: 6,
+  },
+  noContentText: {
+    marginBottom: 4,
+    fontSize: 18,
+    textAlign: 'center',
+    color: Colors.LIGHT_GREY,
+  },
 });

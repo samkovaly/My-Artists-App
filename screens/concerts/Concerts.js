@@ -13,11 +13,6 @@ import { Colors, Screens } from '../../styles';
 
 
 
-
-
-
-
-
 const filterConcertsForArtists = (concerts, artists) => {
 
   // filter based on common property between both: slug
@@ -41,14 +36,14 @@ const filterConcertsForArtists = (concerts, artists) => {
 
 export default function Concerts( {  } ) {
 
+  
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const seatgeekClientId = useSelector(state => state.authentication.APICredentials.seatgeek.client_id);
   const artistsMap = useSelector(state => state.musicProfile.artistSlugMap);
 
   const userLocation = useSelector(state => state.concerts.userLocation);
-
-  //console.log('userLocation', userLocation)
 
   const filters = useSelector(state => state.concerts.filters);
  
@@ -77,23 +72,16 @@ export default function Concerts( {  } ) {
     }
   }, [filters])
 
-
+  console.log('whahah')
 
   useEffect(() => {
-    if(userLocation != null & userLocation != "denied"){
+    if(userLocation != null & userLocation != "undetermined" & userLocation != "denied"){
       dispatch(setFiltersAction({
         ...filters,
         location: userLocation,
       }));
     }
   }, [userLocation])
-
-
-  const editFilters = () => {
-    navigation.navigate('ConcertFilters', {
-      filters: filters,
-    })
-  }
 
 
 
@@ -105,6 +93,11 @@ export default function Concerts( {  } ) {
   ]);
 
 
+  const editFilters = () => {
+    navigation.navigate('ConcertFilters', {
+      filters: filters,
+    })
+  }
 
   // ask for if we don't have yet
   if (userLocation == null){

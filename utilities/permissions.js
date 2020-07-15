@@ -11,7 +11,8 @@ export const userAllowsLocation = async () => {
     console.log('userAllowsLocation')
     const { status } = await Permissions.getAsync(Permissions.LOCATION);
     console.log('location permission status: ', status);
-    return status == "granted";
+    return status;
+    //return status == "granted";
   }
 export const askLocationPermission = async () => {
     console.log('askLocationPermission')

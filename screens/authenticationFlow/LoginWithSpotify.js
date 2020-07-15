@@ -56,17 +56,11 @@ export default function LoginWithSpotify(props) {
     await dispatch(registerWithRefreshToken());
     // refreshAndGetMusicProfile sets analyzingSpotify state to on then off again
     await dispatch(refreshAndGetMusicProfile());
+    await dispatch(setInterestedConcerts());
+    
     await dispatch(setAnalyzingSpotifyAction(false));
-
-    dispatch(setInterestedConcerts());
     dispatch(login());
   }
-  
-  //const refreshToken = useSelector(state => state.authentication.refreshToken);
-
-  //if(refreshToken){
-  //  registerAnalyzeAndGetMusicProfile();
-  //}
 
   const analyzingSpotify = useSelector(state => state.musicProfile.analyzingSpotify);
 

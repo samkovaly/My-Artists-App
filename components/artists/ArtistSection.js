@@ -5,7 +5,7 @@ import { Colors, Screens } from '../../styles'
 import BaseText from '../BaseText'
 
 
-const ArtistSection = ({contentPresent, renderItem, contentText, noContentText, locationDeniedText, container}) => {
+const ArtistSection = ({contentPresent, renderItem, contentText, noContentText, container}) => {
     return (
         <View style = {styles.container}>
         {contentPresent ?
@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
     },
     noContentText: {
       marginBottom: 4,
-        fontSize: 18,
+      fontSize: 18,
+      textAlign: 'center',
+      color: Colors.LIGHT_GREY,
     },
 })

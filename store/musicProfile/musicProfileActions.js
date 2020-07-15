@@ -5,7 +5,6 @@ export const REFRESH_SPOTIFY_ERROR = 'REFRESH_SPOTIFY_ERROR';
 export const SET_LAST_REFRESHED = 'SET_LAST_REFRESHED'
 
 
-
 import { LOGOUT } from '../globalActions'
 
 import { makeAction } from '../../utilities/actions';
@@ -14,6 +13,7 @@ import { refreshAccessToken } from '../authentication/authenticationActions'
 import { spotifyArtistsToArtists } from '../../utilities/artists'
 
 import { getDisplayDate } from '../../utilities/displayStrings'
+
 
 export const refreshAndGetMusicProfile = () => {
     return async(dispatch, getState) => {

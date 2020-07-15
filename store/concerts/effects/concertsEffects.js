@@ -13,39 +13,49 @@ const BACKEND_INTERESTED_CONCERTS = `${BACKEND_USERS}interested_concerts/`;
 
 export const fetchLocationOrAskPermission = async() => {
     // permissions returns only for location permissions on iOS and under certain conditions, see Permissions.LOCATION
-    const userAllows = await userAllowsLocation();
-    console.log('userAllows:', userAllows)
-    if (userAllows) {
-      const location = await getCurrentPositionAsync({ accuracy: Accuracy.Low });
-      console.log('user location: ', location)
-      const address = await reverseGeocodeAsync(location.coords);
+    const permissionStatus = await userAllowsLocation();
 
-      const city = address[0].city;
-      const state = address[0].region;
-      let country = address[0].country;
-      
-      let displayString = city + ', ' + country;
-
-      let USA = false;
-      if(country == "United States"){
-        USA = true;
-        country = "USA";
-        displayString = city + ', ' + state;
+    if (permissionStatus == 'granted') {
+      return await fetchLocation();
+    }else if(permissionStatus == 'undetermined'){
+      const newPermissionStatus = await askLocationPermission();
+      if(newPermissionStatus == 'granted'){
+        return await fetchLocation();
       }
-
-      return {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        city: address[0].city,
-        state: address[0].region,
-        country: country,
-        USA: USA,
-        displayString: displayString,
-      }
-
-    } else {
-      return "denied";
     }
+    return 'denied';
+}
+
+
+
+export const fetchLocation = async() => {
+
+  const location = await getCurrentPositionAsync({ accuracy: Accuracy.Low });
+  console.log('user location: ', location)
+  const address = await reverseGeocodeAsync(location.coords);
+
+  const city = address[0].city;
+  const state = address[0].region;
+  let country = address[0].country;
+  
+  let displayString = city + ', ' + country;
+
+  let USA = false;
+  if(country == "United States"){
+    USA = true;
+    country = "USA";
+    displayString = city + ', ' + state;
+  }
+
+  return {
+    latitude: location.coords.latitude,
+    longitude: location.coords.longitude,
+    city: address[0].city,
+    state: address[0].region,
+    country: country,
+    USA: USA,
+    displayString: displayString,
+  }
 }
 
 

@@ -20,7 +20,8 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
     const userLocation = useSelector(state => state.concerts.userLocation);
     let description = null;
     let locationDenied = false;
-    if(userLocation && userLocation != "denied"){
+    
+    if(userLocation != "denied"){
         description = userLocation.displayString
         location = userLocation;
     }else{

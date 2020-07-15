@@ -69,10 +69,9 @@ export default function AuthLoadingScreen(props) {
         await dispatch(setAuthStateFromStorage());
         // retrive music profile from backend database
         await dispatch(getMusicProfile());
-
+        await dispatch(setInterestedConcerts());
         // with user auth and music profile in state, the user is ready to use the app.
         // login to auto navigate to main app stack
-        dispatch(setInterestedConcerts());
         dispatch(login());
     }
 
