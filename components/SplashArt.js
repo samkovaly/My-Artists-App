@@ -8,7 +8,7 @@ import { Screens } from '../styles'
 const SplashArt = () => {
     return (
       <View style = {styles.container}>
-        { /*<Image source={require('../graphics/X-Icon.jpg')} style = {styles.image} /> */ }
+        <Image source={require('../graphics/my-artists-icon-M-light.png')} resizeMode = 'contain' style = {styles.image} />
       </View>
     )
 }
@@ -19,12 +19,11 @@ export default SplashArt;
 const styles = StyleSheet.create({
   container: {
     ...Screens.screenContainer,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
-      borderRadius: 25,
-      width: 50,
-      height: 50,
+    width: 90,
+    height: 90,
   },
 });

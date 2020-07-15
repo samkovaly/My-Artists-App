@@ -56,7 +56,8 @@ const fetchUserAuthCode = async (appCredentials) => {
       appCredentials.clientId +
       (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
       '&redirect_uri=' +
-      encodeURIComponent(redirectUrl),
+      encodeURIComponent(redirectUrl) +
+      '&show_dialog=true',
   })
   if(result.type == "success"){
     return result.params.code; 

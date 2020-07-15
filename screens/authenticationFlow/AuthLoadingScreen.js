@@ -114,13 +114,15 @@ export default function AuthLoadingScreen(props) {
 
 const loadingScreen = () => {
     return (
+        <SplashArt/>
+        /*
         <View style = {styles.loadingScreen}>
             <ActivityIndicator
                 size = 'large'
                 color = {Colors.THEME_BLUE}
             />
         </View>
-        //<SplashArt/>
+        */
     )
 }
 
