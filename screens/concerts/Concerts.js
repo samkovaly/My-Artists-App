@@ -107,7 +107,7 @@ export default function Concerts( {  } ) {
   const renderScene = ({ route }) => {
     const locationDenied = (userLocation == "denied" && filters.location.latitude == null);
     const locationDeniedHeader = "Need a location."
-    const locationDeniedText = "Give location permission or manually search for one with the filters button above.";
+    const locationDeniedText = "Give location permission or manually search for a city above.";
     switch (route.key) {
       case 'artistConcerts':
         return <ConcertList concerts = {artistConcerts} loading = {loadingConcerts} locationDenied = {locationDenied}
