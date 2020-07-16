@@ -28,6 +28,7 @@ export const SUB_TEXT_GREY = LIGHT_GREY
 
 
 export const SPOTIFY_GREEN = '#1DB954'
+export const SPOTIFY_LIGHT_GREEN = '#1ec95b'
 export const RED = '#e8493a';
 export const FAVORITE_HEART_RED = RED
 export const ERROR_MODAL_RED = RED

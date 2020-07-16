@@ -83,6 +83,7 @@ export default function LoginWithSpotify(props) {
                   borderRadius: 12,
                   padding: 15,
                 }}
+              underlayColor = {Colors.SPOTIFY_LIGHT_GREEN}
           />
 
       </View>

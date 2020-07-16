@@ -6,12 +6,12 @@ import { Colors, Screens } from '../styles'
 import BaseText from './BaseText'
 
 
-const BasicButton= ({ text, onPress, containerStyle, textStyle }) => {
+const BasicButton= ({ text, onPress, containerStyle, textStyle, underlayColor }) => {
     return (
         <TouchableHighlight
             style = {[styles.button, containerStyle]}
             onPress={() => {onPress()}}
-            underlayColor={Colors.BUTTON_UNDERLAY}>
+            underlayColor = { underlayColor ? underlayColor : Colors.BUTTON_UNDERLAY }>
             <BaseText style = {[styles.text, textStyle]}>{text}</BaseText>
         </TouchableHighlight>
     )
