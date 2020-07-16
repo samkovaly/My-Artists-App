@@ -36,8 +36,7 @@ const filterConcertsForArtists = (concerts, artists) => {
 
 export default function Concerts( {  } ) {
 
-  
-
+  console.log('concerts page reload')
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const seatgeekClientId = useSelector(state => state.authentication.APICredentials.seatgeek.client_id);
@@ -71,8 +70,6 @@ export default function Concerts( {  } ) {
       getAllConcerts();
     }
   }, [filters])
-
-  console.log('whahah')
 
   useEffect(() => {
     if(userLocation != null & userLocation != "undetermined" & userLocation != "denied"){
