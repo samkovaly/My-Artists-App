@@ -9,7 +9,12 @@ import { Colors, Screens, Buttons, Font } from '../../styles'
 import BaseText from '../BaseText';
 
 function ConcertList({concerts, loading, displayConcertName, style, noConcertsHeader, noConcertsText,
-    locationDenied, locationDeniedHeader, locationDeniedText }) {
+    locationDenied, locationDeniedHeader, locationDeniedText,
+    backendErrorHeader, backendErrorText, backendError }) {
+
+    if(backendError){
+        return noConcerts(backendErrorHeader,backendErrorText)
+    }
 
     if(loading) {
         return loadingScreen();

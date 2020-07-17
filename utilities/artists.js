@@ -68,7 +68,8 @@ const spotifyArtistGetArtist = (spotifyArtist, extractedArtistsSlugMap) => {
     let slug = getSlug(spotifyArtist);
 
 
-    if(extractedArtistsSlugMap.has(slug)){
+    // if its null, there was a backend error
+    if(extractedArtistsSlugMap != null && extractedArtistsSlugMap.has(slug)){
         // use extractedArtist object
         return extractedArtistsSlugMap.get(slug);
     }else{

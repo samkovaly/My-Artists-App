@@ -108,6 +108,10 @@ export default function Concerts( {  } ) {
     const locationDenied = (userLocation == "denied" && filters.location.latitude == null);
     const locationDeniedHeader = "Need a location."
     const locationDeniedText = "Give location permission or manually search for a city above.";
+
+    const backendErrorHeader = "Oops, there was an error!";
+    const backendErrorText = "Unfortunately there was an error with Spotify and we can't load any of your artists. We have been notified of this and it will be fixed soon. Luckily the 'All Concerts' tab still works!";
+
     switch (route.key) {
       case 'artistConcerts':
         return <ConcertList concerts = {artistConcerts} loading = {loadingConcerts} locationDenied = {locationDenied}
@@ -115,6 +119,11 @@ export default function Concerts( {  } ) {
                   noConcertsText = "Try expanding your filters to include more results."
                   locationDeniedHeader = {locationDeniedHeader}
                   locationDeniedText = {locationDeniedText}
+
+                  backendErrorHeader = {backendErrorHeader}
+                  backendErrorText = {backendErrorText}
+                  backendError = {artistsMap == null}
+
               />;
       case 'allConcerts':
         return <ConcertList concerts = {allConcerts.current} loading = {loadingConcerts} locationDenied = {locationDenied}
@@ -125,7 +134,7 @@ export default function Concerts( {  } ) {
               />;
       case 'interestedConcerts':
         return <ConcertList concerts = {interestedConcerts} loading = {interestedConcerts == null} locationDenied = {false}
-                  noConcertsHeader = "No concerts you are watching."
+                  noConcertsHeader = "You have not favorited any concerts"
                   noConcertsText = "Any concerts you have an interest for will show up here."
               />;
       default:

@@ -24,7 +24,20 @@ export default function MyArtists(props) {
   const navigation = useNavigation();
 
   const artistsMap = useSelector(state => state.musicProfile.artistSlugMap);
+
+  if(artistsMap == null){
+    return (
+      <View style = {styles.noMusicProfileContainer}>
+        <BaseText style = {styles.noMusicProfileText}>Unfortunately there was an error with Spotify and we can't load any of your artists. We have been notified of this and it will be fixed soon.</BaseText>
+      </View>
+
+    )
+  }
+
+
   const artists = Array.from(artistsMap.values());
+  console.log(artistsMap)
+  console.log(artists.slice(0,10))
 
   // example: top_artists_long_term_ranking
   let shortTermArtists = filterArtists(artists, 'top_artists_short_term');
@@ -90,5 +103,16 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
     alignSelf: 'center',
+  },
+
+  noMusicProfileContainer: {
+    ...Screens.screenContainer,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 40,
+  },
+  noMusicProfileText: {
+    fontSize: 18,
   }
+
 });
