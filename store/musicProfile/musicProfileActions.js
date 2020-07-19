@@ -44,7 +44,9 @@ export const getMusicProfile = () => {
         
         const musicProfile = await fetchMusicProfile(auth.username, auth.backendAuthToken);
 
-        if(musicProfile.music_profile_JSON.length > 0){
+        if(musicProfile && 
+            musicProfile.music_profile_JSON && 
+            musicProfile.music_profile_JSON.length > 0){
 
             const musicProfileJSON = JSON.parse(musicProfile.music_profile_JSON)
             let lastRefreshed = musicProfile.last_refreshed
