@@ -81,10 +81,6 @@ const spotifyArtistGetArtist = (spotifyArtist, extractedArtistsSlugMap) => {
 
 const spotifyArtistToArtist = (spotifyArtist, userExtracted) => {
     const slug = getSlug(spotifyArtist);
-    
-    //if(!userExtracted){
-        //console.log('spotifyArtistToArtist', spotifyArtist);
-    //}
 
     let smallImage = null;
     let bigImage = null;

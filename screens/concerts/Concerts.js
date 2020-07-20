@@ -35,14 +35,10 @@ const filterConcertsForArtists = (concerts, artists) => {
 
 
 export default function Concerts( {  } ) {
-
-  console.log('concerts page reload')
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const seatgeekClientId = useSelector(state => state.authentication.APICredentials.seatgeek.client_id);
   const artistsMap = useSelector(state => state.musicProfile.artistSlugMap);
-
-  const userLocation = useSelector(state => state.concerts.userLocation);
 
   const filters = useSelector(state => state.concerts.filters);
  
@@ -51,12 +47,19 @@ export default function Concerts( {  } ) {
   const artistConcerts = useMemo(() => filterConcertsForArtists(allConcerts.current, artistsMap), [allConcerts.current, artistsMap]);
   const [loadingConcerts, setLoadingConcerts] = useState(false);
 
-
   const interestedConcerts = useSelector(state => state.concerts.interestedConcerts);
 
-  navigation.setOptions({
-    headerTitle: props => <FiltersButton filters = {filters} editFilters = {editFilters} />
-  })
+  const userLocation = useSelector(state => state.concerts.userLocation);
+  const [askingLocation, setAskingLocation] = useState(false);
+
+  const [concertsTabIndex, setConcertsTabIndex] = useState(0);
+  const [concertsRoutes] = useState([
+    { key: 'artistConcerts', title: "My Concerts" },
+    { key: 'allConcerts', title: 'All Concerts' },
+    { key: 'interestedConcerts', title: 'Favorites' },
+  ]);
+
+
 
   useEffect(() => {
     const getAllConcerts = async () => {
@@ -80,25 +83,19 @@ export default function Concerts( {  } ) {
     }
   }, [userLocation])
 
+  // ask for if we don't have yet
+  if (userLocation == null){
+    dispatch(getUserLocation());
+  }
 
-
-  const [concertsTabIndex, setConcertsTabIndex] = useState(0);
-  const [concertsRoutes] = useState([
-    { key: 'artistConcerts', title: "My Concerts" },
-    { key: 'allConcerts', title: 'All Concerts' },
-    { key: 'interestedConcerts', title: 'Favorites' },
-  ]);
-
+  navigation.setOptions({
+    headerTitle: props => <FiltersButton filters = {filters} editFilters = {editFilters} />
+  })
 
   const editFilters = () => {
     navigation.navigate('ConcertFilters', {
       filters: filters,
     })
-  }
-
-  // ask for if we don't have yet
-  if (userLocation == null){
-    dispatch(getUserLocation());
   }
 
   const initialLayout = { width: Dimensions.get('window').width };

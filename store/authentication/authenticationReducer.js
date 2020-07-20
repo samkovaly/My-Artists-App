@@ -1,6 +1,6 @@
 
 import { SET_APP_CREDENTIALS, SET_API_CREDENTIALS, 
-  SET_REFRESH_TOKEN, SET_ACCESS_TOKEN, SET_USERNAME, SET_BACKEND_AUTH_TOKEN, 
+  SET_REFRESH_TOKEN, SET_ACCESS_TOKEN, SET_USER, SET_BACKEND_AUTH_TOKEN, 
   SET_ANALYZING_SPOTIFY, LOGIN } from './authenticationActions'
 
 import { LOGOUT } from '../globalActions'
@@ -29,7 +29,11 @@ const initialState = {
   },
   // these 3 are saved to local storage for automatica login upon app start
   refreshToken: null,
-  username: null,
+  user: {
+    username: null,
+    displayName: null,
+    email: null,
+  },
   backendAuthToken: null,
 
 }
@@ -58,10 +62,10 @@ export default function(state = initialState, action) {
         ...state,
         accessToken: action.payload
       }
-    case SET_USERNAME:
+    case SET_USER:
       return {
         ...state,
-        username: action.payload
+        user: action.payload
       };
     case SET_BACKEND_AUTH_TOKEN:
       return {

@@ -3,11 +3,10 @@ import { saveStorage, deleteStorage, getStorage } from '../../utilities/localSto
 const USER_SAVED_ON_LOCAL = 'USER_SAVED_ON_LOCAL';
 
 const USERNAME = 'USERNAME';
+const DISPLAY_NAME = 'DISPLAY_NAME';
 const USER_REFRESH_TOKEN = 'USER_REFRESH_TOKEN';
 const BACKEND_USER_PASSWORD = 'BACKEND_USER_PASSWORD';
 const BACKEND_USER_AUTH_TOKEN = 'BACKEND_USER_AUTH_TOKEN';
-
-
 
 
 // for debugging
@@ -15,6 +14,7 @@ export const printOutAllStorage = async() => {
     console.log('print out all current storage:')
     console.log('user saved on local:', await getUserSavedOnStorage());
     console.log('username:', await getUsernameStorage());
+    console.log('display name:', await getDisplayNameStorage());
     console.log('refresh token:', await getRefreshTokenStorage());
 }
 
@@ -23,6 +23,7 @@ export const removeAllStorage = async() => {
     console.log('removing all local storage...')
     await removeUserSavedOnStorage();
     await removeUsernameStorage();
+    await removeDisplayNameStorage();
     await removeRefreshTokenStorage();
     await removeBackendAuthTokenStorage();
 }
@@ -50,6 +51,17 @@ export const getUsernameStorage = async() => {
 }
 export const removeUsernameStorage = async() => {
     return await deleteStorage(USERNAME);
+}
+
+// name of account to display to users so they know what account they are logged in with.
+export const saveDisplayNameStorage = async (displayName) => {
+    return await saveStorage(DISPLAY_NAME, displayName);
+}
+export const getDisplayNameStorage = async() => {
+    return await getStorage(DISPLAY_NAME);
+}
+export const removeDisplayNameStorage = async() => {
+    return await deleteStorage(DISPLAY_NAME);
 }
 
 

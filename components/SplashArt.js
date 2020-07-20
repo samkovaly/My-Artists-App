@@ -6,24 +6,17 @@ import { Screens } from '../styles'
 
   
 const SplashArt = () => {
-    return (
-      <View style = {styles.container}>
-        <Image source={require('../graphics/my-artists-icon-M-light.png')} resizeMode = 'contain' style = {styles.image} />
-      </View>
-    )
+  return (
+    <Image source={require('../assets/my-artists-splash.png')} resizeMode = 'contain' style = {styles.image} />
+  )
 }
 
 export default SplashArt;
 
 
 const styles = StyleSheet.create({
-  container: {
-    ...Screens.screenContainer,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   image: {
-    width: 90,
-    height: 90,
+    width: '100%',
+    height: '100%',
   },
 });

@@ -53,7 +53,7 @@ const openSpotifyTrack = (uri) => {
 
 
 const getSpotifyLogo = () => {
-    return require('../../graphics/spotify-icon-green-transparent.png');
+    return require('../../assets/spotify-icon-green-transparent.png');
 }
 
 

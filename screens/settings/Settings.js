@@ -13,11 +13,6 @@ import { twoButtonConfirmAlert } from '../../utilities/alerts';
 
 
 
-
-  
-
-
-
 const SUPPORT_EMAIL = 'xilernet@gmail.com';
 const EMAIL_SUBJECT = 'My Artists App';
 const EMAIL_BODY = '';
@@ -33,6 +28,7 @@ export default function Settings(props) {
     }
     const logoutConfirmed = async() => {
       await dispatch(logout())
+      navigation.navigate("AuthFlow")
     }
 
     const refreshMusicProfile = async () => {
@@ -46,14 +42,11 @@ export default function Settings(props) {
       Linking.openURL(`mailto:${SUPPORT_EMAIL}?subject=${EMAIL_SUBJECT}&body=${EMAIL_BODY}`)
     }
 
-    const usename = useSelector(state => state.authentication.username);
+    const displayName = useSelector(state => state.authentication.user.displayName);
     const spotifyError = useSelector(state => state.musicProfile.refreshSpotifyError);
 
     const spotifyErrorHeader = "Error"
     const spotifyErrorMessage = "Something went wrong while analyzing your spotify, please try again"
-
-
-
 
     return (
       <View style = {{flex: 1}}>
@@ -61,7 +54,7 @@ export default function Settings(props) {
         
         <ScrollView style={styles.container}>
 
-            <BaseText style = {styles.topText} >Spotify account name: {username}</BaseText>
+            <BaseText style = {styles.topText} >Spotify user: {displayName}</BaseText>
             <BaseText style = {styles.topText} >Last refreshed: {lastRefreshed}</BaseText>
 
             { /*
@@ -77,6 +70,12 @@ export default function Settings(props) {
               screen = "TermsOfUse"
               //style = {styles.elementGrouped}
               style = {styles.elementGroupLead}
+            />
+            
+            <SettingsOpenScreenButton
+              text = "Privacy Policy"
+              screen = "PrivacyPolicy"
+              style = {styles.elementGrouped}
             />
 
             <SettingsActionButton

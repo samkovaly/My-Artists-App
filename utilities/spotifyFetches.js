@@ -3,7 +3,6 @@ import { requestSpotify, METHODS } from './HTTPRequests';
 
 // https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/
 export const fetchArtist = async (accessToken, artistID) => {
-    console.log('fetchArtist');
     // used to get artist's biggest image
     const url = "https://api.spotify.com/v1/artists/" + artistID;
     const headers = {
@@ -12,7 +11,6 @@ export const fetchArtist = async (accessToken, artistID) => {
       }
     
     const artistJSON = await requestSpotify(url, METHODS.GET, headers);
-    console.log('artistJSON', artistJSON);
     return artistJSON;
 } 
 

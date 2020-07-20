@@ -29,6 +29,10 @@ import SplashArt from '../../components/SplashArt';
 
 
 
+import { useNavigation } from '@react-navigation/native';
+
+import { AppLoading } from 'expo';
+
 
     /*
         1. load credentials         [ AUTH SPLASH SCREEN / COMPONENT ]
@@ -59,6 +63,7 @@ import SplashArt from '../../components/SplashArt';
 
 export default function AuthLoadingScreen(props) {
    const dispatch = useDispatch();
+   const nav = useNavigation();
 
    const appCredentials = useSelector(state => state.authentication.appCredentials);
 
@@ -72,7 +77,8 @@ export default function AuthLoadingScreen(props) {
         await dispatch(setInterestedConcerts());
         // with user auth and music profile in state, the user is ready to use the app.
         // login to auto navigate to main app stack
-        dispatch(login());
+        await dispatch(login());
+        nav.navigate("MainApp");
     }
 
    useEffect(() => {
@@ -113,6 +119,7 @@ export default function AuthLoadingScreen(props) {
 
 const loadingScreen = () => {
     return (
+        //<AppLoading/>
         <SplashArt/>
         /*
         <View style = {styles.loadingScreen}>

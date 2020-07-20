@@ -18,12 +18,11 @@ import { getDisplayDate } from '../../utilities/displayStrings'
 export const refreshAndGetMusicProfile = () => {
     return async(dispatch, getState) => {
         console.log("analyzing spotify...");
-        console.log('refreshAndGetMusicProfile')
         await dispatch(refreshAccessToken());
 
         const auth = getState().authentication;
         
-        const refreshStatus = await loadNewMusicProfile(auth.username, auth.backendAuthToken, auth.accessToken.token);
+        const refreshStatus = await loadNewMusicProfile(auth.user.username, auth.backendAuthToken, auth.accessToken.token);
 
         if(refreshStatus == null || refreshStatus.error){
             console.log('music profile refresh status of null, dispatchig a refresh spotify error');
@@ -42,10 +41,10 @@ export const getMusicProfile = () => {
     return async(dispatch, getState) => {
         auth = getState().authentication
         
-        const musicProfile = await fetchMusicProfile(auth.username, auth.backendAuthToken);
+        const musicProfile = await fetchMusicProfile(auth.user.username, auth.backendAuthToken);
 
         if(musicProfile && 
-            musicProfile.music_profile_JSON && 
+            musicProfile.music_profile_JSON &&
             musicProfile.music_profile_JSON.length > 0){
 
             const musicProfileJSON = JSON.parse(musicProfile.music_profile_JSON)
@@ -58,7 +57,7 @@ export const getMusicProfile = () => {
             const tracks = JSON.parse(musicProfileJSON.tracks)
             const tracksMap = makeTracksIntoIDMap(tracks)
 
-            console.log('dispatching new music profile to redux state...')
+            console.log('dispatching music profile to redux state...')
             await dispatch(setArtistsAction(artistsMap))
             await dispatch(setTracksAction(tracksMap))
             await dispatch(setLastRefreshed(lastRefreshed));

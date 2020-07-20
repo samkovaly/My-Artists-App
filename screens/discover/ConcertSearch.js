@@ -14,8 +14,6 @@ const PAGE_SIZE = 12;
 
 export default function ConcertSearch({ route }) {
   
-  console.log('concert search')
-
   const { initialQuery } = route.params;
 
   const seatgeekClientId = useSelector(state => state.authentication.APICredentials.seatgeek.client_id);

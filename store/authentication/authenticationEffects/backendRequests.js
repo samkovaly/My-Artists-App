@@ -21,35 +21,30 @@ const AUTH_MASTER_KEY_HEADER = {
 }
 export const fetchSpotifyAppCredentials = async () => {
     const credentials = await requestBackend(BACKEND_APP_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
-    //console.log(credentials)
     return credentials
 };
 export const fetchAPICredentials = async () => {
     const credentials = await requestBackend(BACKEND_API_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
-    //console.log(credentials)
     return credentials
 };
 
 
-export const registerUserForAuthToken = async (username, refreshToken, accessToken) => {
-    //console.log('Registering user at ', BACKEND_REGISTER)
+export const registerUserForAuthToken = async (username, email, refreshToken, accessToken) => {
     const headers = {
         'Content-Type': 'application/json'
     }
     const body = {
         'username': username,
+        'email': email,
         'refresh_token': refreshToken,
         'access_token': accessToken,
     }
-    //console.log('register body:', body)
     const registerResult = await requestBackend(BACKEND_REGISTER, METHODS.POST, headers, JSON.stringify(body))
-    //console.log('\n1 Register result:', registerResult, '\n')
     return registerResult
 }
 
 
 export const LoginUserForAuthToken = async (username, refreshToken) => {
-    //console.log('Loggin in user at ', BAKEND_LOGIN)
     const headers = {
         'Content-Type': 'application/json'
     }
@@ -58,6 +53,5 @@ export const LoginUserForAuthToken = async (username, refreshToken) => {
         'refresh_token': refreshToken,
     }
     const loginResult = await requestBackend(BAKEND_LOGIN, METHODS.POST, headers, JSON.stringify(body))
-    //console.log('\n1 Login result:', loginResult, '\n')
     return loginResult
 }

@@ -15,6 +15,7 @@ import AnalyzeSpotifyBackgroundAnimation from '../../components/AnalyzeSpotifyBa
 import BaseText from '../../components/BaseText'
 import BasicButton from '../../components/BasicButton'
 
+import { useNavigation } from '@react-navigation/native';
 
 /*
 N:
@@ -35,6 +36,7 @@ export default function LoginWithSpotify(props) {
 
   const screenHeight = Dimensions.get('window').height;
   const dispatch = useDispatch();
+  const nav = useNavigation();
 
 
   // ask to sign in to spotify, which will return a refrsh token if successful,
@@ -59,7 +61,8 @@ export default function LoginWithSpotify(props) {
     await dispatch(setInterestedConcerts());
     
     await dispatch(setAnalyzingSpotifyAction(false));
-    dispatch(login());
+    await dispatch(login());
+    nav.navigate("MainApp");
   }
 
   const analyzingSpotify = useSelector(state => state.musicProfile.analyzingSpotify);
@@ -72,8 +75,8 @@ export default function LoginWithSpotify(props) {
     return (
       <View style = {styles.container}>
         <View style = {styles.textContainer}>
-          <BaseText style = {styles.header}>Welcome</BaseText>
-          <BaseText style = {styles.subHeader}>Please connect your spotify account</BaseText>
+          <BaseText style = {styles.header}>Welcome to My Artists</BaseText>
+          <BaseText style = {styles.subHeader}>By logging on with Spotify, you'll be able to find upcoming concerts for your favorite artists automatically.</BaseText>
         </View>
 
         <BasicButton text = "Login With Spotify" onPress={() => {LoginUserButtonClicked()}}
@@ -101,18 +104,18 @@ const styles = StyleSheet.create({
   },
 
   textContainer: {
-    marginTop: 40,
+    marginTop: 50,
     marginHorizontal: 25,
     flexDirection: 'column',
     alignItems: 'center',
   },
   header: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: '400',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   subHeader: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: '200',
     color: Colors.LIGHT_GREY,
   },

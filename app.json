@@ -14,9 +14,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/my-artists-splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#18191a"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -25,7 +25,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "bundleIdentifier": "xilernet.myartists",
+      "buildNumber": "1.0.0",
+      "supportsTablet": false,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app asks users for their location to automatically find concerts near them. Otherwise, users can manually search for concerts via the google places autocomplete API",
         "LSApplicationQueriesSchemes": [

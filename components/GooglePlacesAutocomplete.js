@@ -564,8 +564,6 @@ export default class GooglePlacesAutocomplete extends Component {
                     )
                   : responseJSON.predictions;
 
-                //console.log(results)
-
               this._results = results;
               this.setState({
                 dataSource: this.buildRowsFromResults(results),

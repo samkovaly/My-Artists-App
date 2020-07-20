@@ -43,7 +43,7 @@ export default function AnalyzeSpotifyBackgroundAnimation({ runAnimation, screen
     return (
       <View style = {styles.container}>
         <BaseText style={styles.header} >Analyzing your Spotify data...</BaseText>
-          { /*<Image source = {require("../graphics/spotify-logo-name.png")} resizeMode="contain" style = {styles.logo} /> */ }
+          { /*<Image source = {require("../assets/spotify-logo-name.png")} resizeMode="contain" style = {styles.logo} /> */ }
           <Animated.View style = {{
                 ...styles.animatedView,
                 top: positionY,

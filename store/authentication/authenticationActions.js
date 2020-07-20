@@ -7,7 +7,7 @@ export const SET_API_CREDENTIALS = 'SET_API_CREDENTIALS';
 
 export const SET_REFRESH_TOKEN = 'SET_REFRESH_TOKEN';
 export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN';
-export const SET_USERNAME = 'SET_USERNAME';
+export const SET_USER = 'SET_USER';
 export const SET_BACKEND_AUTH_TOKEN = 'SET_BACKEND_AUTH_TOKEN';
 
 export const LOGIN = 'LOGIN';
@@ -16,8 +16,9 @@ export const LOGIN = 'LOGIN';
 import { makeAction } from '../../utilities/actions';
 import { LOGOUT } from '../globalActions';
 import { fetchAPICredentials, fetchSpotifyAppCredentials, LoginUserForAuthToken, registerUserForAuthToken } from './authenticationEffects/backendRequests';
-import { fetchAccessToken, fetchNewUserTokens, fetchUsername } from './authenticationEffects/spotifyRequests';
-import { getBackendAuthTokenStorage, getRefreshTokenStorage, getUsernameStorage, removeAllStorage, saveBackendAuthTokenStorage, saveRefreshTokenStorage, saveUsernameStorage, saveUserSavedOnStorage } from "./authenticationStorage";
+import { fetchAccessToken, fetchNewUserTokens, fetchUser } from './authenticationEffects/spotifyRequests';
+import { getBackendAuthTokenStorage, getRefreshTokenStorage, getUsernameStorage, removeAllStorage, saveBackendAuthTokenStorage, saveRefreshTokenStorage, saveUsernameStorage, saveUserSavedOnStorage,
+    saveDisplayNameStorage, getDisplayNameStorage } from "./authenticationStorage";
 
 
 
@@ -53,20 +54,24 @@ export const setAuthStateFromStorage = () => {
         await dispatch(refreshAccessToken());
 
         username = await getUsernameStorage();
-        await dispatch(setUsernameAction(username));
+        displayName = await getDisplayNameStorage();
+        user = {
+            username: username,
+            displayName: displayName,
+        }
+        await dispatch(setUserAction(user));
 
         backendAuthToken = await getBackendAuthTokenStorage();
         await dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthToken));
-
-        //console.log('after auto login, auth state is:', getState().authentication)
     }
 }
 
 
 export const saveAuthStateToStorage = async (authentication) => {
-    console.log('saving the stuff')
+    console.log('saveAuthStateToStorage')
     await saveRefreshTokenStorage(authentication.refreshToken);
-    await saveUsernameStorage(authentication.username)
+    await saveUsernameStorage(authentication.user.username)
+    await saveDisplayNameStorage(authentication.user.displayName)
     await saveBackendAuthTokenStorage(authentication.backendAuthToken)
     await saveUserSavedOnStorage(true)
 }
@@ -74,12 +79,11 @@ export const saveAuthStateToStorage = async (authentication) => {
 
 export const registerWithRefreshToken = () => {
     return async (dispatch, getState) => {
-        console.log('rwrt')
         // prompts for user to sign into spotify with their username / password
 
         console.log('registerWithRefreshToken')
         await dispatch(refreshAccessToken());
-        await dispatch(getUsername());
+        await dispatch(getUser());
         await dispatch(getBackendAuthToken());
 
         await saveAuthStateToStorage(getState().authentication)
@@ -103,12 +107,12 @@ export const getRefreshToken = () => {
         }
     }
 }
-// retrieves username with our access token
-export const getUsername = () => {
+// retrieves username and displayName with our access token
+export const getUser = () => {
     return async (dispatch, getState) => {
         const auth = getState().authentication
-        username = await fetchUsername(auth.accessToken.token);
-        await dispatch(setUsernameAction(username))
+        const user = await fetchUser(auth.accessToken.token);
+        await dispatch(setUserAction(user))
     }
 }
 // acquires initial access token after logging in / registering or when a new one is needed due to expiration.
@@ -128,13 +132,10 @@ export const refreshAccessToken = () => {
 export const getBackendAuthToken = () => {
     return async (dispatch, getState) => {
         const auth = getState().authentication;
-        //console.log("requesting backend user auth token with current auth state:", auth)
         // register user, does not if they are already registered
-        console.log("registering with: refresh: ", auth.refreshToken)
-        await registerUserForAuthToken(auth.username, auth.refreshToken, auth.accessToken.token)
+        await registerUserForAuthToken(auth.user.username, auth.user.email, auth.refreshToken, auth.accessToken.token)
         // login user and get auth token as return value
-        backendAuthTokenResult = await LoginUserForAuthToken(auth.username, auth.refreshToken)
-        console.log('\n', backendAuthTokenResult, '\n')
+        backendAuthTokenResult = await LoginUserForAuthToken(auth.user.username, auth.refreshToken)
         await dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthTokenResult.token))
     }
 }
@@ -158,9 +159,7 @@ export const logout = () => {
 
 
 const needNewAccessToken = (expireTime) => {
-    //console.log('need new access token?')
     const currentTime = new Date().getTime();
-    //console.log('expireTime: ', expireTime, 'currentTime:', currentTime)
     return currentTime >= expireTime;
 }
 
@@ -175,8 +174,8 @@ const setAccessTokenAction = (accessToken, expireTime) => {
         expireTime: expireTime,
     })
 }
-const setUsernameAction = (username) => {
-    return makeAction(SET_USERNAME, username);
+const setUserAction = (user) => {
+    return makeAction(SET_USER, user);
 }
 
 

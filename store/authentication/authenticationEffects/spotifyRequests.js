@@ -9,20 +9,25 @@ const CODE_ENDPOINT = ACCOUNTS_URL + 'authorize';
 const TOKEN_ENDPOINT = ACCOUNTS_URL + 'api/token';
 
 const USER_PERMISSION_SCOPES = ['user-library-read','playlist-read-private',
-  'playlist-read-collaborative','user-top-read', 'user-follow-read'];
+  'playlist-read-collaborative','user-top-read', 'user-read-email', 'user-follow-read'];
 
 const USER_PROFILE_URL = 'https://api.spotify.com/v1/me';
 
 
-export const fetchUsername = async (accessToken) => {
-  //console.log(`fetchUsername(${accessToken})`)
+export const fetchUser = async (accessToken) => {
   const headers = {
     'Authorization': `Bearer ${accessToken}`,
     'Content-Type': 'application/json',
   }
   const userProfile = await requestSpotify(USER_PROFILE_URL, METHODS.GET, headers);
-  //console.log('userProfile:', userProfile)
-  return userProfile.id
+
+  let displayName = userProfile.display_name ? userProfile.display_name : userProfile.email
+
+  return {
+    username: userProfile.id,
+    displayName: displayName,
+    email: userProfile.email,
+  };
 }
 
 
@@ -35,10 +40,8 @@ export const fetchAccessToken = async (appCredentials, refreshToken) => {
 // user registration - new refresh token, auth code is discared as it's not needed for future calls
 // fetches access token and refresh token
 export const fetchNewUserTokens = async (appCredentials) => {
-    //console.log(`fetchNewUserTokens(${appCredentials})`)
     const authCode = await fetchUserAuthCode(appCredentials);
     if(!authCode) return null
-    //console.log('autocode', authCode)
     const body = `grant_type=authorization_code&code=${authCode}&redirect_uri=${appCredentials.redirectUri}`;
     return await fetchUserTokens(appCredentials, body);
 }

@@ -15,7 +15,6 @@ export const METHODS = {
 */
 
 export const requestSpotify = async(URL, method, headers = null, body = null) => {
-  console.log('requestSpotify')
   //console.log('attempting ', URL, ' with method', method, ', headrs', headers, 'body', body)
   
   const responseJson = await requestJSON(URL, method, headers, body);

@@ -32,7 +32,7 @@ export const setInterestedConcerts = () => {
     return async (dispatch, getState) => {
         const auth = getState().authentication;
         const clientID = auth.APICredentials.seatgeek.client_id;
-        const interestedConcerts = await fetchInterestedConcerts(auth.username, auth.backendAuthToken);
+        const interestedConcerts = await fetchInterestedConcerts(auth.user.username, auth.backendAuthToken);
         const concertIDs = interestedConcerts.map((idObject) => {
             return idObject.concert_seatgeek_id;
         });
@@ -46,7 +46,7 @@ export const addInterestedConcert = (concertID) => {
     return async (dispatch, getState) => {
         const auth = getState().authentication;
         const clientID = auth.APICredentials.seatgeek.client_id;
-        const result = await postInterestedConcert(auth.username, auth.backendAuthToken, concertID);
+        const result = await postInterestedConcert(auth.user.username, auth.backendAuthToken, concertID);
         console.log('add result:', result);
         if(result){
             const concert = await fetchConcertByID(concertID, clientID);
@@ -59,7 +59,7 @@ export const addInterestedConcert = (concertID) => {
 export const removeInterestedConcert = (concertID) => {
     return async (dispatch, getState) => {
         const auth = getState().authentication;
-        const result = await deleteInterestedConcert(auth.username, auth.backendAuthToken, concertID);
+        const result = await deleteInterestedConcert(auth.user.username, auth.backendAuthToken, concertID);
         console.log('del result:', result);
         if(result){
             await dispatch(makeAction(REMOVE_INTERESTED_CONCERT, concertID));

@@ -25,19 +25,24 @@ export default function MyArtists(props) {
 
   const artistsMap = useSelector(state => state.musicProfile.artistSlugMap);
 
+
   if(artistsMap == null){
     return (
       <View style = {styles.noMusicProfileContainer}>
         <BaseText style = {styles.noMusicProfileText}>Unfortunately there was an error with Spotify and we can't load any of your artists. We have been notified of this and it will be fixed soon.</BaseText>
       </View>
-
+    )
+  }
+  if(artistsMap.size == 0){
+    return (
+      <View style = {styles.noMusicProfileContainer}>
+        <BaseText style = {styles.noMusicProfileText}>Unfortunately you have not listened to enough artists on spotify for them to show up here.</BaseText>
+      </View>
     )
   }
 
 
   const artists = Array.from(artistsMap.values());
-  console.log(artistsMap)
-  console.log(artists.slice(0,10))
 
   // example: top_artists_long_term_ranking
   let shortTermArtists = filterArtists(artists, 'top_artists_short_term');
@@ -51,8 +56,6 @@ export default function MyArtists(props) {
 
   let followedArtists = filterArtists(artists, 'followed_artist');
   followedArtists = followedArtists.sort((a, b) => (a.name > b.name) ? 1 : -1);
-
-  console.log('dreadful reload...')
 
   const gotoAllArtists = () => {
     navigation.navigate('AllArtists');

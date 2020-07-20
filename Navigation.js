@@ -38,8 +38,10 @@ import Settings from './screens/settings/Settings';
 import AnalyzeSpotify from './screens/settings/AnalyzeSpotify';
 import NotificationSettings from './screens/settings/NotificationSettings';
 import TermsOfUse from './screens/settings/TermsOfUse';
+import PrivacyPolicy from './screens/settings/PrivacyPolicy';
 
 import { Colors } from './styles';
+import { StatusBar } from 'expo-status-bar';
 
 
 
@@ -212,6 +214,13 @@ import { Colors } from './styles';
         }}
       />
       <Stack.Screen
+        name="PrivacyPolicy"
+        component={PrivacyPolicy}
+        options={{
+          title: 'Privacy Policy',
+        }}
+      />
+      <Stack.Screen
         name="AnalyzeSpotify"
         component={AnalyzeSpotify}
         options={{
@@ -269,11 +278,15 @@ import { Colors } from './styles';
       );
     }
     
-    
     const MainApp = () => {
+      const loggedIn = useSelector(state => state.authentication.loggedIn);
+      if(!loggedIn){
+        return <View/>
+      }
       return (
         <Stack.Navigator mode="modal"
-          screenOptions={stackScreenOptions} >
+          screenOptions={stackScreenOptions}
+          initialRouteName = "MainTabs">
           <Stack.Screen
             name = "MainTabs"
             component = {MainTabs}
@@ -286,27 +299,28 @@ import { Colors } from './styles';
             component = {ConcertFilters}
             options={{
               title: 'Filter Concerts',
-              headerLeft: ( { onPress } ) => (
+              headerLeft: ( { onPress } ) => {
                 // onPress defaults to goBack()
-                <TouchableOpacity onPress={onPress} >
+                return (<TouchableOpacity onPress={onPress} >
                   <Text style = {{
                       color: Colors.THEME_BLUE,
                       fontSize: 17,
                       fontWeight: '700',
                       marginLeft: 12,
                     }}>Cancel</Text>
-                </TouchableOpacity>
-              ),
+                </TouchableOpacity>)
+              },
             }}
           />
         </Stack.Navigator>
       )
     }
     
+
+
     const AuthFlow = () => {
       return (
-        <Stack.Navigator
-            headerMode = "none">
+        <Stack.Navigator headerMode = "none">
             <Stack.Screen name="AuthLoadingScreen" component={AuthLoadingScreen}/>
             <Stack.Screen name="LoginWithSpotify" component={LoginWithSpotify}/>
         </Stack.Navigator>
@@ -315,20 +329,19 @@ import { Colors } from './styles';
     
 
 export default function Navigation(props) {
-  const loggedIn = useSelector(state => state.authentication.loggedIn);
   return (
     <View style={{ flex: 1, backgroundColor: Colors.SCREEN_BACKGROUND }}>
       <SafeAreaProvider>
+        <StatusBar style="light" />
         <NavigationContainer theme = {{
             colors: {
               background: Colors.SCREEN_BACKGROUND,
             }
           }}>
-          { loggedIn ? (
-            <MainApp/>
-          ) : (
-            <AuthFlow/>
-          )}
+            <Stack.Navigator headerMode = "none" initialRouteName="AuthFlow">
+                <Stack.Screen name="AuthFlow" component={AuthFlow}/>
+                <Stack.Screen name="MainApp" component={MainApp}/>
+            </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>
     </View>

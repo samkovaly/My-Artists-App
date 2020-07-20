@@ -31,7 +31,6 @@ export const fetchLocationOrAskPermission = async() => {
 export const fetchLocation = async() => {
 
   const location = await getCurrentPositionAsync({ accuracy: Accuracy.Low });
-  console.log('user location: ', location)
   const address = await reverseGeocodeAsync(location.coords);
 
   const city = address[0].city;
