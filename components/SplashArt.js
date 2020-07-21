@@ -7,7 +7,7 @@ import { Screens } from '../styles'
   
 const SplashArt = () => {
   return (
-    <Image source={require('../assets/my-artists-splash.png')} resizeMode = 'contain' style = {styles.image} />
+    <Image source={require('../assets/splash.png')} resizeMode = 'contain' style = {styles.image} />
   )
 }
 

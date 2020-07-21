@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { StyleSheet, View, TouchableHighlight, Dimensions } from 'react-native';
+import { StyleSheet, View, TouchableHighlight, Dimensions, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors, Screens } from '../../styles';
@@ -16,6 +16,12 @@ import BaseText from '../../components/BaseText'
 import BasicButton from '../../components/BasicButton'
 
 import { useNavigation } from '@react-navigation/native';
+
+
+
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 /*
 N:
@@ -74,18 +80,34 @@ export default function LoginWithSpotify(props) {
   }else{
     return (
       <View style = {styles.container}>
-        <View style = {styles.textContainer}>
-          <BaseText style = {styles.header}>Welcome to My Artists</BaseText>
-          <BaseText style = {styles.subHeader}>By logging on with Spotify, you'll be able to find upcoming concerts for your favorite artists automatically.</BaseText>
+        <View style = {styles.topContainer}>
+          <BaseText style = {styles.welcomeTo}>Welcome to</BaseText>
+          <BaseText style = {styles.myArtists}>My Artists</BaseText>
+          <View style = {styles.explanationCardsContainer}>
+            <ExplanationCard
+              header="Find concerts tailored for you"
+              text = "Find upcoming concerts featuring your favorite artists in your city or any city."
+              icon = {<FontAwesome5 name = 'music' style = {{marginBottom: -8, marginRight: 8}} size = {28} color = {Colors.THEME_BLUE} />
+                }
+            />
+            <ExplanationCard
+              header="View all your artists"
+              text = "Find out what tracks you like from your artists and discover related artists."
+              icon = {<MaterialCommunityIcon name = 'artist' style = {{marginBottom: -5, marginRight: -3}} size = {40} color = {Colors.THEME_BLUE} />
+                }
+            />
+            <ExplanationCard
+              header="Discover new talent"
+              text = "Search for any artist ever to find out when and where they are playing next."
+              icon = {<Feather name = 'globe' style = {{marginBottom: 0, marginRight: 1, marginLeft: 5}} size = {33} color = {Colors.THEME_BLUE} />
+                }
+            />
+          </View>
+          <BaseText style = {styles.connectAccount}>Connect your Spotify account to get started.</BaseText>
         </View>
 
         <BasicButton text = "Login With Spotify" onPress={() => {LoginUserButtonClicked()}}
-            containerStyle = {{
-                  backgroundColor: Colors.SPOTIFY_GREEN,
-                  marginBottom: 40,
-                  borderRadius: 12,
-                  padding: 15,
-                }}
+            containerStyle = {styles.buttonContainer}
               underlayColor = {Colors.SPOTIFY_LIGHT_GREEN}
           />
 
@@ -95,28 +117,91 @@ export default function LoginWithSpotify(props) {
 }
 
 
+
+
+const ExplanationCard = ({ header, text, icon }) => {
+  return (
+    <View style={styles.explanationCardContainer}>
+      {icon}
+      <View style = {styles.explanationCardTextContainer}>
+        <BaseText style = {styles.explanationCardHeader}>{header}</BaseText>
+        <BaseText style = {styles.explanationCardText}>{text}</BaseText>
+      </View>
+    </View>
+  )
+}
+
 const styles = StyleSheet.create({
   container: {
     ...Screens.screenContainer,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 45,
+    marginBottom: 30,
+    marginHorizontal: 25,
   },
 
-  textContainer: {
-    marginTop: 50,
-    marginHorizontal: 25,
+  topContainer: {
+    flex: 1,
+    width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
   },
-  header: {
-    fontSize: 32,
+  /*
+  logo: {
+    width: '75%',
+    height: 60,
+    marginTop: 0,
+    marginBottom: 55,
+  }, */
+  welcomeTo: {
+    fontSize: 30,
+    marginBottom: -5,
+  },
+  myArtists: {
+    fontSize: 52,
+    color: Colors.THEME_BLUE,
+    fontWeight: '600',
+  },
+
+  explanationCardsContainer: {
+    flexDirection: 'column',
+    marginRight: 10,
+    marginTop: 30,
+    marginLeft: 20,
+  },
+
+  explanationCardContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+
+  explanationCardTextContainer: {
+    flexDirection: 'column',
+    marginLeft: 20,
+  },
+  explanationCardHeader: {
+    fontSize: 20,
     fontWeight: '400',
-    marginBottom: 20,
+    marginBottom: 4,
   },
-  subHeader: {
-    fontSize: 24,
-    fontWeight: '200',
-    color: Colors.LIGHT_GREY,
+  explanationCardText: {
+    fontSize: 15,
+    color: Colors.SUB_TEXT_GREY,
   },
+  connectAccount: {
+    fontSize: 22,
+    textAlign: 'center',
+    marginTop: 30,
+  },
+
+  buttonContainer: {
+    backgroundColor: Colors.SPOTIFY_GREEN,
+    borderRadius: 12,
+    padding: 15,
+    width: '100%'
+  }
 });

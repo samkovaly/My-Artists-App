@@ -47,7 +47,6 @@ export const addInterestedConcert = (concertID) => {
         const auth = getState().authentication;
         const clientID = auth.APICredentials.seatgeek.client_id;
         const result = await postInterestedConcert(auth.user.username, auth.backendAuthToken, concertID);
-        console.log('add result:', result);
         if(result){
             const concert = await fetchConcertByID(concertID, clientID);
             await dispatch(makeAction(ADD_INTERESTED_CONCERT, concert));
@@ -60,7 +59,6 @@ export const removeInterestedConcert = (concertID) => {
     return async (dispatch, getState) => {
         const auth = getState().authentication;
         const result = await deleteInterestedConcert(auth.user.username, auth.backendAuthToken, concertID);
-        console.log('del result:', result);
         if(result){
             await dispatch(makeAction(REMOVE_INTERESTED_CONCERT, concertID));
         }

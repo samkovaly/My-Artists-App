@@ -319,6 +319,10 @@ import { StatusBar } from 'expo-status-bar';
 
 
     const AuthFlow = () => {
+      const loggedIn = useSelector(state => state.authentication.loggedIn);
+      if(loggedIn){
+        return <View/>
+      }
       return (
         <Stack.Navigator headerMode = "none">
             <Stack.Screen name="AuthLoadingScreen" component={AuthLoadingScreen}/>

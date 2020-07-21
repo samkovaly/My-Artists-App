@@ -112,8 +112,8 @@ export default function Concerts( {  } ) {
     switch (route.key) {
       case 'artistConcerts':
         return <ConcertList concerts = {artistConcerts} loading = {loadingConcerts} locationDenied = {locationDenied}
-                  noConcertsHeader = "Sorry, no concerts found."
-                  noConcertsText = "Try expanding your filters to include more results."
+                  noConcertsHeader = "Sorry, no concerts found"
+                  noConcertsText = "Try changing the city or increasing the radius to include more results."
                   locationDeniedHeader = {locationDeniedHeader}
                   locationDeniedText = {locationDeniedText}
 
@@ -124,15 +124,15 @@ export default function Concerts( {  } ) {
               />;
       case 'allConcerts':
         return <ConcertList concerts = {allConcerts.current} loading = {loadingConcerts} locationDenied = {locationDenied}
-                  noConcertsHeader = "Sorry, no concerts found."
-                  noConcertsText = "Try expanding your filters to include more results or listen to more artists on Spotify"
+                  noConcertsHeader = "Sorry, no concerts found"
+                  noConcertsText = "Try changing the city or increasing the radius to include more results or listen to more artists on Spotify"
                   locationDeniedHeader = {locationDeniedHeader}
                   locationDeniedText = {locationDeniedText}
               />;
       case 'interestedConcerts':
         return <ConcertList concerts = {interestedConcerts} loading = {interestedConcerts == null} locationDenied = {false}
                   noConcertsHeader = "You have not favorited any concerts"
-                  noConcertsText = "Any concerts you have an interest for will show up here."
+                  noConcertsText = "Any concerts that you favorite will show up here."
               />;
       default:
         return null;
