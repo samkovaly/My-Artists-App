@@ -21,7 +21,7 @@ export default function LocationSearch ({ setLocation, containerStyle }) {
     let description = null;
     let locationDenied = false;
     
-    if(userLocation != "denied"){
+    if(userLocation && userLocation != "denied"){
         description = userLocation.displayString
         location = userLocation;
     }else{

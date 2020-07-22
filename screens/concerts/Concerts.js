@@ -50,7 +50,6 @@ export default function Concerts( {  } ) {
   const interestedConcerts = useSelector(state => state.concerts.interestedConcerts);
 
   const userLocation = useSelector(state => state.concerts.userLocation);
-  const [askingLocation, setAskingLocation] = useState(false);
 
   const [concertsTabIndex, setConcertsTabIndex] = useState(0);
   const [concertsRoutes] = useState([
