@@ -11,7 +11,7 @@ import { Colors, Screens } from '../../styles'
 
 
 import BasicButton from '../../components/BasicButton';
-import LocationSearch from '../../components/LocationSearch';
+import PlacesSearchBarAutocomplete from '../../components/PlacesSearchBarAutocomplete';
 
 import { useNavigation } from '@react-navigation/native';
 import { setFiltersAction} from '../../store/concerts/concertsActions'
@@ -50,9 +50,9 @@ const ConcertFilters = ({ route }) => {
 
                 <View style = {styles.locationContainer}>
                     <BaseText style={styles.filterText }>Location: {location.displayString}</BaseText>
-                    <LocationSearch
+                    <PlacesSearchBarAutocomplete
                         setLocation = {setLocation}
-                        containerStyle = {styles.LocationSearch}
+                        containerStyle = {styles.PlacesSearchBarAutocomplete}
                     />
                 </View>
 
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         height: 260,
         marginBottom: 6,
     },
-    LocationSearch: {
+    PlacesSearchBarAutocomplete: {
         marginTop: 12,
     },
 

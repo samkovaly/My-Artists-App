@@ -1,7 +1,10 @@
 
-import { AuthSession } from 'expo';
+import * as AuthSession from 'expo-auth-session'
 import Base64 from 'Base64';
 import { requestSpotify, METHODS } from '../../../utilities/HTTPRequests';
+
+
+import * as WebBrowser from 'expo-web-browser';
 
 
 const ACCOUNTS_URL = 'https://accounts.spotify.com/';
@@ -51,17 +54,29 @@ const fetchUserAuthCode = async (appCredentials) => {
   const scopes = USER_PERMISSION_SCOPES.join(' ');
   //this is something like https://auth.expo.io/@your-username/your-app-slug
   const redirectUrl = AuthSession.getRedirectUrl();
+  console.log(redirectUrl);
+  console.log(scopes);
+
+  const authUrl = CODE_ENDPOINT +
+  '?response_type=code' +
+  '&client_id=' +
+  appCredentials.clientId +
+  (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+  '&redirect_uri=' +
+  encodeURIComponent(redirectUrl) +
+  '&show_dialog=true'
+
+  console.log(authUrl)
+
+  //const result = await WebBrowser.openBrowserAsync(authUrl, {
+  //    showInRecents: true
+  //});
+
   const result = await AuthSession.startAsync({
-    authUrl:
-      CODE_ENDPOINT +
-      '?response_type=code' +
-      '&client_id=' +
-      appCredentials.clientId +
-      (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-      '&redirect_uri=' +
-      encodeURIComponent(redirectUrl) +
-      '&show_dialog=true',
+    authUrl: authUrl,
   })
+
+  console.log(result);
   if(result.type == "success"){
     return result.params.code; 
   }else if(result.type == "cancel"){

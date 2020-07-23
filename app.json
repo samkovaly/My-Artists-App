@@ -2,9 +2,8 @@
   "expo": {
     "scheme": "https",
     "name": "My Artists",
-    "slug": "My-Artists-App",
+    "slug": "my-artists-app",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -35,6 +34,10 @@
           "applemaps"
         ]
       }
+    },
+    "android": {
+      "package": "xilernet.myartists",
+      "versionCode": 1
     }
   }
 }

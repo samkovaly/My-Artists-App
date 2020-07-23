@@ -10,7 +10,7 @@ import { View,  StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { GooglePlacesAutocomplete } from './GooglePlacesAutocomplete'
 import BaseText from './BaseText';
 
-export default function LocationSearch ({ setLocation, containerStyle }) {
+export default function PlacesSearchBarAutocomplete ({ setLocation, containerStyle }) {
     //const [text, setText] = useState("");
     const googlePlacesAPIKey = useSelector(state => state.authentication.APICredentials.googlePlacesAPI.key);
 
