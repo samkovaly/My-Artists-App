@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity} from 'react-native';
 
 import { Colors, Screens } from '../../styles'
 
-import { Linking } from 'expo';
+import * as Linking from 'expo-linking'
 import BasicButton from '../BasicButton'
 
 
@@ -19,8 +19,13 @@ export default TicketButton;
 
 
 
-const linkToSeatGeek = (url) => {
-    Linking.openURL(url);
+const linkToSeatGeek = async (url) => {
+    const canOpen = await Linking.canOpenURL(url);
+    if(canOpen){
+        Linking.openURL(url);
+    }else{
+        console.log("can't open seatgeek URL", url)
+    }
 }
 
 

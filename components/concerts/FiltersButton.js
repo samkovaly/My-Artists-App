@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import BaseText from '../../components/BaseText'
 import Icon from 'react-native-vector-icons/AntDesign'
 
@@ -27,14 +27,17 @@ export default FiltersButton;
 const styles = StyleSheet.create({
     filterContainer: {
       flexDirection: 'row',
+      marginVertical: 12,
+      marginHorizontal: 8,
     },
     filterText: {
       fontSize: 18,
       marginHorizontal: 6,
-      fontWeight: '600',
+      fontWeight: Platform.OS === 'ios' ? '600' : 'bold',
     },
     caretdown: {
       marginLeft: -2,
+      marginTop: Platform.OS === 'ios' ? 0 : 3,
       paddingTop: 5
     }
 });

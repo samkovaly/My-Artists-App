@@ -74,7 +74,7 @@ export default function Concerts( {  } ) {
   }, [filters])
 
   useEffect(() => {
-    if(userLocation != null & userLocation != "undetermined" & userLocation != "denied"){
+    if(userLocation != null && userLocation != "undetermined" & userLocation != "denied"){
       dispatch(setFiltersAction({
         ...filters,
         location: userLocation,
@@ -174,7 +174,6 @@ const loadingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     ...Screens.screenContainer,
-    paddingTop: 0,
   },
   loadingContainer: {
     ...Screens.screenContainer,

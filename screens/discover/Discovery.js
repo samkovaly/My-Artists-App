@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { Colors, Screens} from '../../styles'
 
-import SearchBar from '../../components/SearchBar';
+import SearchBar from '../../components/searchBar/SearchBar';
 
 import { queryConcertsAtPage } from '../../store/concerts/effects/seatgeekEffects';
 import ResultsPreview from '../../components/discover/ResultsPreview';
@@ -66,18 +66,19 @@ export default function Discovery({}) {
   const sections = [
     {
       name: 'Concerts',
+      noResultsMessage: 'No concerts found',
       data: previewConcerts.slice(0, previewLength),
       renderComponent: (item) => <ConcertItemSmall key = {item.id} concert = {item} pressForDetail = {true} />,
       expandSearchNav: "ConcertSearch",
     },
     {
       name: 'Artists',
+      noResultsMessage: 'No artists found',
       data: previewArtists.slice(0, previewLength),
       renderComponent: (item) => <ArtistItem key = {item.id} artist = {item} pressForDetail = {true} />,
       expandSearchNav: "ArtistSearch",
     }
   ]
-
 
   return (
     <View style={styles.container}>
@@ -89,15 +90,10 @@ export default function Discovery({}) {
         autoCorrect = {false}
         autoFocus = {false}
       />
-      {
-        previewConcerts.length > 0 ?
-        <ResultsPreview
-          sections={sections}
-          query = {query}
-        />
-        :
-        null
-      }
+      <ResultsPreview
+        sections={sections}
+        query = {query}
+      />
     </View>
   );
 }
@@ -109,7 +105,5 @@ const styles = StyleSheet.create({
     ...Screens.screenContainer,
   },
   searchBarContainer: {
-    //marginTop: 12,
-    //marginHorizontal: 6,
   },
 });

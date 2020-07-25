@@ -77,6 +77,7 @@ export default function AuthLoadingScreen(props) {
         await dispatch(setInterestedConcerts());
         // with user auth and music profile in state, the user is ready to use the app.
         // login to auto navigate to main app stack
+        console.log('logging in')
         await dispatch(login());
         nav.navigate("MainApp");
     }

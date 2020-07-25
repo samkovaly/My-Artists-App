@@ -47,18 +47,16 @@ export default function ArtistDetail({ route }) {
     const seatgeekClientId = useSelector(state => state.authentication.APICredentials.seatgeek.client_id);
 
     const userLocation = useSelector(state => state.concerts.userLocation);
-    //const radius = useSelector(state => state.concerts.searchRadius);
-    const radius = 15;
+    const radius = 30;
 
     const { artist } = route.params;
 
     // spotify dependent
-    //const [fetchedArtist, setFetchedArtist] = useState(null);
     const [relatedArtists, setRelatedArtists] = useState(null);
 
     const [concerts, setConcerts] = useState(null);
 
-    let tracks = null
+    let tracks = null 
     if(artist.userExtracted){
       tracks = getTracks(artist.tracks, trackIDMap);
     }
@@ -67,13 +65,12 @@ export default function ArtistDetail({ route }) {
         const getAsyncArtistData = async(localConcerts) => {
 
             const accessToken = await updateAndGetAccessToken(dispatch);
-            //setFetchedArtist(await getArtist(accessToken, artist.id));
 
             let relatedArtists = await getRelatedArtists(accessToken, artist.id);
             relatedArtists = spotifyArtistsGetArtists(relatedArtists, extractedArtistsSlugMap);
             setRelatedArtists(relatedArtists);
 
-            const months = 12;
+            const months = 10;
             if(localConcerts){
               setConcerts(await fetchAllConcertsForArtist(artist, months, seatgeekClientId, userLocation.latitude, userLocation.longitude, radius));
             }else{
@@ -115,7 +112,7 @@ export default function ArtistDetail({ route }) {
               </View>
             }
 
-            {tracks? displayTracks(tracks): null}
+            {tracks && tracks.length > 0 ? displayTracks(tracks): null}
             {displayRelatedArtists(relatedArtists)}
 
             { /* artist.userExtracted? displayFoundIn(artist): null */ }
@@ -166,7 +163,7 @@ const displayTracks = (tracks) => {
             style = {{}}
         />
       )}
-      noContentText = "No similar artists"
+      noContentText = "No tracks"
     />)
 }
 

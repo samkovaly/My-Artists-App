@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     },
     noConcertsText: {
         fontSize: 18,
+        textAlign: 'center',
         color: Colors.SEARCH_BAR_INPUT,
     }
 })

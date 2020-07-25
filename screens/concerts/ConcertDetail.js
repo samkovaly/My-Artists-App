@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
   
   concertName: {
     fontSize: 26,
+    textAlign: 'center',
   },
   
 

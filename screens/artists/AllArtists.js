@@ -8,7 +8,7 @@ import { Colors, Screens, Buttons, Font } from '../../styles'
 
 
 import ArtistItem from '../../components/artists/ArtistItem';
-import SearchBar from '../../components/SearchBar';
+import SearchBar from '../../components/searchBar/SearchBar';
 import SearchableFlatList from '../../components/SearchableFlatList';
 
 

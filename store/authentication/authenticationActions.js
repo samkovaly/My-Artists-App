@@ -48,20 +48,20 @@ export const getAPICredentials = () => {
 export const setAuthStateFromStorage = () => {
     return async (dispatch, getState) => {
         
-        refreshToken = await getRefreshTokenStorage();
+        const refreshToken = await getRefreshTokenStorage();
         await dispatch(setRefreshTokenAction(refreshToken));
         console.log('setAuthStateFromStorage')
         await dispatch(refreshAccessToken());
 
-        username = await getUsernameStorage();
-        displayName = await getDisplayNameStorage();
-        user = {
+        const username = await getUsernameStorage();
+        const displayName = await getDisplayNameStorage();
+        const user = {
             username: username,
             displayName: displayName,
         }
         await dispatch(setUserAction(user));
 
-        backendAuthToken = await getBackendAuthTokenStorage();
+        const backendAuthToken = await getBackendAuthTokenStorage();
         await dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthToken));
     }
 }
@@ -96,7 +96,7 @@ export const registerWithRefreshToken = () => {
 export const getRefreshToken = () => {
     return async (dispatch, getState) => {
         const auth = getState().authentication;
-        newUserTokens = await fetchNewUserTokens(auth.appCredentials);
+        const newUserTokens = await fetchNewUserTokens(auth.appCredentials);
         if(newUserTokens){
             await dispatch(setRefreshTokenAction(newUserTokens.refreshToken));
             return true;
@@ -135,7 +135,7 @@ export const getBackendAuthToken = () => {
         // register user, does not if they are already registered
         await registerUserForAuthToken(auth.user.username, auth.user.email, auth.refreshToken, auth.accessToken.token)
         // login user and get auth token as return value
-        backendAuthTokenResult = await LoginUserForAuthToken(auth.user.username, auth.refreshToken)
+        const backendAuthTokenResult = await LoginUserForAuthToken(auth.user.username, auth.refreshToken)
         await dispatch(makeAction(SET_BACKEND_AUTH_TOKEN, backendAuthTokenResult.token))
     }
 }

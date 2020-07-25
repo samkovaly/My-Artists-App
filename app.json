@@ -1,8 +1,8 @@
 {
   "expo": {
-    "scheme": "https",
+    "scheme": "my-artists",
     "name": "My Artists",
-    "slug": "my-artists-app",
+    "slug": "my-artists",
     "privacy": "public",
     "platforms": [
       "ios",
@@ -14,7 +14,7 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#18191a"
     },
     "updates": {
@@ -23,6 +23,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "userInterfaceStyle": "dark",
     "ios": {
       "bundleIdentifier": "xilernet.myartists",
       "buildNumber": "1.0.0",
@@ -37,7 +38,8 @@
     },
     "android": {
       "package": "xilernet.myartists",
-      "versionCode": 1
+      "versionCode": 1,
+      "softwareKeyboardLayoutMode": "pan"
     }
   }
 }

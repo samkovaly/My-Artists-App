@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Colors, Screens, Buttons, Font } from '../../styles'
 
-import SearchBar from '../../components/SearchBar';
+import SearchBar from '../searchBar/SearchBar';
 
 
 
@@ -22,8 +22,7 @@ export default function ResourceResults({ queryFunc, initialQuery, renderElement
     const newData = await queryFunc(query, page)
     return newData;
   }
-
-
+  
     return (
       <View style={styles.container}>
         <View style = {styles.searchBarContainer}>
@@ -39,12 +38,12 @@ export default function ResourceResults({ queryFunc, initialQuery, renderElement
 
         <View style = {styles.listContainer}>
             <PagedFetchFlatlist
-            data = {data}
-            setData = {(data) => setData(data)}
-            query = {query}
-            fetchData = {(page) => fetchNewPage(page)}
-            pageSize = {pageSize}
-            renderElementComponent = {renderElementComponent}
+              data = {data}
+              setData = {(data) => setData(data)}
+              query = {query}
+              fetchData = {(page) => fetchNewPage(page)}
+              pageSize = {pageSize}
+              renderElementComponent = {renderElementComponent}
             />
         </View>
 

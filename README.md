@@ -10,6 +10,7 @@ Open source code for the ios and android app My Artists (link to ios) (link to a
 <img src="/screenshots/concerts-my.PNG" width="250">
 <img src="/screenshots/concerts-all.PNG" width="250">
 <img src="/screenshots/concerts-favorites.PNG" width="250">
+<img src="/screenshots/concerts-filters.PNG" width="250">
 <img src="/screenshots/discovery-artist-top.PNG" width="250">
 <img src="/screenshots/artists-search.PNG" width="250">
 <img src="/screenshots/concerts-detail-2.PNG" width="250">

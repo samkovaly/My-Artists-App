@@ -2,8 +2,8 @@
  * React Native Map Link
  */
 
-import { Linking } from 'react-native'
-import * as expo from 'expo'
+import * as Linking from 'expo-linking'
+import * as ExpoLinking from 'expo-linking'
 
 import { generatePrefixes, generateTitles } from './constants'
 import { askAppChoice, checkOptions } from './utils'
@@ -188,7 +188,10 @@ export async function showLocation (options) {
 
   if (url) {
     if(usingExpo){
-      return expo.Linking.openURL(url).then(() => Promise.resolve(app))
+      const canOpen = await ExpoLinking.canOpenURL(url);
+      if(canOpen){
+        return ExpoLinking.openURL(url).then(() => Promise.resolve(app))
+      }
     }else{
       return Linking.openURL(url).then(() => Promise.resolve(app))
     }

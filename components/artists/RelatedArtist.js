@@ -5,7 +5,7 @@ import { Colors, Screens } from '../../styles'
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { Linking } from 'expo';
+import * as Linking from 'expo-linking'
 
 import BaseText from '../BaseText'
 import { getArtistImageSourceSmall } from '../../utilities/imageSources'
@@ -34,9 +34,13 @@ const RelatedArtist = ({ artist }) => {
 export default RelatedArtist;
 
 
-
-const openSpotifyArtist = (artistURI) => {
-    Linking.openURL(artistURI);
+const openSpotifyArtist = async (uri) => {
+    const canOpen = await Linking.canOpenURL(uri);
+    if(canOpen){
+        Linking.openURL(uri);
+    }else{
+        console.log("can't open URI", uri)
+    }
 } 
 
 const getSpotifyLogo = () => {

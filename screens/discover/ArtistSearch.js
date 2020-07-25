@@ -20,8 +20,6 @@ const PAGE_SIZE = 12;
 export default function ArtistSearch({ route }) {
   const dispatch = useDispatch();
 
-  console.log('artist search')
-
   const { initialQuery } = route.params;
 
   const extractedArtistsSlugMap = useSelector(state => state.musicProfile.artistSlugMap)

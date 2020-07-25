@@ -3,6 +3,8 @@ import { API_IP, API_MASTER_KEY } from '../../../APIConfig';
 import { METHODS, requestBackend } from '../../../utilities/HTTPRequests';
 
 
+import * as Linking from 'expo-linking';
+
 const BACKEND_URL = `http://${API_IP}/`
 const BACKEND_API_URL = `${BACKEND_URL}api/`;
 
@@ -21,7 +23,12 @@ const AUTH_MASTER_KEY_HEADER = {
 }
 export const fetchSpotifyAppCredentials = async () => {
     const credentials = await requestBackend(BACKEND_APP_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
-    return credentials
+    const redirectUri = Linking.makeUrl()
+    return {
+        clientId: credentials.clientId,
+        clientSecret: credentials.clientSecret,
+        redirectUri: redirectUri,
+    }
 };
 export const fetchAPICredentials = async () => {
     const credentials = await requestBackend(BACKEND_API_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)

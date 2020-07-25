@@ -38,8 +38,14 @@ export default function Settings(props) {
     const contactUsClicked = () => {
       twoButtonConfirmAlert("Contact Us", "Open email?", sendEmail, null);
     }
-    const sendEmail = () => {
-      Linking.openURL(`mailto:${SUPPORT_EMAIL}?subject=${EMAIL_SUBJECT}&body=${EMAIL_BODY}`)
+    const sendEmail = async () => {
+      const url = `mailto:${SUPPORT_EMAIL}?subject=${EMAIL_SUBJECT}&body=${EMAIL_BODY}`
+      const canOpen = await Linking.canOpenURL(url);
+      if(canOpen){
+          Linking.openURL(url);
+      }else{
+          console.log("can't open mail URL", url)
+      }
     }
 
     const displayName = useSelector(state => state.authentication.user.displayName);

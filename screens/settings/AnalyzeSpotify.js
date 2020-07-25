@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
 
-import { Colors, Screens} from '../../styles'
+import { Colors, Screens, Constants} from '../../styles'
 import BaseText from '../../components/BaseText'
 
 import AnalyzeSpotifyBackgroundAnimation from '../../components/AnalyzeSpotifyBackgroundAnimation';
@@ -14,13 +14,19 @@ import { setRefreshSpotifyError } from '../../store/musicProfile/musicProfileAct
 
 import { useNavigation } from '@react-navigation/native';
 
-
+import { useHeaderHeight } from '@react-navigation/stack';
 
 export default function AnalyzeSpotify({}) {
 
     const analyzingSpotify = useSelector(state => state.musicProfile.analyzingSpotify);
 
-    const screenHeight = Dimensions.get('window').height - 133;
+    const headerHeight = useHeaderHeight();
+
+    console.log('header height', headerHeight)
+
+    const screenHeight = Dimensions.get('window').height
+    const animationHeight = screenHeight - Constants.BOTTOM_NAV_HEIGHT - headerHeight;
+
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -42,7 +48,7 @@ export default function AnalyzeSpotify({}) {
 
     return (    
       <View style = {styles.container}>
-          <AnalyzeSpotifyBackgroundAnimation runAnimation = {analyzingSpotify} screenHeight = {screenHeight}/>
+          <AnalyzeSpotifyBackgroundAnimation runAnimation = {analyzingSpotify} screenHeight = {animationHeight}/>
       </View>
     );
 }

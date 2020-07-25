@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux'
 
-import { View,  StyleSheet, Dimensions } from 'react-native';
-import { TouchableHighlight } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { View,  StyleSheet } from 'react-native';
 import BaseText from '../../components/BaseText'
 import { useDispatch } from 'react-redux';
 
@@ -16,10 +13,10 @@ import PlacesSearchBarAutocomplete from '../../components/PlacesSearchBarAutocom
 import { useNavigation } from '@react-navigation/native';
 import { setFiltersAction} from '../../store/concerts/concertsActions'
 
-import { SafeAreaView } from 'react-native-safe-area-context';
-
 // https://github.com/miblanchard/react-native-slider
 import { Slider } from "@miblanchard/react-native-slider";
+
+import { adjustSize } from '../../utilities/scaling'
 
 
 const ConcertFilters = ({ route }) => {
@@ -45,7 +42,7 @@ const ConcertFilters = ({ route }) => {
     }
 
     return (
-        <SafeAreaView style = { styles.modalContainer }>
+        <View style = { styles.modalContainer }>
             <View style = {styles.filtersContainer}>
 
                 <View style = {styles.locationContainer}>
@@ -61,7 +58,7 @@ const ConcertFilters = ({ route }) => {
                     <Slider
                         style={styles.radiusSlider}
                         minimumValue={1}
-                        maximumValue={20}
+                        maximumValue={30}
                         value = {radius}
                         step = {0}
                         onValueChange = {(v) => setRadius(v)}
@@ -76,7 +73,7 @@ const ConcertFilters = ({ route }) => {
                     <Slider
                         style={styles.monthsSlider}
                         minimumValue={1}
-                        maximumValue={8}
+                        maximumValue={10}
                         value = {months}
                         step = {0}
                         onValueChange = {(v) => setMonths(v)}
@@ -90,7 +87,7 @@ const ConcertFilters = ({ route }) => {
             <BasicButton text = "Apply" onPress = {applyFilters}
                 containerStyle = {styles.buttonContainer}
              />
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -103,43 +100,42 @@ export default ConcertFilters;
 const styles = StyleSheet.create({
     modalContainer: {
         ...Screens.screenContainer,
-
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
+        marginTop: adjustSize(10),
     },
 
     filtersContainer: {
         flex: 1,
-        padding: 22,
+        padding: adjustSize(22),
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',
     },
 
     filterText: {
-        fontSize: 18,
+        fontSize: adjustSize(18),
     },
 
     locationContainer: {
         width: '100%',
-        marginTop: 7,
-        height: 260,
-        marginBottom: 6,
+        height: adjustSize(270),
+        marginBottom: adjustSize(6),
     },
     PlacesSearchBarAutocomplete: {
-        marginTop: 12,
+        marginTop: adjustSize(12),
     },
 
     radiusContainer: {
         width: '100%',
-        marginTop: 7,
+        marginTop: adjustSize(7),
     },
     radiusSlider: {
         width: '100%',
-        height: 30,
-        marginTop: 5,
-        marginBottom: 10,
+        height: adjustSize(30),
+        marginTop: adjustSize(5),
+        marginBottom: adjustSize(10),
     },
 
     monthsContainer: {
@@ -148,12 +144,12 @@ const styles = StyleSheet.create({
     },
     monthsSlider: {
         width: '100%',
-        height: 30,
-        marginTop: 5,
-        marginBottom: 10,
+        height: adjustSize(30),
+        marginTop: adjustSize(5),
+        marginBottom: adjustSize(10),
     },
 
     buttonContainer: {
-        marginBottom: 25,
+        marginBottom: adjustSize(25),
     },
 })

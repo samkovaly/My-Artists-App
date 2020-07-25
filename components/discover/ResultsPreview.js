@@ -2,14 +2,14 @@ import React from 'react';
 import { Colors } from '../../styles'
 
 
-import { View, ScrollView, Keyboard, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, ScrollView, Keyboard, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import BaseText from '../BaseText';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 
-const ResultsPreview = ({ sections, query, style }) => {
+const ResultsPreview = ({ sections, query }) => {
 
     const navigation = useNavigation();
 
@@ -18,21 +18,32 @@ const ResultsPreview = ({ sections, query, style }) => {
             onScrollBeginDrag = {() => Keyboard.dismiss()}
             keyboardShouldPersistTaps = "always"
         >
-            {sections.map(section =>(
-            <View key = {section.name}>
-                <BaseText style = {styles.header}>{section.name}</BaseText>
-                <View style = {styles.list}>
-                    {section.data.map(element => section.renderComponent(element))}
-                </View>
-
-                <TouchableHighlight onPress={() => navigation.navigate(section.expandSearchNav, {initialQuery: query})}>
-                    <View style = {styles.moreResultsView}>
-                        <BaseText style = {styles.moreResults}>more results</BaseText>
-                        <Icon style = {styles.arrow} name="keyboard-arrow-right" size={25} color={Colors.SUB_TEXT_GREY} />
-                    </View>
-                </TouchableHighlight>
-            </View>
-            ))}
+            {sections.map(section =>{
+                if(section.data.length > 0){
+                    return (
+                        <View key = {section.name}>
+                            <BaseText style = {styles.header}>{section.name}</BaseText>
+                            <View style = {styles.list}>
+                                {section.data.map(element => section.renderComponent(element))}
+                            </View>
+                            <View style = {styles.moreResultsOuterContainer}>
+                                <TouchableOpacity onPress={() => navigation.navigate(section.expandSearchNav, {initialQuery: query})}>
+                                    <View style = {styles.moreResultsInnerContainer}>
+                                        <BaseText style = {styles.moreResults}>more results</BaseText>
+                                        <Icon style = {styles.arrow} name="keyboard-arrow-right" size={25} color={Colors.SUB_TEXT_GREY} />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    )
+                }else if(query.length > 1){
+                    return (
+                        <View  key = {section.name} style = {styles.noResultsContainer}>
+                            <BaseText style = {styles.noResultsText}>{section.noResultsMessage}</BaseText>
+                        </View>
+                    )
+                }
+            })}
         </ScrollView>
   );
 }
@@ -50,30 +61,40 @@ const styles = StyleSheet.create({
         marginLeft: 8,
         alignSelf: 'center',
     },
-    moreResultsView: {
+    moreResultsOuterContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row',
-        marginTop: 2,
+        marginTop: 0,
         marginBottom: 12,
         marginHorizontal: 8,
-        padding: 2,
+    },
+    moreResultsInnerContainer: {
+        flexDirection: 'row',
+        padding: 10,
     },
     moreResults: {
         fontSize: 16,
-        //marginLeft: 12,
-        //marginVertical: 4,
-        //color: Colors.SUB_TEXT_GREY,
         color: Colors.SUB_TEXT_GREY,
         fontWeight: 'normal',
-        paddingLeft: 20,
+        marginLeft: 8,
     },
     arrow: {
-        //position: 'absolute',
-        //right: 10,
-        marginTop: 2,
+        marginTop: -2,
+        marginLeft: -3,
+        marginRight: -7,
+        marginBottom: -3,
     },
     list: {
         marginHorizontal: 6,
-    }
+    },
+    noResultsContainer: {
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noResultsText: {
+        fontSize: 20,
+        color: Colors.SUB_TEXT_GREY,
+        fontWeight: 'normal',
+    },
   });

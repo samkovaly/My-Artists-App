@@ -54,7 +54,7 @@ export const fetchAllConcertsAtLocation = async (clientID, monthsAhead, lat, lon
     // need initial call to get total pages
     const totalPages = await getTotalPages(url);
     
-    concertCalls = [];
+    let concertCalls = [];
 
     for(let page = 1; page <= totalPages; page += 1){
         concertCalls.push( new Promise( (resolve, reject) => {
@@ -97,7 +97,7 @@ export const fetchConcertsByID = async(Ids, clientId) => {
     url += makeParameter("sort", "datetime_utc.asc");
     url += makeParameter('type', 'concert')
 
-    concertCalls = [];
+    let concertCalls = [];
     for(id of Ids){
         concertCalls.push( new Promise( (resolve, reject) => {
             return resolve(fetchEventsAtID(url, id));
@@ -151,7 +151,7 @@ export const fetchAllConcertsForArtist = async(artist, monthsAhead, clientId, la
     let nonLocationURL = buildConcertsLocationURL(clientId, monthsAhead);
 
     // run location and non-location calls at the same time to save time.
-    concertCalls = [];
+    let concertCalls = [];
     concertCalls.push( new Promise( (resolve, reject) => {
         return resolve(fetchConcertsArtistSlug(locationURL, artist.slug))
     } ));

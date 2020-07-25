@@ -39,8 +39,7 @@ export const refreshAndGetMusicProfile = () => {
 // called to populate the state (backend simply returns what is in the databse)
 export const getMusicProfile = () => {
     return async(dispatch, getState) => {
-        auth = getState().authentication
-        
+        const auth = getState().authentication
         const musicProfile = await fetchMusicProfile(auth.user.username, auth.backendAuthToken);
 
         if(musicProfile && 

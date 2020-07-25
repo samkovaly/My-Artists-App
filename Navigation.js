@@ -54,15 +54,20 @@ import { StatusBar } from 'expo-status-bar';
 
 
   const stackScreenOptions = {
+    headerHideShadow: true,
     headerStyle: {
       backgroundColor: Colors.TOP_NAV,
       shadowOffset: { height: 0, width: 0 },
+      shadowOpacity: 0,
+      elevation: 0,
+      borderBottomWidth: 0,
     },
     headerBackTitleVisible: false,
     headerTintColor: 'white',
     headerTitleStyle: {
       fontWeight: 'bold',
     },
+    headerTitleAlign: 'center',
   }
 
   const concertDetailScreen = () => {
@@ -256,7 +261,7 @@ import { StatusBar } from 'expo-status-bar';
                 }
                 
               },
-            })} 
+            })}
             tabBarOptions = {{
               activeTintColor: Colors.THEME_BLUE,
               inactiveTintColor: Colors.BOTTOM_NAV_INACTIVE,
@@ -267,6 +272,7 @@ import { StatusBar } from 'expo-status-bar';
                 backgroundColor: Colors.BOTTOM_NAV,
                 borderTopWidth: 0.5, //0,
                 borderTopColor: '#000000',
+                height: 50,
               }
             }}
           >
@@ -306,7 +312,9 @@ import { StatusBar } from 'expo-status-bar';
                       color: Colors.THEME_BLUE,
                       fontSize: 17,
                       fontWeight: '700',
-                      marginLeft: 12,
+                      paddingVertical: 6,
+                      paddingHorizontal: 10,
+                      marginLeft: 4,
                     }}>Cancel</Text>
                 </TouchableOpacity>)
               },

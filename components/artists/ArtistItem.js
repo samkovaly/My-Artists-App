@@ -13,7 +13,12 @@ import { getArtistImageSourceSmall } from '../../utilities/imageSources'
 const ArtistItem = ({ artist, pressForDetail, containerStyle }) => {
 
   const navigation = useNavigation();
-  
+
+  let artistName = artist.name;
+  if(artistName.length > 30){
+    artistName = artistName.slice(0, 30) + "..."
+  }
+
   const innerContainer = () => (
     <View style={[styles.container, containerStyle]}>
       <Image
@@ -21,7 +26,7 @@ const ArtistItem = ({ artist, pressForDetail, containerStyle }) => {
         source={getArtistImageSourceSmall(artist)}
       />
       <View style = {styles.nameContainer}>
-        <BaseText style={styles.name}>{artist.name}</BaseText>
+        <BaseText style={styles.name}>{artistName}</BaseText>
       </View>
       <Icon style = {styles.arrow} name="keyboard-arrow-right" size={30} color="white" />
     </View>
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
     },
     nameContainer: {
       marginLeft: 12,
-      width: '70%',
+      width: '76%',
     },
     name: {
       fontSize: 16,

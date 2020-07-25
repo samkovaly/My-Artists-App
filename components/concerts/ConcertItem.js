@@ -25,6 +25,20 @@ const ConcertItem = ({ concert, elementHeight, titleFontSize, subtextFontSize, m
   if(name.length > 25){
     name = name.slice(0,25) + "...";
   }
+  const venue = concert.venue
+  let venueName = 'N/A';
+  let venueState = 'N/A';
+  let venueCity = 'N/A';
+
+  if(venue){
+    venueState = venue.state;
+    venueCity = venue.city;
+    if(venue.name.length > 30){
+      venueName = venue.name.slice(0, 30) + "...";
+    }else{
+      venueName = venue.name;
+    }
+  }
 
   const innerContainer = (displayDate) => (
     <View style={[styles.container, {height: elementHeight, marginVertical: marginVertical}]}>
@@ -39,8 +53,8 @@ const ConcertItem = ({ concert, elementHeight, titleFontSize, subtextFontSize, m
        <View style = {styles.textContaier}>
         <BaseText style={[styles.artist, {fontSize: titleFontSize}]}>{name}</BaseText>
         <View style={styles.venueCityContainer}>
-          <BaseText style={[styles.venue, {fontSize: subtextFontSize}]}>{concert.venue ? concert.venue.name: "N/A"}</BaseText>
-          <BaseText style={[styles.city, {fontSize: subtextFontSize}]}>{concert.venue.city}, {concert.venue.state}</BaseText>
+          <BaseText style={[styles.venue, {fontSize: subtextFontSize}]}>{venueName}</BaseText>
+          <BaseText style={[styles.city, {fontSize: subtextFontSize}]}>{venueCity}, {venueState}</BaseText>
         </View>
           { concert.date_tbd ? 
             <BaseText style={[styles.date, {fontSize: subtextFontSize}]}>Date TBD</BaseText>
@@ -92,7 +106,8 @@ const styles = StyleSheet.create({
     },
 
     artist: {
-      flex: 1.25,
+      flex: 1.5,
+      includeFontPadding: true,
     },
     
     venueCityContainer: {
@@ -102,12 +117,16 @@ const styles = StyleSheet.create({
 
     venue: {
       color: Colors.SUB_TEXT_GREY,
+      includeFontPadding: false,
     },
     city: {
       marginTop: -2,
       color: Colors.SUB_TEXT_GREY,
+      includeFontPadding: false,
     },
     date: {
+      flex: 1.25,
       color: Colors.SUB_TEXT_GREY,
+      includeFontPadding: false,
     },
   });

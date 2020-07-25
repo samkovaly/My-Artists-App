@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { StyleSheet, View, TouchableHighlight, Dimensions, Image } from 'react-native';
+import { StyleSheet, View, Dimensions, PixelRatio } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors, Screens } from '../../styles';
@@ -18,32 +18,17 @@ import BasicButton from '../../components/BasicButton'
 import { useNavigation } from '@react-navigation/native';
 
 
-
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-/*
-N:
-direct user to login screen [ LOGIN SCREEN ]
-
-register and analyze on backend [ ANALYZING SPOTIFY SCREEN/COMPONENT ]
-get user auth from backend
-
-{ LOAD AUTH STATE AND MUSIC PROFILE WITH THIS CREDENTIALS OBJECT}
-auth obj -> auth state
-fetch music profile into state
-LOGIN to trigger auth nav screen change
-*/
-
-
+import { adjustSize } from '../../utilities/scaling'
 
 export default function LoginWithSpotify(props) {
-
-  const screenHeight = Dimensions.get('window').height;
+ 
+  let screenHeight = Dimensions.get('window').height;
   const dispatch = useDispatch();
   const nav = useNavigation();
-
 
   // ask to sign in to spotify, which will return a refrsh token if successful,
   // and null if the user refused or an error occured
@@ -60,14 +45,13 @@ export default function LoginWithSpotify(props) {
 
   const registerAnalyzeAndGetMusicProfile = async () => {
     await dispatch(setAnalyzingSpotifyAction(true));
-    // user has verified and refresh token is returned
     await dispatch(registerWithRefreshToken());
-    // refreshAndGetMusicProfile sets analyzingSpotify state to on then off again
     await dispatch(refreshAndGetMusicProfile());
     await dispatch(setInterestedConcerts());
     
-    await dispatch(setAnalyzingSpotifyAction(false));
+    console.log('logging in')
     await dispatch(login());
+    await dispatch(setAnalyzingSpotifyAction(false));
     nav.navigate("MainApp");
   }
 
@@ -108,16 +92,14 @@ export default function LoginWithSpotify(props) {
 
         <BasicButton text = "Login With Spotify" onPress={() => {LoginUserButtonClicked()}}
             containerStyle = {styles.buttonContainer}
-              underlayColor = {Colors.SPOTIFY_LIGHT_GREEN}
+            textStyle = {styles.buttonText}
+            underlayColor = {Colors.SPOTIFY_LIGHT_GREEN}
           />
 
       </View>
     )
   }
 }
-
-
-
 
 const ExplanationCard = ({ header, text, icon }) => {
   return (
@@ -131,15 +113,18 @@ const ExplanationCard = ({ header, text, icon }) => {
   )
 }
 
+
+
+
 const styles = StyleSheet.create({
   container: {
     ...Screens.screenContainer,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 45,
-    marginBottom: 30,
-    marginHorizontal: 25,
+    marginTop: adjustSize(45),
+    marginBottom: adjustSize(30),
+    marginHorizontal: adjustSize(25),
   },
 
   topContainer: {
@@ -148,60 +133,56 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  /*
-  logo: {
-    width: '75%',
-    height: 60,
-    marginTop: 0,
-    marginBottom: 55,
-  }, */
   welcomeTo: {
-    fontSize: 30,
-    marginBottom: -5,
+    fontSize: adjustSize(30),
+    marginBottom: adjustSize(-10),
   },
   myArtists: {
-    fontSize: 52,
+    fontSize: adjustSize(52),
     color: Colors.THEME_BLUE,
     fontWeight: '600',
   },
 
   explanationCardsContainer: {
     flexDirection: 'column',
-    marginRight: 10,
-    marginTop: 30,
-    marginLeft: 20,
+    marginRight: adjustSize(10),
+    marginTop: adjustSize(30),
+    marginLeft: adjustSize(20),
   },
 
   explanationCardContainer: {
     width: '100%',
     flexDirection: 'row',
-    marginVertical: 10,
+    marginVertical: adjustSize(10),
     alignItems: 'center',
   },
 
   explanationCardTextContainer: {
     flexDirection: 'column',
-    marginLeft: 20,
+    marginLeft: adjustSize(20),
   },
   explanationCardHeader: {
-    fontSize: 20,
+    fontSize: adjustSize(20),
     fontWeight: '400',
-    marginBottom: 4,
+    marginBottom: adjustSize(4),
   },
   explanationCardText: {
-    fontSize: 15,
+    fontSize: adjustSize(15),
     color: Colors.SUB_TEXT_GREY,
   },
   connectAccount: {
-    fontSize: 22,
+    fontSize: adjustSize(20),
     textAlign: 'center',
-    marginTop: 30,
+    marginTop: adjustSize(30),
   },
 
   buttonContainer: {
     backgroundColor: Colors.SPOTIFY_GREEN,
     borderRadius: 12,
-    padding: 15,
+    padding: adjustSize(15),
     width: '100%'
+  },
+  buttonText: {
+    fontSize: adjustSize(18),
   }
 });

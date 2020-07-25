@@ -4,7 +4,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import GenreBubbleCards from './GenreBubbleCards'
 import { getArtistImageSourceBig } from '../../utilities/imageSources'
 import { TouchableWithoutFeedback } from 'react-native';
-import { Linking } from 'expo';
+import * as Linking from 'expo-linking'
 
 const ArtistAvatar = ({ artist, genres }) => {
     return (
@@ -31,8 +31,13 @@ const ArtistAvatar = ({ artist, genres }) => {
 
 
 
-const openSpotifyArtist = (uri) => {
-    Linking.openURL(uri);
+const openSpotifyArtist = async (uri) => {
+    const canOpen = await Linking.canOpenURL(uri);
+    if(canOpen){
+        Linking.openURL(uri);
+    }else{
+        console.log("can't open URI", uri)
+    }
 }
 
 const getSpotifyLogo = () => {

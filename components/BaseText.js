@@ -7,10 +7,10 @@ import { Colors } from '../styles'
 const color = Colors.BASE_TEXT_COLOR;
 
 
-const BaseText = ({ children, style }) => {
+const BaseText = (props) => {
     return (
-    <Text style = {[styles.text, style]}>
-        {children}
+    <Text {...props} style = {[styles.text, props.style]}>
+        {props.children}
     </Text>
   );
 }

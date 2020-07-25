@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
 
-import { Linking } from 'expo';
+import * as Linking from 'expo-linking'
 
 import { Colors, Screens } from '../../styles'
 
@@ -47,8 +47,13 @@ export default TrackItem;
 
 
 
-const openSpotifyTrack = (uri) => {
-    Linking.openURL(uri);
+const openSpotifyTrack = async (uri) => {
+    const canOpen = await Linking.canOpenURL(uri);
+    if(canOpen){
+        Linking.openURL(uri);
+    }else{
+        console.log("can't open URI", uri)
+    }
 }
 
 
