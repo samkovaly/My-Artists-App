@@ -36,7 +36,6 @@ export const fetchLocation = async() => {
   if(locationDeviceEnable.locationServicesEnabled){
 
     const location = await getCurrentPositionAsync({ accuracy: Accuracy.Low }).then(async (location) => {
-      console.log('good')
       const address = await reverseGeocodeAsync(location.coords);
       const city = address[0].city;
       const state = getStateAbbreviation(address[0].region);
@@ -60,7 +59,6 @@ export const fetchLocation = async() => {
         displayString: displayString,
       }
     }).catch(e => {
-      console.log('FUCK')
       console.log(e)
       return 'denied'
     })

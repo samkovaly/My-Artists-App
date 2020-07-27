@@ -74,7 +74,7 @@ export default function Concerts( {  } ) {
   }, [filters])
 
   useEffect(() => {
-    if(userLocation != null && userLocation != "undetermined" & userLocation != "denied"){
+    if(userLocation != null && userLocation != "undetermined" && userLocation != "denied"){
       dispatch(setFiltersAction({
         ...filters,
         location: userLocation,
@@ -101,7 +101,7 @@ export default function Concerts( {  } ) {
 
   
   const renderScene = ({ route }) => {
-    const locationDenied = (userLocation == "denied" && filters.location.latitude == null);
+    const locationDenied = ((userLocation == null || userLocation == "denied") && filters.location.latitude == null);
     const locationDeniedHeader = "Need a location."
     const locationDeniedText = "Give location permission or manually search for a city above.";
 

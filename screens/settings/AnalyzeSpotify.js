@@ -21,9 +21,6 @@ export default function AnalyzeSpotify({}) {
     const analyzingSpotify = useSelector(state => state.musicProfile.analyzingSpotify);
 
     const headerHeight = useHeaderHeight();
-
-    console.log('header height', headerHeight)
-
     const screenHeight = Dimensions.get('window').height
     const animationHeight = screenHeight - Constants.BOTTOM_NAV_HEIGHT - headerHeight;
 

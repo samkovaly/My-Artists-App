@@ -26,7 +26,7 @@ export default function PlacesSearchBarAutocomplete ({ setLocation, containerSty
     let locationDenied = false;
 
     
-    if(userLocation != "denied"){
+    if(userLocation && userLocation != "denied"){
         description = userLocation.displayString
         location = userLocation;
     }else{

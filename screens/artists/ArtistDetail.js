@@ -79,10 +79,10 @@ export default function ArtistDetail({ route }) {
 
         }
 
-        if(userLocation == "denied"){
-          getAsyncArtistData(false);
-        }else{
+        if(userLocation && userLocation != 'denied'){
           getAsyncArtistData(true);
+        }else{
+          getAsyncArtistData(false);
         }
     }, [])
 
@@ -140,8 +140,8 @@ const displayConcerts = (concerts, userLocation, concertsUpcomingText, noConcert
         }
         noContentText = {
           // if user has denied location access
-          userLocation == "denied" && locationDeniedText != null ?
-          locationDeniedText : noConcertsUpcomingText
+          userLocation && userLocation != 'denied'  && locationDeniedText != null ?
+          noConcertsUpcomingText : locationDeniedText
         }
         locationDeniedText = {locationDeniedText}
       />
