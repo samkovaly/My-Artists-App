@@ -4,12 +4,13 @@
     "name": "My Artists",
     "slug": "my-artists",
     "privacy": "public",
+    "sdkVersion": "38.0.0",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -38,8 +39,9 @@
     },
     "android": {
       "package": "xilernet.myartists",
-      "versionCode": 1,
-      "softwareKeyboardLayoutMode": "pan"
+      "versionCode": 2,
+      "softwareKeyboardLayoutMode": "pan",
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
     }
   }
 }
