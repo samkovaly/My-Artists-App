@@ -239,7 +239,6 @@ import { StatusBar } from 'expo-status-bar';
 
     const MainTabs = () => {
       const insets = useSafeAreaInsets();
-      console.log('insets', insets)
       return (
           <Tab.Navigator
             screenOptions={({ route }) => ({

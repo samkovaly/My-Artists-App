@@ -31,7 +31,7 @@ export default function LoginWithSpotify(props) {
   const insets = useSafeAreaInsets();
   let screenHeight = Dimensions.get('window').height;
   let animationstart = insets.top;
-  let animationEnd = screenHeight;
+  let animationEnd = screenHeight - insets.bottom;
 
   const dispatch = useDispatch();
   const nav = useNavigation();
