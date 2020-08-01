@@ -9,6 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -40,7 +41,7 @@ import NotificationSettings from './screens/settings/NotificationSettings';
 import TermsOfUse from './screens/settings/TermsOfUse';
 import PrivacyPolicy from './screens/settings/PrivacyPolicy';
 
-import { Colors } from './styles';
+import { Colors, Constants } from './styles';
 import { StatusBar } from 'expo-status-bar';
 
 
@@ -236,10 +237,9 @@ import { StatusBar } from 'expo-status-bar';
     )
   }
 
-
-
-    
     const MainTabs = () => {
+      const insets = useSafeAreaInsets();
+      console.log('insets', insets)
       return (
           <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -272,7 +272,8 @@ import { StatusBar } from 'expo-status-bar';
                 backgroundColor: Colors.BOTTOM_NAV,
                 borderTopWidth: 0.5, //0,
                 borderTopColor: '#000000',
-                height: 50,
+                height: Constants.BOTTOM_NAV_HEIGHT + insets.bottom,
+                paddingBottom: insets.bottom,
               }
             }}
           >

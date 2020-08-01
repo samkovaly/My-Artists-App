@@ -12,7 +12,7 @@ import BaseText from './BaseText'
 const barHeight = 20;
 const fontScale = PixelRatio.getFontScale();
 
-export default function AnalyzeSpotifyBackgroundAnimation({ runAnimation, screenHeight }) {
+export default function AnalyzeSpotifyBackgroundAnimation({ runAnimation, animationstart, animationEnd }) {
 
     useEffect(() => {
         startAnimation();
@@ -22,13 +22,13 @@ export default function AnalyzeSpotifyBackgroundAnimation({ runAnimation, screen
         Animated.loop(
             Animated.sequence([
                 Animated.timing(positionY, {
-                    toValue: screenHeight - barHeight,
+                    toValue: animationEnd - barHeight,
                     duration: 2500,
                     easing: Easing.sin,
                     useNativeDriver: true,
                 }),
                 Animated.timing(positionY, {
-                    toValue: 0,
+                    toValue: animationstart,
                     duration: 2500,
                     easing: Easing.sin,
                     useNativeDriver: true,
@@ -36,7 +36,7 @@ export default function AnalyzeSpotifyBackgroundAnimation({ runAnimation, screen
             ])
         ).start();
     }
-    const [positionY, setPositionY]= useState(new Animated.Value(0))
+    const [positionY, setPositionY]= useState(new Animated.Value(animationstart))
 
     if(!runAnimation){
         positionY.stopAnimation();

@@ -24,9 +24,15 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 import { adjustSize } from '../../utilities/scaling'
 
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 export default function LoginWithSpotify(props) {
  
+  const insets = useSafeAreaInsets();
   let screenHeight = Dimensions.get('window').height;
+  let animationstart = insets.top;
+  let animationEnd = screenHeight;
+
   const dispatch = useDispatch();
   const nav = useNavigation();
 
@@ -59,7 +65,11 @@ export default function LoginWithSpotify(props) {
 
   if(analyzingSpotify){
     return (
-      <AnalyzeSpotifyBackgroundAnimation runAnimation = {analyzingSpotify} screenHeight = {screenHeight}/>
+      <AnalyzeSpotifyBackgroundAnimation
+        runAnimation = {analyzingSpotify}
+        animationstart = {animationstart}
+        animationEnd = {animationEnd}
+      />
     )
   }else{
     return (

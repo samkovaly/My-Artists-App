@@ -37,6 +37,11 @@ export const fetchLocation = async() => {
 
     const location = await getCurrentPositionAsync({ accuracy: Accuracy.Low }).then(async (location) => {
       const address = await reverseGeocodeAsync(location.coords);
+      
+      if (address == null || address[0] == null){
+        return 'denied';
+      }
+
       const city = address[0].city;
       const state = getStateAbbreviation(address[0].region);
       let country = address[0].country;
