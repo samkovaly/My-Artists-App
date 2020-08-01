@@ -1,14 +1,15 @@
 {
   "expo": {
     "scheme": "my-artists",
+    "description": "My Artists helps you find local concerts of your favorite artists by analyzing your Spotify data. It's the only app that automates this whole process in just one tap. ",
     "name": "My Artists",
     "slug": "my-artists",
+    "owner": "samkovaly",
     "privacy": "public",
     "sdkVersion": "38.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.1.0",
     "orientation": "portrait",

@@ -34,11 +34,11 @@ export default function PrivacyPolicy(props) {
 
 
         { getSection("Service Providers", 
-          "We employ the services of third-party services (Spotify, Seatgeek, Google) in order to provide the best user experience possible. These services only have the personal data that you supply to them. We in no way share your data with these services. Any data that these services request is between you and said service and falls under their privacy policy. My Artists contains links to these other services. If you click on one of these third-party link, you will be redirected to them. It is strongly advised that you to review the Privacy Policy of these services."
+          "We employ the services of third-party services (Spotify, Seatgeek, Google) in order to provide the best user experience possible. These services only have the personal data that you supply to them. We in no way share your data with these services. Any data that these services request is between you and said service and falls under their privacy policy. My Artists contains links to these other services. If you click on one of these third-party links, you will be redirected to them. It is strongly advised that you review the Privacy Policy of these services."
         )}
 
         { getSection("Changes to This Privacy Policy",
-          "This Privacy Policy is not static and will be updated from time to time. Thus, you are advised to review this page periodically for any changes. You wiill be notified of any changes to this policy."
+          "This Privacy Policy is not static and will be updated from time to time. Thus, you are advised to review this page periodically for any changes. You will be notified of any changes to this policy."
         )}
 
         { getSection("Contacting Us", 
