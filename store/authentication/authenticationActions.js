@@ -29,14 +29,14 @@ import { getBackendAuthTokenStorage, getRefreshTokenStorage, getUsernameStorage,
 // fetches app credentials from backend and updates the state
 export const getSpotifyAppCredentials = () => {
     return async (dispatch, getState) => {
-        credentials = await fetchSpotifyAppCredentials()
+        const credentials = await fetchSpotifyAppCredentials()
         await dispatch(makeAction(SET_APP_CREDENTIALS, credentials))
     }
 }
 // same for this guy
 export const getAPICredentials = () => {
     return async (dispatch, getState) => {
-        credentials = await fetchAPICredentials();
+        const credentials = await fetchAPICredentials();
         await dispatch(makeAction(SET_API_CREDENTIALS, credentials));
     }
 }

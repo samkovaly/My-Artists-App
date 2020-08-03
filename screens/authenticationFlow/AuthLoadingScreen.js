@@ -1,6 +1,6 @@
 import React from 'react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector} from 'react-redux';
 
 import {
   ActivityIndicator,
@@ -12,6 +12,7 @@ import {
 
 import { Colors, Screens, Buttons, Font } from '../../styles'
 
+import BaseText from '../../components/BaseText'
 
 
 import { getUserSavedOnStorage, getUsernameStorage, getBackendAuthTokenStorage, getRefreshTokenStorage } from '../../store/authentication/authenticationStorage';
@@ -64,6 +65,7 @@ import { AppLoading } from 'expo';
 export default function AuthLoadingScreen(props) {
    const dispatch = useDispatch();
    const nav = useNavigation();
+   const [error, setError] = useState(false);
 
    const appCredentials = useSelector(state => state.authentication.appCredentials);
 
@@ -85,11 +87,12 @@ export default function AuthLoadingScreen(props) {
    useEffect(() => {
        const loginUserOrAskToRegister = async() => {
            
-           if(appCredentials.clientId == null){
+           if(appCredentials.tried == false){
                // 1. load credentials  [ AUTH SPLASH SCREEN / COMPONENT ]
                dispatch(getSpotifyAppCredentials());
                dispatch(getAPICredentials());
-
+           } else if(appCredentials.tried == true && appCredentials.clientId == null){
+               setError(true);
            }else{
                // 2. determine if user has auth saved to local
                const userSavedOnStorage = await getUserSavedOnStorage();
@@ -114,7 +117,12 @@ export default function AuthLoadingScreen(props) {
        loginUserOrAskToRegister();
    }, [appCredentials])
 
-    return loadingScreen();
+   if(error){
+       console.log("error loading app credentials")
+        return errorScreen();
+   }else{
+        return loadingScreen();
+   }
 }
 
 
@@ -134,11 +142,26 @@ const loadingScreen = () => {
 }
 
 
+const errorScreen = () => {
+    return (
+        <View style = {styles.errorScreen}>
+            <BaseText style = {styles.errorText}>Error loading app credentials</BaseText>
+        </View>
+    )
+}
+
 
 const styles = StyleSheet.create({
+    errorScreen: {
+        ...Screens.screenContainer,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        fontSize: 22,
+        padding: 12,
+    },
     loadingScreen: {
       ...Screens.screenContainer,
-      justifyContent: 'center',
-      alignItems: 'center',
     },
 });  

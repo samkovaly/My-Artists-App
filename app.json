@@ -28,7 +28,7 @@
     "userInterfaceStyle": "dark",
     "ios": {
       "bundleIdentifier": "xilernet.myartists",
-      "buildNumber": "1.0.0",
+      "buildNumber": "1.1.0",
       "supportsTablet": false,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app asks users for their location to automatically find concerts near them. Otherwise, users can manually search for concerts via the google places autocomplete API",

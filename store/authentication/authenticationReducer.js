@@ -13,6 +13,7 @@ const initialState = {
     clientId: null,
     clientSecret: null,
     redirectUri: null,
+    tried: false,
   },
   APICredentials: {
     seatgeek: {
@@ -44,7 +45,10 @@ export default function(state = initialState, action) {
     case SET_APP_CREDENTIALS:
       return {
         ...state,
-        appCredentials: action.payload
+        appCredentials: {
+          ...action.payload,
+          tried: true,
+        }
       }
     case SET_API_CREDENTIALS:
       return {

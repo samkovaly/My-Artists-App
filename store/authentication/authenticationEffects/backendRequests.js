@@ -22,7 +22,9 @@ const AUTH_MASTER_KEY_HEADER = {
     'Content-Type': 'application/json',
 }
 export const fetchSpotifyAppCredentials = async () => {
+    //console.log('getting backend credentials' + BACKEND_APP_CREDENTIALS_ENDPOINT + ' with key=', AUTH_MASTER_KEY_HEADER)
     const credentials = await requestBackend(BACKEND_APP_CREDENTIALS_ENDPOINT, METHODS.GET, AUTH_MASTER_KEY_HEADER)
+
     const redirectUri = Linking.makeUrl()
     return {
         clientId: credentials.clientId,
