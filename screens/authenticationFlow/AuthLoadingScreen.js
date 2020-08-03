@@ -69,6 +69,8 @@ export default function AuthLoadingScreen(props) {
 
    const appCredentials = useSelector(state => state.authentication.appCredentials);
 
+   console.log('appcreds', appCredentials)
+
    const autoLogin = async () => {
         // 3. Y:
         console.log('automatic login..')
@@ -92,10 +94,13 @@ export default function AuthLoadingScreen(props) {
                dispatch(getSpotifyAppCredentials());
                dispatch(getAPICredentials());
            } else if(appCredentials.tried == true && appCredentials.clientId == null){
+               console.log('setting error')
                setError(true);
            }else{
                // 2. determine if user has auth saved to local
                const userSavedOnStorage = await getUserSavedOnStorage();
+
+               console.log('userSavedOnStorage', userSavedOnStorage)
 
                 let userInBackend = null;
                 if(userSavedOnStorage){
@@ -104,6 +109,7 @@ export default function AuthLoadingScreen(props) {
                     const backendAuthToken = await getBackendAuthTokenStorage();
                     userInBackend = await confirmUserBackend(username, refreshToken, backendAuthToken);
                 }
+                console.log('userInBackend', userInBackend)
                
                if(userSavedOnStorage && userInBackend){
                     await autoLogin();
