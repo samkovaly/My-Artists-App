@@ -17,7 +17,8 @@ export default SearchIcon;
 
 const styles = StyleSheet.create({
     searchIcon: {
-      flex: 1,
-      marginRight: 2,
+      //flex: 1,
+      marginRight: 9,
+      marginTop: 2,
     },
 });

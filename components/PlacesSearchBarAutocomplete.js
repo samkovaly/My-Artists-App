@@ -116,8 +116,8 @@ export default function PlacesSearchBarAutocomplete ({ setLocation, containerSty
                 flexDirection: 'row',
                 alignItems: 'center',
                 backgroundColor: Colors.SEARCH_BAR_BACKGROUND,
-                paddingVertical: adjustSize(8),
-                paddingHorizontal: adjustSize(10),
+                paddingVertical: adjustSize(11),
+                paddingHorizontal: adjustSize(13),
                 borderRadius: 6,
             },
             textInput: {

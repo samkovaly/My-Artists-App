@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -7,19 +7,25 @@ import { Colors } from '../../styles'
 
 
 const CloseButton = ({ onClose }) => {
-    return (
-        <TouchableWithoutFeedback style = {styles.closeContainer} onPress = {() => onClose()}>
-          <Icon style = {styles.close} name = 'close-circle' size = {22} color = {Colors.LIGHT_GREY}/>
-        </TouchableWithoutFeedback>
-    )
+
+  return (
+      <TouchableWithoutFeedback
+        onPress = {() => onClose()}>
+        <Icon
+          name = 'close-circle'
+          size = {23}
+          color = {Colors.LIGHT_GREY}
+          style = {styles.close}
+        />
+      </TouchableWithoutFeedback>
+  )
 }
 export default CloseButton;
 
 const styles = StyleSheet.create({
-    closeContainer: {
-      flex: 1,
-    },
     close: {
-      marginTop: Platform.OS === 'ios' ? 2 : 0,
+      position: 'absolute',
+      right: 10,
+      paddingTop: 2,
     },
 });

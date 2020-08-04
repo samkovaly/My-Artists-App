@@ -1,1 +1,2 @@
 export const BOTTOM_NAV_HEIGHT = 50;
+export const ARTIST_AVATAR_SCREEN_HEIGHT_RATIO = 2.6;

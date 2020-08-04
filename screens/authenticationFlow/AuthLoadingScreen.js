@@ -34,6 +34,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { AppLoading } from 'expo';
 
+import { getDeviceType } from '../../store/device/deviceActions'
+
 
     /*
         1. load credentials         [ AUTH SPLASH SCREEN / COMPONENT ]
@@ -63,6 +65,9 @@ import { AppLoading } from 'expo';
 
 
 export default function AuthLoadingScreen(props) {
+
+
+
    const dispatch = useDispatch();
    const nav = useNavigation();
    const [error, setError] = useState(false);
@@ -70,6 +75,9 @@ export default function AuthLoadingScreen(props) {
    const appCredentials = useSelector(state => state.authentication.appCredentials);
 
    console.log('appcreds', appCredentials)
+
+   //const deviceType = useSelector(state => state.device.deviceType)
+
 
    const autoLogin = async () => {
         // 3. Y:
@@ -91,6 +99,9 @@ export default function AuthLoadingScreen(props) {
            
            if(appCredentials.tried == false){
                // 1. load credentials  [ AUTH SPLASH SCREEN / COMPONENT ]
+               //if(deviceType == null){
+                dispatch(getDeviceType());
+                //}
                dispatch(getSpotifyAppCredentials());
                dispatch(getAPICredentials());
            } else if(appCredentials.tried == true && appCredentials.clientId == null){

@@ -44,9 +44,7 @@ import PrivacyPolicy from './screens/settings/PrivacyPolicy';
 import { Colors, Constants } from './styles';
 import { StatusBar } from 'expo-status-bar';
 
-
-
-
+import { DeviceType } from 'expo-device';
 
     
 
@@ -238,18 +236,24 @@ import { StatusBar } from 'expo-status-bar';
   }
 
     const MainTabs = () => {
+      const deviceType = useSelector(state => state.device.deviceType)
       const insets = useSafeAreaInsets();
       return (
           <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
 
-                if (route.name === 'Artists') {
-                  return <MaterialCommunityIcon name = 'artist' style = {{marginBottom: -10}} size = {34} color = {color} />;
-
-                } else if (route.name === 'Concerts') {
+                if (route.name === 'Concerts') {
                   return <FontAwesome5 name = 'music' style = {{marginBottom: -10}} size = {24} color = {color} />
-                
+
+                }else if (route.name === 'Artists') {
+                  return <MaterialCommunityIcon name = 'artist' style = {
+                    {
+                      marginBottom: -7,
+                      marginLeft: (deviceType == DeviceType.TABLET) ? -6 : 2,
+                    }
+                  }
+                  size = {34} color = {color} />;
 
                 } else if (route.name === 'Discovery') {
                   return <Feather name = 'globe' style = {{marginBottom: -5}} size = {26} color = {color} />
@@ -264,9 +268,14 @@ import { StatusBar } from 'expo-status-bar';
             tabBarOptions = {{
               activeTintColor: Colors.THEME_BLUE,
               inactiveTintColor: Colors.BOTTOM_NAV_INACTIVE,
-              labelStyle: {
+
+              labelStyle: deviceType == DeviceType.TABLET ? {
+                fontSize: 20,
+                marginTop: 4,
+              } : {
                 fontSize: 12,
-              },
+              }
+              ,
               style: {
                 backgroundColor: Colors.BOTTOM_NAV,
                 borderTopWidth: 0.5, //0,

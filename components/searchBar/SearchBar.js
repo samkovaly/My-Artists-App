@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: Colors.SEARCH_BAR_BACKGROUND,
-      paddingVertical: 8,
-      paddingHorizontal: 10,
+      paddingVertical: 11,
+      paddingHorizontal: 13,
       borderRadius: 6,
       marginHorizontal: 6,
       marginVertical: 6,
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     typingText: {
         color: Colors.SEARCH_BAR_INPUT,
         fontSize: 16,
-        flex: 10,
+        width: '90%'
+        //flex: 10,
     },
 });

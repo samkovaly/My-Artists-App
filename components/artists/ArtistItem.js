@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     avatar: {
-        borderRadius: (elementHeight * imageHeightRatio)/2 ,
+        borderRadius: (elementHeight * imageHeightRatio)/2,
         width: elementHeight * imageHeightRatio,
         height: elementHeight * imageHeightRatio,
         marginLeft: 0,
