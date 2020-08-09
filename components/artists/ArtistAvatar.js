@@ -5,8 +5,8 @@ import GenreBubbleCards from './GenreBubbleCards'
 import { getArtistImageSourceBig } from '../../utilities/imageSources'
 import { TouchableWithoutFeedback } from 'react-native';
 
+import { openURI } from '../../utilities/spotify'
 import { Constants } from '../../styles';
-import * as Linking from 'expo-linking'
 
 const ArtistAvatar = ({ artist, genres }) => {
     let screenHeight = Dimensions.get('window').height;
@@ -16,7 +16,7 @@ const ArtistAvatar = ({ artist, genres }) => {
         }]}>
             <View style = {styles.spotifyLinkButtonContainer}>
                 <TouchableWithoutFeedback style = {styles.spotifyLinkButton}
-                    onPress = {() => openSpotifyArtist(artist.uri)}
+                    onPress = {() => openURI(artist.uri)}
                 >
                     <Image
                         style={styles.spotifyLink}
@@ -32,17 +32,6 @@ const ArtistAvatar = ({ artist, genres }) => {
             <GenreBubbleCards genres={genres} style={styles.genreBubleCards}/>
         </View>
   );
-}
-
-
-
-const openSpotifyArtist = async (uri) => {
-    const canOpen = await Linking.canOpenURL(uri);
-    if(canOpen){
-        Linking.openURL(uri);
-    }else{
-        console.log("can't open URI", uri)
-    }
 }
 
 const getSpotifyLogo = () => {

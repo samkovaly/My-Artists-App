@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
 
-import * as Linking from 'expo-linking'
+import { openURI } from '../../utilities/spotify'
 
 import { Colors, Screens } from '../../styles'
 
@@ -27,7 +27,7 @@ const TrackItem = ({ track }) => {
         trackName = trackName.slice(0, 35) + '...';
     }
       return (
-        <TouchableWithoutFeedback onPress={() => openSpotifyTrack(track.uri)}>
+        <TouchableWithoutFeedback onPress={() => openURI(track.uri)}>
             <View style={styles.container}>
                 <Image
                     style={styles.trackImage}
@@ -44,17 +44,6 @@ const TrackItem = ({ track }) => {
 }
 
 export default TrackItem;
-
-
-
-const openSpotifyTrack = async (uri) => {
-    const canOpen = await Linking.canOpenURL(uri);
-    if(canOpen){
-        Linking.openURL(uri);
-    }else{
-        console.log("can't open URI", uri)
-    }
-}
 
 
 const getSpotifyLogo = () => {

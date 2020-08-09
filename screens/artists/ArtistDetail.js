@@ -18,7 +18,6 @@ import { fetchAllConcertsForArtist, fetchNonLocalConcertsForArtist } from '../..
 
 import ConcertItemBig from '../../components/concerts/ConcertItemBig'
 import TrackItem from '../../components/tracks/TrackItem'
-//import RelatedArtist from '../../components/artists/RelatedArtist'
 
 import ExpandableList from '../../components/ExpandableList'
 
@@ -176,9 +175,6 @@ const displayRelatedArtists = (relatedArtists) => {
         renderItem = {() => (
           <ExpandableList
               elements = {relatedArtists}
-              //renderElementComponent={(artist) =>
-              //    <RelatedArtist key={artist.id} artist = {artist} />
-              //}
               renderElementComponent={(artist) =>
                 <ArtistItem key={artist.id} artist = {artist} pressForDetail = {true} />
               }
