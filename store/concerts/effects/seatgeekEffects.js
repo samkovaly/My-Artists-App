@@ -75,7 +75,6 @@ export const fetchAllConcertsAtLocation = async (clientID, monthsAhead, lat, lon
     for(let i = 0; i < concerts.length; i += 1){
         allConcerts.push(...concerts[i]);
     }
-
     return allConcerts;
 }
 
@@ -92,18 +91,12 @@ const getTotalPages = async (url) => {
 
 export const fetchConcertsByID = async(Ids, clientId) => {
     // gather promises
-    let url = EVENTS_URL;
-    url += makeParameter("client_id", clientId);
-    url += makeParameter("sort", "datetime_utc.asc");
-    url += makeParameter('type', 'concert')
-
     let concertCalls = [];
     for(id of Ids){
         concertCalls.push( new Promise( (resolve, reject) => {
-            return resolve(fetchEventsAtID(url, id));
+            return resolve(fetchConcertByID(id, clientId))
         } ));
     }
-
     // execute and wait
     try {
         var concerts = await Promise.all(concertCalls);
@@ -111,6 +104,16 @@ export const fetchConcertsByID = async(Ids, clientId) => {
     catch(err) {
         console.log(err);
     };
+
+    // This filter has effects, for example: if a concert is required by ID
+    // but seatgeek has deleted this concert from their database, then 
+    // we will simply pretend it never existed (bad solution, but works for now).
+    // The most obvious impact of this is in InterestedConcerts.
+    // Saved concerts that are either expired or cancelled (otherwise deleted for some reason)
+    // will simply disapear from the user's app. (sad)
+    concerts = concerts.filter((concert) => {
+        return concert ? true : false
+    })
 
     return concerts;
 }
@@ -123,13 +126,13 @@ export const fetchConcertByID = async(id, clientId) => {
     return concert;
 }
 
+
 const fetchEventsAtID = async(url, id) => {
     const urlID = url + makeParameter('id', id);
     const response = await getSeatgeek(urlID);
     const events = mapEvents(response.events);
     return events[0];
 }
-
 
 
 export const fetchNonLocalConcertsForArtist = async(artist, monthsAhead, clientId) => {
@@ -238,12 +241,22 @@ const buildConcertsLocationURL = (clientId, monthsAhead=1, lat=null, lon=null, r
     return url;
 }
   
+
 const mapEvents = (events) => {
+    // for now, any null events (returned from mapEvent)
+    // will be ignored and not included
     if(events){
         const mappedEvents = Object.values(events).map((event) => {
             return mapEvent(event)
         })
-        return mappedEvents;
+        const filteredEvents = Object.values(mappedEvents).filter((event) => {
+            if(event){
+                return true
+            }else{
+                return false
+            }
+        })
+        return filteredEvents;
     }else{
         return []
     }
