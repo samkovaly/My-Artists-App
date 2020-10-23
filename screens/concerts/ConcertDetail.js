@@ -93,7 +93,7 @@ export default function ConcertDetail({ route }) {
             </View>
 
             <View style = {styles.buttonsSection}>
-                <TicketButton url = {concert.url} />
+                <TicketButton eventID = {concert.id} />
                 <InterestedButton
                   disabled = {disabledInterestedButton}
                   initialInterested = {initialInterested}

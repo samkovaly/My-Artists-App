@@ -1,15 +1,15 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { Colors, Screens } from '../../styles'
+import AppLink from 'react-native-app-link';
+//import * as Linking from 'expo-linking'
 
-import * as Linking from 'expo-linking'
 import BasicButton from '../BasicButton'
 
 
-const TicketButton= ({ url }) => {
+const TicketButton= ({ eventID }) => {
     return (
-        <BasicButton text = "Get tickets" onPress = {() => linkToSeatGeek(url)}
+        <BasicButton text = "Get tickets" onPress = {() => linkSeatGeekAppEvent(eventID)}
             containerStyle = {styles.button}
         />
     )
@@ -19,15 +19,30 @@ export default TicketButton;
 
 
 
-const linkToSeatGeek = async (url) => {
-    const canOpen = await Linking.canOpenURL(url);
-    if(canOpen){
-        Linking.openURL(url);
-    }else{
-        console.log("can't open seatgeek URL", url)
+const linkSeatGeekAppEvent = async (eventID) => {
+    const seatgeekEventLink = "seatgeek://events/" + eventID
+    const seatgeekInfo = {
+        appName: 'seatgeek',
+        appStoreId: '582790430',
+        appStoreLocale: 'us',
+        playStoreId: 'com.seatgeek.android'
+    }
+
+    try {
+        await AppLink.maybeOpenURL(seatgeekEventLink, seatgeekInfo);
+        return;
+    }catch(error){
+        console.log(error)
+    }
+    
+    // if not
+    try{
+        await AppLink.openInStore(seatgeekInfo);
+        return;
+    }catch(error){
+        console.log(error)
     }
 }
-
 
 
 const styles = StyleSheet.create({

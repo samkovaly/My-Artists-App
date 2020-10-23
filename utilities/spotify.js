@@ -1,11 +1,27 @@
 
-import * as Linking from 'expo-linking'
+
+import AppLink from 'react-native-app-link';
 
 export const openURI = async(uri) => {
-    // canOpenURL does not work on ios (even with LSApplicationQueriesSchemes defined)
+    const spotifyInfo = {
+        appName: 'spotify',
+        appStoreId: '324684580',
+        appStoreLocale: 'us',
+        playStoreId: 'com.spotify.music'
+    }
+
     try {
-        await Linking.openURL(uri);
-    } catch (e){
-        console.log("can't open URI: ", uri)
+        await AppLink.maybeOpenURL(uri, spotifyInfo);
+        return;
+    }catch(error){
+        console.log(error)
+    }
+    
+    // if not
+    try{
+        await AppLink.openInStore(spotifyInfo);
+        return;
+    }catch(error){
+        console.log(error)
     }
 }

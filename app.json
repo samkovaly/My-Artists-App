@@ -11,7 +11,7 @@
       "ios",
       "android"
     ],
-    "version": "1.3.0",
+    "version": "1.4.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -28,11 +28,12 @@
     "userInterfaceStyle": "dark",
     "ios": {
       "bundleIdentifier": "xilernet.myartists",
-      "buildNumber": "1.3.0",
+      "buildNumber": "1.4.0",
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app asks users for their location to automatically find concerts near them. Otherwise, users can manually search for concerts via the google places autocomplete API",
         "LSApplicationQueriesSchemes": [
+          "seatgeek",
           "spotify",
           "comgooglemaps",
           "applemaps"
@@ -41,7 +42,7 @@
     },
     "android": {
       "package": "xilernet.myartists",
-      "versionCode": 3,
+      "versionCode": 4,
       "softwareKeyboardLayoutMode": "pan",
       "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
     }

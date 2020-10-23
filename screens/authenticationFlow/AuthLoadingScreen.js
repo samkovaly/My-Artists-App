@@ -65,9 +65,6 @@ import { getDeviceType } from '../../store/device/deviceActions'
 
 
 export default function AuthLoadingScreen(props) {
-
-
-
    const dispatch = useDispatch();
    const nav = useNavigation();
    const [error, setError] = useState(false);
