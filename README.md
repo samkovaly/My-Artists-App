@@ -2,6 +2,8 @@
 # My Artists Mobile App
 My Artists is a React Native ios/android app that helps you find local concerts of your favorite artists by analyzing your Spotify data. It's the only app that automates this whole process in just one tap. After signing in with your Spotify account, concerts tailored just for you are immediately fetched and displayed.
 <br/>
+[Apple App Store](https://apps.apple.com/us/app/my-artists-only/id1525832462)
+<br/>
 [Google Play Store](https://play.google.com/store/apps/details?id=xilernet.myartists)
 <br/>
 [Backend API of this project](https://github.com/samkovaly/SpotifyAPIMusicProfile)
